@@ -3,7 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-	<c:import url="/WEB-INF/views/common/head.jsp" />
+    <head>
+		<c:import url="/WEB-INF/views/common/head.jsp" />
+	</head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
             <!-- Navigation-->
