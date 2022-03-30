@@ -2,4 +2,4 @@
     pageEncoding="UTF-8"%>
 
 <jsp:forward page="main.do" />
-sso
+song test
