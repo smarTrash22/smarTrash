@@ -6,6 +6,7 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/smartrash/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="about.do">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="loginpage.do">Login</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.do">Contact</a></li>
                 <li class="nav-item"><a class="nav-link" href="pricing.do">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link" href="faq.do">FAQ</a></li>

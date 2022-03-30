@@ -38,12 +38,17 @@ public class HomeController {
 	
 	@RequestMapping(value = "main.do", method = RequestMethod.GET)
 	public String mainViewForward() {
-		return "common/main";  // 내보낼 뷰파일명 리턴
+		return "common/main";  // �궡蹂대궪 酉고뙆�씪紐� 由ы꽩
 	}
 	
 	@RequestMapping(value = "about.do", method = RequestMethod.GET)
 	public String aboutViewForward() {
 		return "common/about";
+	}
+	
+	@RequestMapping(value = "loginpage.do", method = RequestMethod.GET)
+	public String loginViewForward() {
+		return "user/loginPage";
 	}
 	
 	@RequestMapping(value = "blog-home.do", method = RequestMethod.GET)
