@@ -2,4 +2,4 @@
     pageEncoding="UTF-8"%>
 
 <jsp:forward page="main.do" />
-강기원 준비 완료
+강기원 준비 완료 2
