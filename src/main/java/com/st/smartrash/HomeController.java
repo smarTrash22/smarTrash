@@ -76,8 +76,8 @@ public class HomeController {
 		return "common/portfolio-overview";
 	}
 	
-	@RequestMapping(value = "pricing.do", method = RequestMethod.GET)
+	@RequestMapping(value = "category.do", method = RequestMethod.GET)
 	public String pricingViewForward() {
-		return "common/pricing";
+		return "common/categorylist";
 	}
 }

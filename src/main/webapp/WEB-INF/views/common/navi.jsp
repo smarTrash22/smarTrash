@@ -9,7 +9,7 @@
                 <li class="nav-item"><a class="nav-link" href="/smartrash/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="about.do">공지 게시판</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.do">검사 갤러리</a></li>
-                <li class="nav-item"><a class="nav-link" href="pricing.do">분리수거 정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="category.do">분리수거 정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="faq.do">로그인</a></li>
             </ul>
         </div>
