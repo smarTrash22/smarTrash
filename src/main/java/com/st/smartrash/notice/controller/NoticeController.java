@@ -43,7 +43,7 @@ public class NoticeController {
 	public String moveWritePage() {
 		return "notice/noticeWriteForm";
 	}
-	
+	//a
 	// 공지글 수정페이지로 이동 처리용
 	@RequestMapping("upmove.do")
 	public String moveUpdatePage(@RequestParam("noticeno") int noticeno, Model model) {
