@@ -1,0 +1,9 @@
+.get/
+target/
+.class
+.classpath
+.deployables
+.git
+.jar
+.project
+.settings
