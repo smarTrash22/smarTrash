@@ -2,4 +2,5 @@
     pageEncoding="UTF-8"%>
 
 <jsp:forward page="main.do" />
-sws test22dd
+<<<<<<< HEAD
+
