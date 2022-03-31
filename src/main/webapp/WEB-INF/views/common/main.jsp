@@ -3,26 +3,71 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-	<c:import url="/WEB-INF/views/common/head.jsp" />
+	<head>
+		<c:import url="/WEB-INF/views/common/head.jsp" />
+		<style type="text/css">
+			#holder {
+			border: 10px dashed #ccc;
+			width: 500px;
+			height: 300px;
+			item-align: center;
+			}
+			#holder.hover {
+			border: 10px dashed #333;
+			}
+			#status {
+			color: white;
+			text-align: center;
+			}
+		</style>
+		<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.0.min.js"></script>
+		<script type="text/javascript">
+		$(function() {
+			var holder = document.getElementById('holder'),
+			state = document.getElementById('status');
+	
+			if (typeof window.FileReader === 'undefined') {
+				state.className = 'fail';
+			} else {
+				state.className = 'success';
+				state.innerHTML = 'File API & FileReader available';
+			}
+			 
+			holder.ondragover = function () { this.className = 'hover'; return false; };
+			holder.ondragend = function () { this.className = ''; return false; };
+			holder.ondrop = function (e) {
+				this.className = '';
+				e.preventDefault();
+		
+				var file = e.dataTransfer.files[0],
+				reader = new FileReader();
+				reader.onload = function (event) {
+					console.log(event.target);
+					holder.style.background = 'url(' + event.target.result + ') no-repeat center';
+				};
+				console.log(file);
+				reader.readAsDataURL(file);
+		
+				return false;
+			};
+		});
+		</script>
+	</head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
             <!-- Navigation-->
 			<c:import url="/WEB-INF/views/common/navi.jsp" />
             <!-- Header-->
-            <header class="bg-dark py-5">
-                <div class="container px-5">
-                    <div class="row gx-5 align-items-center justify-content-center">
-                        <div class="col-lg-8 col-xl-7 col-xxl-6">
-                            <div class="my-5 text-center text-xl-start">
-                                <h1 class="display-5 fw-bolder text-white mb-2">A Bootstrap 5 template for modern businesses</h1>
-                                <p class="lead fw-normal text-white-50 mb-4">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit!</p>
-                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                    <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#features">Get Started</a>
-                                    <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
-                                </div>
+            <header class="bg-dark">
+                <div class="container">
+                    <div class="row align-items-center justify-content-center">
+                        <div style="width: 525px;">
+                            <div class="my-2">
+                                <h1 class="display-5 fw-bolder text-white mb-2 text-center">SmarTrash</h1>
+								<div id="holder" class="float-"></div> 
+								<p id="status">File API & FileReader API not supported</p>
                             </div>
                         </div>
-                        <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="https://dummyimage.com/600x400/343a40/6c757d" alt="..." /></div>
                     </div>
                 </div>
             </header>
