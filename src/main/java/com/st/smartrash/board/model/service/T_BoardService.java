@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.st.smartrash.board.model.vo.T_Board;
 import com.st.smartrash.common.Paging;
-
+ 
 public interface T_BoardService {
 	int selectListCount();  // 총 게시글 갯수 조회용 (페이지 수 계산용)
 	ArrayList<T_Board> selectList(Paging page);  // 한 페이지에 출력할 게시글 조회용

@@ -13,7 +13,7 @@ import com.st.smartrash.common.Paging;
 public class T_BoardServiceImpl implements T_BoardService {
 	@Autowired
 	private T_BoardDao boardDao;
-
+ 
 	@Override
 	public int selectListCount() {
 		return boardDao.selectListCount();

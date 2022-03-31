@@ -27,7 +27,7 @@ public class T_BoardDao {
 	public int selectListCount() {
 		return session.selectOne("boardMapper.getListCount");
 	}
-
+    
 	public ArrayList<T_Board> selectList(Paging page) {
 		List<T_Board> list = session.selectList("boardMapper.selectList", page);
 		return (ArrayList<T_Board>)list;

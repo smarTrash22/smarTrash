@@ -37,7 +37,7 @@ public class T_Board implements java.io.Serializable {
 	}
 	public int getBoard_no() {
 		return board_no;
-	}
+	} 
 	public void setBoard_no(int board_no) {
 		this.board_no = board_no;
 	}
