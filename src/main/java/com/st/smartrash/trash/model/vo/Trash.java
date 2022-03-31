@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Trash implements java.io.Serializable {
 
 	private static final long serialVersionUID = -2168193368861104940L;
-
+	
 	private int trash_no; // 쓰레기 번호
 	private int user_no;	// 유저 번호
 	private int category_no;	// 카테고리 번호

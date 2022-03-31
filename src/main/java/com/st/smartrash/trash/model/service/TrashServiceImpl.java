@@ -11,7 +11,7 @@ import com.st.smartrash.trash.model.vo.Trash;
 
 @Service("TrashService")
 public class TrashServiceImpl implements TrashService {
-
+	
 	@Autowired
 	private TrashDao trashDao;
 

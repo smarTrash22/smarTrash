@@ -24,7 +24,7 @@ public class TrashDao {
 		List<Trash> list = session.selectList("TrashMapper.trashSelectAll");
 		return (ArrayList<Trash>) list;
 	}
-
+	
 	// 신고된 쓰레기 조회
 	public ArrayList<Trash> trashSelectReport(Trash trash) {
 		List<Trash> list = session.selectList("TrashMapper.trashSelectReport", trash);
