@@ -26,7 +26,7 @@
 		select * from T_CATEGORY where board_num = #{board_num}
 	</select>
 	
-	<select id="selectList">
+	<select id="selectList" resultMap="resultCategory">
 		select * from T_CATEGORY
 	</select>
 	
