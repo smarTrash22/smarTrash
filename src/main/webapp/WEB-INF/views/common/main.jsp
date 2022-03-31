@@ -1,14 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!-- Page Title -->
+<c:set var="page_title" value="Main" />
+
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>SmarTrash - ${ page_title }</title>
 		<c:import url="/WEB-INF/views/common/head.jsp" />
 		<style type="text/css">
 			#holder {
 			border: 10px dashed #ccc;
-			width: 500px;
+			width: 50%;
 			height: 300px;
 			item-align: center;
 			}
@@ -61,13 +66,19 @@
             <header class="bg-dark">
                 <div class="container">
                     <div class="row align-items-center justify-content-center">
-                        <div style="width: 525px;">
-                            <div class="my-2">
-                                <h1 class="display-5 fw-bolder text-white mb-2 text-center">SmarTrash</h1>
-								<div id="holder" class="float-"></div> 
-								<p id="status">File API & FileReader API not supported</p>
-                            </div>
-                        </div>
+	                    <div class="my-2">
+	                        <h1 class="display-5 fw-bolder text-white mb-2 text-center">SmarTrash</h1>
+	                    </div>
+                    </div>
+                    <div class="row align-items-center justify-content-center" align="center">
+						<div class="my-2">
+							<div id="holder"></div> 
+						</div>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+						<div class="my-2">
+							<p id="status">File API & FileReader API not supported</p>
+						</div>
                     </div>
                 </div>
             </header>

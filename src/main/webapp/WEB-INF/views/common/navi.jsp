@@ -1,14 +1,33 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container px-5">
-        <a class="navbar-brand" href="/smartrash/">Start Bootstrap</a>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/smartrash/">SmarTrash</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/smartrash/">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="about.do">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="contact.do">Contact</a></li>
-                <li class="nav-item"><a class="nav-link" href="pricing.do">Pricing</a></li>
-                <li class="nav-item"><a class="nav-link" href="faq.do">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.do">공지 게시판</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.do">검사 갤러리</a></li>
+                <li class="nav-item"><a class="nav-link" href="pricing.do">분리수거 정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="faq.do">로그인</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- 
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container px-5">
+        <a class="navbar-brand" href="/smartrash/">SmarTrash</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="/smartrash/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.do">공지 게시판</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.do">검사 갤러리</a></li>
+                <li class="nav-item"><a class="nav-link" href="pricing.do">분리수거 정보</a></li>
+                <li class="nav-item"><a class="nav-link" href="faq.do">로그인</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Blog</a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
@@ -27,3 +46,5 @@
         </div>
     </div>
 </nav>
+
+ -->
