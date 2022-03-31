@@ -19,23 +19,6 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate);
-		
-		return "home";
-	}
-	
 	@RequestMapping(value = "main.do", method = RequestMethod.GET)
 	public String mainViewForward() {
 		return "common/main";  // 내보낼 뷰파일명 리턴
@@ -74,10 +57,5 @@ public class HomeController {
 	@RequestMapping(value = "portfolio-overview.do", method = RequestMethod.GET)
 	public String portfolio_overviewViewForward() {
 		return "common/portfolio-overview";
-	}
-	
-	@RequestMapping(value = "category.do", method = RequestMethod.GET)
-	public String pricingViewForward() {
-		return "common/categorylist";
 	}
 }

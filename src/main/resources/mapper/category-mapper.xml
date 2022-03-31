@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="categoryMapper">
+
+	<resultMap type="Category" id="resultCategory">
+		<id column="category_no" property="category_no" />
+		<result column="category_name" property="category_name" />
+		<result column="category_content" property="category_content" />
+		<result column="category_tip" property="category_tip" />
+	</resultMap>
+
+	<!-- 비교연산자를 쿼리문에 그냥 사용하면 
+		태그 앨리먼트 꺽쇠괄호 등(<, >, &)과 혼동하는 문제가 발생할 수 있음.
+		이 문제를 미연에 방지하기 위해 xml 코드 중 xml parser 에 의해
+		해석하지 말고, 문장 그대로 해석하라는 뜻으로
+		<![CDATA[ 쿼리문장 ]]> 사용함
+	 -->
+	
+	<select id="getListCount" resultType="_int">
+		select count(*) from T_CATEGORY
+	</select>
+	
+	<select id="selectCategory" parameterType="int" resultMap="resultCategory">
+		select * from T_CATEGORY where board_num = #{board_num}
+	</select>
+	
+	<select id="selectList">
+		select * from T_CATEGORY
+	</select>
+	
+</mapper>
