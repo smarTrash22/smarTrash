@@ -3,5 +3,5 @@
 
 <jsp:forward page="main.do" />
 <<<<<<< HEAD
-asdgasgasgdffzazzzzzzzzzzzzz
+ㅁㄶㅁㄶㅁㄶㄹ
 
