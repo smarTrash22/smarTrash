@@ -13,7 +13,7 @@
 			<c:import url="/WEB-INF/views/common/navi.jsp" />
            <hr>
 	
-	<h2 align="center"><b>쓰레기 등록 페이지 (관리자)</b></h2> <!-- 안녕 -->
+	<h2 align="center"><b>쓰레기 등록 페이지 (관리자)</b></h2>
 	<br>
 	
 	<!-- ★★  form에서 입력된 값들과 첨부파일을 같이 전송하려면, 반드시 enctype 속성을 추가해야함  ★★ -->
