@@ -31,54 +31,58 @@
 
 
 	<!-- 쓰레기 추가 -->
-	<select id="tInsert" resultMap="Trash">
-			insert into t_trash 	(trash_no,user_no,category_no,trash_path,trash_date,report)	
-			values (#{trash_no}, #{user_no}, #{category_no}, #{trash_path}, #{trash_date}, #{report} ) 
-			
-		
-	</select>
+	<insert id="trashInsert" parameterType="trash">
+
+
+		insert into t_trash ( user_no,
+		category_no, trash_path)
+		values ( #{user_no},
+		#{category_no}, #{
+		trash_path, jdbcType=VARCHAR })
+
+	</insert>
 
 
 	<!-- 쓰레기 삭제 -->
-	<select id="trashDelete" parameterType="string">
-		resultMap="resultNotice">
+	<delete id="trashDelete" parameterType="string">
 
-	</select>
+
+	</delete>
 
 
 	<!-- 쓰레기 신고 -->
 	<select id="trashReport" parameterType="string">
-	
+
 	</select>
 
 
 	<!-- 최근 쓰레기 조회 -->
 	<select id="trashRecentList" parameterType="SearchDate">
-	
+
 	</select>
 
 
 	<!-- 오늘 추가된 쓰레기 -->
 	<select id="trashTodayCount" parameterType="SearchDate">
-	
+
 	</select>
 
 
 	<!-- 유저번호로 쓰레기 검색 -->
 	<select id="trashSelectUserNo" parameterType="SearchDate">
-	
+
 	</select>
 
 
 	<!-- 카테고리번호로 쓰레기 검색 -->
 	<select id="trashSelectCategoryNo" parameterType="SearchDate">
-	
+
 	</select>
 
 
 	<!-- 날짜로 쓰레기 검색 -->
 	<select id="trashSelectDate" parameterType="SearchDate">
-	
+
 	</select>
 
 

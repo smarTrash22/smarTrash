@@ -11,6 +11,7 @@
                 <li class="nav-item"><a class="nav-link" href="contact.do">검사 갤러리</a></li>
                 <li class="nav-item"><a class="nav-link" href="category.do">분리수거 정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="">로그인</a></li>
+                <li class="nav-item"><a class="nav-link" href="trashInsert.do">쓰레기 관리</a></li>
             </ul>
         </div>
     </div>

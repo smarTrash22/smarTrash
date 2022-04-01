@@ -33,7 +33,7 @@ public class TrashServiceImpl implements TrashService {
 	// 쓰레기 추가
 	public ArrayList<Trash> trashInsert(Trash trash) {
 		// TODO Auto-generated method stub
-		return null;
+		return trashDao.trashInsert(trash);
 	}
 
 	@Override

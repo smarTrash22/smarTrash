@@ -21,48 +21,48 @@ public class TrashDao {
 
 	// 전체 쓰레기 조회
 	public ArrayList<Trash> trashSelectAll(Trash trash) {
-		List<Trash> list = session.selectList("TrashMapper.trashSelectAll");
+		List<Trash> list = session.selectList("trashMapper.trashSelectAll");
 		return (ArrayList<Trash>) list;
 	}
-	
+
 	// 신고된 쓰레기 조회
 	public ArrayList<Trash> trashSelectReport(Trash trash) {
-		List<Trash> list = session.selectList("TrashMapper.trashSelectReport", trash);
+		List<Trash> list = session.selectList("trashMapper.trashSelectReport", trash);
 		return (ArrayList<Trash>) list;
 	}
 
 	// 쓰레기 추가
 	public ArrayList<Trash> trashInsert(Trash trash) {
-		List<Trash> list = session.selectList("TrashMapper.trashInsert", trash);
+		List<Trash> list = session.selectList("trashMapper.trashInsert", trash);
 		return (ArrayList<Trash>) list;
 	}
 
 	// 쓰레기 삭제
 	public ArrayList<Trash> trashDelete(Trash trash) {
-		List<Trash> list = session.selectList("TrashMapper.trashDelete", trash);
+		List<Trash> list = session.selectList("trashMapper.trashDelete", trash);
 		return (ArrayList<Trash>) list;
 	}
 
 	// 쓰레기 신고
-	public ArrayList<Trash> trashReport(Trash trash) {
-		List<Trash> list = session.selectList("TrashMapper.trashReport", trash);
-		return (ArrayList<Trash>) list;
+	public String trashReport(String report) {
+		return session.selectOne("trashMapper.trashReport", report);
+
 	}
 
 	// 최근 쓰레기 조회
 	public ArrayList<Trash> trashRecentList(Trash trash) {
-		List<Trash> list = session.selectList("TrashMapper.trashRecentList", trash);
+		List<Trash> list = session.selectList("trashMapper.trashRecentList", trash);
 		return (ArrayList<Trash>) list;
 	}
 
 	// 오늘 추가된 쓰레기
 	public int trashTodayCount(Trash trash) {
-		return session.selectOne("TrashMapper.insertTrash", trash);
+		return session.selectOne("trashMapper.trashTodayCount", trash);
 	}
 
 	// 유저번호로 쓰레기 검색
 	public int trashSelectUserNo(int user_no) {
-		return session.selectOne("TrashMapper.updateTrash", user_no);
+		return session.selectOne("TrashMapper.trashSelectUserNo", user_no);
 	}
 
 	// 카테고리번호로 쓰레기 검색

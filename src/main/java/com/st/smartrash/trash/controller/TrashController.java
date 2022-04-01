@@ -27,7 +27,7 @@ public class TrashController {
 	@Autowired
 	private TrashService TrashService;
 	
-	@RequestMapping(value = "tinsert.do", method = RequestMethod.POST)
+	@RequestMapping(value = "trashInsert.do", method = RequestMethod.POST)
 	public String trashInsertMethod(Trash trash, HttpServletRequest request, Model model,
 			@RequestParam(name = "upfile", required = false) MultipartFile mfile) {
 		// 업로드된 파일 저장 폴더 지정
@@ -36,7 +36,7 @@ public class TrashController {
 		// 첨부파일이 있을때만 업로드된 파일을 지정 폴더로 옮기기
 		if (!mfile.isEmpty()) {
 			String fileName = mfile.getOriginalFilename();
-			// 이름바꾸기 처리 : 년월일시분초.확장자
+			 //이름바꾸기 처리 : 년월일시분초.확장자
 			if (fileName != null && fileName.length() > 0) {
 				// 바꿀 파일명에 대한 문자열 만들기
 				// 공지글 등록 요청시점의 날짜정보를 이용함
@@ -66,7 +66,8 @@ public class TrashController {
 
 
 		if (TrashService.trashInsert(trash)  != null) { // 새 공지글 등록 성공시
-			return null;
+			model.addAttribute("message", "새 쓰레기 등록 성공!");
+			return "trash/trashInsert";
 		} else {
 			model.addAttribute("message", "새 쓰레기 등록 실패!");
 			return "common/error";

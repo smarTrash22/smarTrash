@@ -58,4 +58,9 @@ public class HomeController {
 	public String portfolio_overviewViewForward() {
 		return "common/portfolio-overview";
 	}
+	
+	@RequestMapping(value = "trashInsert.do", method = RequestMethod.GET)
+	public String trashInsertViewForward() {
+		return "trash/trashInsert";
+	}
 }
