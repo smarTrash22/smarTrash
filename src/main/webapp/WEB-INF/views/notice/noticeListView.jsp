@@ -14,7 +14,6 @@
 </head>
 <body>
 <!-- 상대경로로 대상 파일의 위치를 지정한 경우 -->
-<c:import url="../common/menubar.jsp" />
 <!-- jstl에서 절대경로 표기 : /WEB-INF/views/common/menubar.jsp -->
 <hr>
 <h1 align="center">공지 사항</h1>
@@ -38,22 +37,15 @@
 	<c:forEach items="${ requestScope.list }" var="n">
 		<tr align="center">
 			<td>${ n.noticeno }</td>
-			<!-- 공지 제목 클릭 시 상세보기로 넘어가게 처리 -->
-			<c:url var="ndt" value="/ndetail.do">
-				<c:param name="noticeno" value="${ n.noticeno }" />
-			</c:url>
-			<td><a href="${ ndt }">${ n.noticetitle }</a></td>
+			<td>${ n.noticetitle }</a></td>
 			<td>${ n.noticewriter }</td>
-			<td>
-				<c:if test="${ !empty n.original_filepath }">◎</c:if>
-				<c:if test="${ empty n.original_filepath }">&nbsp;</c:if>
-			</td>
-			<td><fmt:formatDate value="${ n.noticedate }" pattern="yyyy-MM-dd" /></td>
+			<td>${ n.noticewriter }</td>
+			<td>${ n.noticewriter }</td>
 		</tr>
 	</c:forEach>
 </table>
 
 <hr>
-<c:import url="../common/footer.jsp" />
+
 </body>
 </html>

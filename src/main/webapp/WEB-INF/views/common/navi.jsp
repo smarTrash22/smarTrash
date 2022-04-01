@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container px-5">
         <a class="navbar-brand" href="/smartrash/">Start Bootstrap</a>
@@ -8,7 +11,7 @@
                 <li class="nav-item"><a class="nav-link" href="about.do">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.do">Contact</a></li>
                 <li class="nav-item"><a class="nav-link" href="pricing.do">Pricing</a></li>
-                <li class="nav-item"><a class="nav-link" href="faq.do">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link" href="${ pageContext.servletContext.contextPath }/nlist.do">FAQ</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Blog</a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">

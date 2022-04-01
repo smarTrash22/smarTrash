@@ -4,96 +4,52 @@ import java.sql.Date;
 
 public class Notice implements java.io.Serializable {
 	private static final long serialVersionUID = 1365978153616705231L;
+
+	private int notice_no;
+	private String notice_title;
+	private java.sql.Date notice_date;
+	private String notice_writer;
 	
-	private int noticeno;
-	private String noticetitle;
-	private java.sql.Date noticedate;
-	private String noticewriter;
-	private String noticecontent;
-	private String original_filepath;
-	private String rename_filepath;
 	
-	public Notice() {
+	
+	public Notice(int notice_no, String notice_title, Date notice_date, String notice_writer) {
 		super();
-		// TODO Auto-generated constructor stub
+		this.notice_no = notice_no;
+		this.notice_title = notice_title;
+		this.notice_date = notice_date;
+		this.notice_writer = notice_writer;
 	}
-
-	public Notice(int noticeno, String noticetitle, Date noticedate, String noticewriter, String noticecontent,
-			String original_filepath, String rename_filepath) {
-		super();
-		this.noticeno = noticeno;
-		this.noticetitle = noticetitle;
-		this.noticedate = noticedate;
-		this.noticewriter = noticewriter;
-		this.noticecontent = noticecontent;
-		this.original_filepath = original_filepath;
-		this.rename_filepath = rename_filepath;
+	public int getNotice_no() {
+		return notice_no;
 	}
-
-	public int getNoticeno() {
-		return noticeno;
+	public void setNotice_no(int notice_no) {
+		this.notice_no = notice_no;
 	}
-
-	public void setNoticeno(int noticeno) {
-		this.noticeno = noticeno;
+	public String getNotice_title() {
+		return notice_title;
 	}
-
-	public String getNoticetitle() {
-		return noticetitle;
+	public void setNotice_title(String notice_title) {
+		this.notice_title = notice_title;
 	}
-
-	public void setNoticetitle(String noticetitle) {
-		this.noticetitle = noticetitle;
+	public java.sql.Date getNotice_date() {
+		return notice_date;
 	}
-
-	public java.sql.Date getNoticedate() {
-		return noticedate;
+	public void setNotice_date(java.sql.Date notice_date) {
+		this.notice_date = notice_date;
 	}
-
-	public void setNoticedate(java.sql.Date noticedate) {
-		this.noticedate = noticedate;
+	public String getNotice_writer() {
+		return notice_writer;
 	}
-
-	public String getNoticewriter() {
-		return noticewriter;
+	public void setNotice_writer(String notice_writer) {
+		this.notice_writer = notice_writer;
 	}
-
-	public void setNoticewriter(String noticewriter) {
-		this.noticewriter = noticewriter;
-	}
-
-	public String getNoticecontent() {
-		return noticecontent;
-	}
-
-	public void setNoticecontent(String noticecontent) {
-		this.noticecontent = noticecontent;
-	}
-
-	public String getOriginal_filepath() {
-		return original_filepath;
-	}
-
-	public void setOriginal_filepath(String original_filepath) {
-		this.original_filepath = original_filepath;
-	}
-
-	public String getRename_filepath() {
-		return rename_filepath;
-	}
-
-	public void setRename_filepath(String rename_filepath) {
-		this.rename_filepath = rename_filepath;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
 	@Override
 	public String toString() {
-		return "Notice [noticeno=" + noticeno + ", noticetitle=" + noticetitle + ", noticedate=" + noticedate + ", noticewriter="
-				+ noticewriter + ", noticecontent=" + noticecontent + ", original_filepath=" + original_filepath
-				+ ", rename_filepath=" + rename_filepath + "]";
+		return "Notice [notice_no=" + notice_no + ", notice_title=" + notice_title + ", notice_date=" + notice_date
+				+ ", notice_writer=" + notice_writer + "]";
 	}
+
 }
