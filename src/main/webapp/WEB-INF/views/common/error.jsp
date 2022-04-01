@@ -34,6 +34,6 @@
 	 또는 webapp/resources/images/d7.jpg를 지정한다면
 	 "../../../resources/images/d7.jpg"
  -->
-<c:import url="footer.jsp" />
+<c:import url="foot.jsp" />
 </body>
 </html>
