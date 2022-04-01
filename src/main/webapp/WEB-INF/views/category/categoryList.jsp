@@ -31,8 +31,8 @@
 									</c:url>
 									<a href="${ cdt }"><img style="width:100%;" class="rounded-circle" src="${ pageContext.servletContext.contextPath }/resources/images/category/${ c.category_name }.png"/></a>
 								</div>
-								<div>
-									<h5 align="center">${ c.category_name }</h5>
+								<div class="mt-1">
+									<h5 align="center">${ c.category_name_kor }</h5>
 								</div>
 							</div>
                         </c:forEach>

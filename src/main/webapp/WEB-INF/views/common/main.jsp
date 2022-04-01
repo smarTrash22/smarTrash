@@ -11,49 +11,107 @@
 		<title>SmarTrash - ${ page_title }</title>
 		<c:import url="/WEB-INF/views/common/head.jsp" />
 		<style type="text/css">
-			#holder {
-			border: 10px dashed #ccc;
-			width: 50%;
-			height: 300px;
-			item-align: center;
+			.drop-zone {
+			    outline: 10px dashed #fff ;
+			    outline-offset:-10px;  
+			    text-align: center;
+			    transition: all .15s ease-in-out;
+			    width: 50%;
+			    height: 300px;
 			}
-			#holder.hover {
-			border: 10px dashed #333;
-			}
-			#status {
-			color: white;
-			text-align: center;
+			.drop-zone.hover {
+				border: 10px dashed #333;
 			}
 		</style>
 		<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.0.min.js"></script>
 		<script type="text/javascript">
 		$(function() {
-			var holder = document.getElementById('holder'),
-			state = document.getElementById('status');
-	
-			if (typeof window.FileReader === 'undefined') {
-				state.className = 'fail';
-			} else {
-				state.className = 'success';
-				state.innerHTML = 'File API & FileReader available';
-			}
-			 
-			holder.ondragover = function () { this.className = 'hover'; return false; };
-			holder.ondragend = function () { this.className = ''; return false; };
-			holder.ondrop = function (e) {
-				this.className = '';
-				e.preventDefault();
-		
-				var file = e.dataTransfer.files[0],
-				reader = new FileReader();
-				reader.onload = function (event) {
-					console.log(event.target);
-					holder.style.background = 'url(' + event.target.result + ') no-repeat center';
-				};
-				console.log(file);
-				reader.readAsDataURL(file);
-		
-				return false;
+				var $file = document.getElementById("file")
+				
+				var dropZone = document.querySelector(".drop-zone")
+				$('.drop-zone')
+					.on("dragover", dragOver)
+					.on("dragleave", dragOver)
+					.on("click", up);
+				
+				function dragOver(e) {
+				    e.stopPropagation();
+				    e.preventDefault();
+				    if (e.type == "dragover") {
+				        $(e.target).css({
+				            "outline-offset": "-20px"
+				        });
+				    } else {
+				        $(e.target).css({
+				            "outline-offset": "-10px"
+				        });
+				    }
+				}
+
+				
+				var showFiles = function (files) {
+					dropZone.innerHTML = ""
+					for (var i = 0, len = files.length; i < len; i++) {
+						// dropZone.innerHTML += "<p>" + files[i].name + "</p>"
+					}
+				}
+				
+				var selectFile = function (files) {
+					// input file 영역에 드랍된 파일들로 대체
+					$file.files = files
+					showFiles($file.files)
+				}
+				
+				$file.addEventListener("change", function (e) {
+					showFiles(e.target.files)
+				})
+				
+				// 드래그한 파일이 드랍되었을 때
+				dropZone.addEventListener("drop", function (e) {
+					e.preventDefault()
+					var files = e.dataTransfer && e.dataTransfer.files
+					console.log(files)
+					if (files != null) {
+						if (files[0].type.match(/image.*/)) {
+						    $(e.target).css({
+						        "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
+						        "outline": "none",
+						        "background-size": "100% 100%"
+						    });
+
+							selectFile(files)
+							
+							$.ajax({
+								type: "POST",
+								enctype: 'multipart/form-data', // 필수
+								url: 'upload.do',
+								data: formData, // 필수
+								processData: false, // 필수
+								contentType: false, // 필수
+								cache: false,
+								success:function(res){
+									alert("저장에 성공하셨습니다.");
+								},error:function(res){
+								alert("오류 발생.\n관리자에게 문의해주세요.");
+								}
+							});
+						}else{
+						  alert('이미지가 아닙니다.');
+						  return;
+						}
+					} else {
+						alert("ERROR")
+					}
+					
+				})
+			
+			function ajaxFileTransmit() {
+		        var form = jQuery("ajaxFrom")[0];
+		        var formData = new FormData(form);
+		        formData.append("message", "파일 확인 창 숨기기");
+		        formData.append("file", jQuery("#ajaxFile")[0].files[0]);
+
+
 			};
 		});
 		</script>
@@ -70,16 +128,22 @@
 	                        <h1 class="display-5 fw-bolder text-white mb-2 text-center">SmarTrash</h1>
 	                    </div>
                     </div>
-                    <div class="row align-items-center justify-content-center" align="center">
-						<div class="my-2">
-							<div id="holder"></div> 
-						</div>
-                    </div>
-                    <div class="row align-items-center justify-content-center">
-						<div class="my-2">
-							<p id="status">File API & FileReader API not supported</p>
-						</div>
-                    </div>
+                    <form>
+	                    <div class="row align-items-center justify-content-center" align="center">
+							<div class="my-2">
+								
+								<div class="drop-zone">
+								또는 파일을 여기로 드래그하세요.
+								</div>
+							</div>
+	                    </div>
+	                    <div class="row align-items-center justify-content-center">
+							<div class="my-4 text-center">
+								<input type="file" id="file" style="display:none;" />
+								<input type="submit" id="submit" />
+							</div>
+	                    </div>
+                    </form>
                 </div>
             </header>
             <!-- Features section-->
