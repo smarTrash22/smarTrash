@@ -54,6 +54,11 @@
 				border-radius: 20px;
 				
 			}
+			#pg {
+			  width: 240px;
+			  margin-left: auto;
+			  margin-right: auto;
+			}
 		</style>	
 	</head>
 	<body class="d-flex flex-column">
@@ -102,7 +107,31 @@
 				</table>
 			</div>
 			<br>
-			<p align="center">페이지 들어갈 자리</p>
+			<div id="pg">
+			<ul class="pagination">
+				<li class="page-item disabled">
+					<a class="page-link" href="#">&laquo;</a>
+				</li>
+				<li class="page-item active">
+					<a class="page-link" href="#">1</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="#">2</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="#">3</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="#">4</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="#">5</a>
+				</li>
+				<li class="page-item">
+					<a class="page-link" href="#">&raquo;</a>
+				</li>
+			</ul>
+		</div>
 			<br>
 		</main>
 		<!-- Footer-->

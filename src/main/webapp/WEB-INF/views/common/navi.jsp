@@ -8,7 +8,7 @@
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/smartrash/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="faq.do">공지 게시판</a></li>
-                <li class="nav-item"><a class="nav-link" href="contact.do">검사 갤러리</a></li>
+                <li class="nav-item"><a class="nav-link" href="boardlist.do">검사 갤러리</a></li>
                 <li class="nav-item"><a class="nav-link" href="category.do">분리수거 정보</a></li>
                 <li class="nav-item"><a class="nav-link" href="">로그인</a></li>
             </ul>
