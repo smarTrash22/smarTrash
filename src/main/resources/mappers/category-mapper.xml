@@ -23,7 +23,7 @@
 	</select>
 	
 	<select id="selectCategory" parameterType="int" resultMap="resultCategory">
-		select * from T_CATEGORY where board_num = #{board_num}
+		select * from T_CATEGORY where category_no = #{ category_no }
 	</select>
 	
 	<select id="selectList" resultMap="resultCategory">
