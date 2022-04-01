@@ -15,7 +15,6 @@
 			    outline: 10px dashed #fff ;
 			    outline-offset:-10px;  
 			    text-align: center;
-			    transition: all .15s ease-in-out;
 			    width: 50%;
 			    height: 300px;
 			}
@@ -26,93 +25,146 @@
 		<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.0.min.js"></script>
 		<script type="text/javascript">
 		$(function() {
-				var $file = document.getElementById("file")
-				
-				var dropZone = document.querySelector(".drop-zone")
-				$('.drop-zone')
-					.on("dragover", dragOver)
-					.on("dragleave", dragOver)
-					.on("click", up);
-				
-				function dragOver(e) {
-				    e.stopPropagation();
-				    e.preventDefault();
-				    if (e.type == "dragover") {
-				        $(e.target).css({
-				            "outline-offset": "-20px"
-				        });
-				    } else {
-				        $(e.target).css({
-				            "outline-offset": "-10px"
-				        });
-				    }
-				}
-
-				
-				var showFiles = function (files) {
-					dropZone.innerHTML = ""
-					for (var i = 0, len = files.length; i < len; i++) {
-						// dropZone.innerHTML += "<p>" + files[i].name + "</p>"
-					}
-				}
-				
-				var selectFile = function (files) {
-					// input file 영역에 드랍된 파일들로 대체
-					$file.files = files
-					showFiles($file.files)
-				}
-				
-				$file.addEventListener("change", function (e) {
-					showFiles(e.target.files)
-				})
-				
-				// 드래그한 파일이 드랍되었을 때
-				dropZone.addEventListener("drop", function (e) {
-					e.preventDefault()
-					var files = e.dataTransfer && e.dataTransfer.files
-					console.log(files)
-					if (files != null) {
-						if (files[0].type.match(/image.*/)) {
-						    $(e.target).css({
-						        "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
-						        "outline": "none",
-						        "background-size": "100% 100%"
-						    });
-
-							selectFile(files)
-							
-							$.ajax({
-								type: "POST",
-								enctype: 'multipart/form-data', // 필수
-								url: 'upload.do',
-								data: formData, // 필수
-								processData: false, // 필수
-								contentType: false, // 필수
-								cache: false,
-								success:function(res){
-									alert("저장에 성공하셨습니다.");
-								},error:function(res){
-								alert("오류 발생.\n관리자에게 문의해주세요.");
-								}
-							});
-						}else{
-						  alert('이미지가 아닙니다.');
-						  return;
-						}
-					} else {
-						alert("ERROR")
-					}
-					
-				})
+			$image = document.getElementById("upload-file-input")
+			dropZone = document.querySelector(".drop-zone")
 			
-			function ajaxFileTransmit() {
-		        var form = jQuery("ajaxFrom")[0];
-		        var formData = new FormData(form);
-		        formData.append("message", "파일 확인 창 숨기기");
-		        formData.append("file", jQuery("#ajaxFile")[0].files[0]);
+			$(dropZone)
+				.on("dragover", dragOver)
+				.on("dragleave", dragOver)
+				.on("click", ajaxFileSelect);
+			
+			function dragOver(e) {
+			    e.stopPropagation();
+			    e.preventDefault();
+			    if (e.type == "dragover") {
+			        $(e.target).css({
+			            "transform": "scale(0.9)",
+			            "transition": "transform .25s"
+			        });
+			    } else {
+			        $(e.target).css({
+			            "transform": "scale(1.0)",
+			            "transition": "transform .25s"
+			        });
+			    }
+			}
+			
+			/* var showFiles = function (files) {
+				dropZone.innerHTML = ""
+				for (var i = 0, len = files.length; i < len; i++) {
+					dropZone.innerHTML += "<p>" + files[i].name + "</p>"
+				}
+			} */
+			
+			var selectFile = function (files) {
+				// input file 영역에 드랍된 파일들로 대체
+				$image.files = files
+				/* showFiles($image.files) */
+				
+			}
+			
+			/* $image.addEventListener("change", function (e) {
+				showFiles(e.target.files)
+			}) */
+			
+			// 드래그한 파일이 드랍되었을 때
+			dropZone.addEventListener("drop", function (e) {
+				e.preventDefault()
+		        $(e.target).css({
+		            "transform": "scale(1.0)",
+		            "transition": "transform .25s"
+		        });
+				var files = e.dataTransfer && e.dataTransfer.files
+				console.log(files)
+				if (files != null) {
+					if(files[0].type.match(/image.*/)) {
+						
+						dropZone.innerHTML = ""
+						
+					    $(dropZone).css({
+					        "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
+					        "background-size": "contain",
+					        "background-repeat": "no-repeat",
+					        "background-position": "center"
+					    });
 
+						selectFile(files)
 
-			};
+						ajaxFileUpload()
+					}else{
+						alert('이미지가 아닙니다.');
+						dropZone.innerHTML = "Drop & Click"
+		        		$('.drop-zone').css({
+					        "background-image": "none"
+					    });
+						return;
+					}
+				} else {
+					alert("ERROR")
+				}
+				
+			})
+			
+			function ajaxFileSelect() {
+		        jQuery("#upload-file-input").click();
+			}
+			
+			jQuery(document).ready(function($) {
+			    $("#upload-file-input").change(function() {
+			        var files = !!this.files ? this.files : [];
+			        if(!files.length || !window.FileReader) {
+			        	dropZone.innerHTML = "Drop & Click"
+		        		$(dropZone).css({
+					        "background-image": "none"
+					    });
+			        	return; // no file selected, or no FileReader support
+			        }
+
+			        if(/^image/.test( files[0].type)){ // only image file
+				    	ajaxFileUpload()
+
+			            var reader = new FileReader(); // instance of the FileReader
+			            reader.readAsDataURL(files[0]); // read the local file
+			            reader.onload = function(e) {
+			            	dropZone.innerHTML = ""
+			            	
+			            	$(dropZone).css({
+						        "background-image": "url(" + e.target.result + ")",
+						        "background-size": "contain",
+						        "background-repeat": "no-repeat",
+						        "background-position": "center"
+						    });
+			            	console.log(e.target.result)
+			            }
+			        } else {
+			        	alert('이미지가 아닙니다.');
+			        	dropZone.innerHTML = "Drop & Click"
+		        		$(dropZone).css({
+					        "background-image": "none"
+					    });
+						return;
+			        }
+
+			    });
+			});
+		
+		    function ajaxFileUpload() {
+		    	$.ajax({
+					url: "uploadFile.do",
+					type: "POST",
+					data: new FormData($("#upload-file-form")[0]),
+					enctype: 'multipart/form-data',
+					processData: false,
+					contentType: false,
+					cache: false,
+					success: function () {
+						console.log("success");
+					},
+					error: function () {
+						console.log("error");
+					}
+				});
+		    }
 		});
 		</script>
 	</head>
@@ -128,22 +180,18 @@
 	                        <h1 class="display-5 fw-bolder text-white mb-2 text-center">SmarTrash</h1>
 	                    </div>
                     </div>
-                    <form>
 	                    <div class="row align-items-center justify-content-center" align="center">
 							<div class="my-2">
-								
-								<div class="drop-zone">
-								또는 파일을 여기로 드래그하세요.
-								</div>
+								<form id="upload-file-form">
+									<div class="drop-zone text-white d-flex align-items-center justify-content-center user-select-none">Drop & Click</div>
+									<input id="upload-file-input" type="file" name="uploadfile" style="display:none;" />
+								</form>
 							</div>
 	                    </div>
 	                    <div class="row align-items-center justify-content-center">
 							<div class="my-4 text-center">
-								<input type="file" id="file" style="display:none;" />
-								<input type="submit" id="submit" />
 							</div>
 	                    </div>
-                    </form>
                 </div>
             </header>
             <!-- Features section-->
