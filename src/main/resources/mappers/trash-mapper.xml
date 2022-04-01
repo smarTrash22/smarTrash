@@ -40,44 +40,44 @@
 
 
 	<!-- 쓰레기 삭제 -->
-	<select id="trashDelete" parameterType="string"
+	<select id="trashDelete" parameterType="string">
 		resultMap="resultNotice">
 
 	</select>
 
 
 	<!-- 쓰레기 신고 -->
-	<select id="trashReport" parameterType="string"
+	<select id="trashReport" parameterType="string">
 	
 	</select>
 
 
 	<!-- 최근 쓰레기 조회 -->
-	<select id="trashRecentList" parameterType="SearchDate"
+	<select id="trashRecentList" parameterType="SearchDate">
 	
 	</select>
 
 
 	<!-- 오늘 추가된 쓰레기 -->
-	<select id="trashTodayCount" parameterType="SearchDate"
+	<select id="trashTodayCount" parameterType="SearchDate">
 	
 	</select>
 
 
 	<!-- 유저번호로 쓰레기 검색 -->
-	<select id="trashSelectUserNo" parameterType="SearchDate"
+	<select id="trashSelectUserNo" parameterType="SearchDate">
 	
 	</select>
 
 
 	<!-- 카테고리번호로 쓰레기 검색 -->
-	<select id="trashSelectCategoryNo" parameterType="SearchDate"
+	<select id="trashSelectCategoryNo" parameterType="SearchDate">
 	
 	</select>
 
 
 	<!-- 날짜로 쓰레기 검색 -->
-	<select id="trashSelectDate" parameterType="SearchDate"
+	<select id="trashSelectDate" parameterType="SearchDate">
 	
 	</select>
 
