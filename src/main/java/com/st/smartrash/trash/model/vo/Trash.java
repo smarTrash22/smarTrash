@@ -85,4 +85,16 @@ public class Trash implements java.io.Serializable {
 				+ trash_path + ", trash_date=" + trash_date + ", report=" + report + "]";
 	}
 
+	public void setOriginal_filepath(String fileName) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+
+	public void setRename_filepath(String renameFileName) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
