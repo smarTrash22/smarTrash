@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.JsonElement;
@@ -26,6 +27,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.st.smartrash.user.model.service.UserService;
 import com.st.smartrash.user.model.vo.KakaoUserInfo;
+import com.st.smartrash.user.model.vo.User;
 
 @Controller
 @RequestMapping(value="/user/*")
@@ -79,9 +81,8 @@ public class UserController {
 	 * return code; }
 	 */
 	
-	@RequestMapping(value="/kakaoLogin", method=RequestMethod.GET)
+	@RequestMapping(value="kakaoLogin.do", method=RequestMethod.GET)
 	public String kakaoLogin(@RequestParam(value = "code"/* , required = false */) String code) throws Exception {
-		System.out.println("되긴하는거냐고");
 		System.out.println("#########" + code);
 		
 		String access_Token = userService.getAccessToken(code);
@@ -94,5 +95,8 @@ public class UserController {
 		return "common/main";
 	}
 	
-	
+//	@RequestMapping(value="mypage.do", method=RequestMethod.POST)
+//	public ModelAndView myInfoMethod(@RequestParam("user") User user, ModelAndView mv) {
+//		
+//	}
 }

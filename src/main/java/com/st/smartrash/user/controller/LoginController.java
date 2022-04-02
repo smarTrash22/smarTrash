@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.st.smartrash.user.model.service.UserService;
 import com.st.smartrash.user.model.vo.NaverLoginBO;
+import com.st.smartrash.user.model.vo.User;
 
 /**
  * Handles requests for the application home page.
@@ -30,22 +32,32 @@ public class LoginController {
 	private void setNaverLoginBO(NaverLoginBO naverLoginBO) {
 		this.naverLoginBO = naverLoginBO;
 	}
+	
+	@Autowired
+	private UserService userService;
 
 	//로그인 첫 화면 요청 메소드
 	@RequestMapping(value="login.do", method={ RequestMethod.GET, RequestMethod.POST })
 	public String login(Model model, HttpSession session) {
 		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginBO클래스의 getAuthorizationUrl메소드 호출 */
-		String naverAuthUrl = naverLoginBO.getAuthorizationUrl(session);
-
+		String naverAuthUrl = naverLoginBO.getAuthorizationUrlNaver(session);
+		
 		System.out.println("네이버:" + naverAuthUrl);
 		//네이버
-		model.addAttribute("url", naverAuthUrl);
+		
+//		String kakaoAuthUrl = naverLoginBO.getAuthorizationUrlKakao(session);
+//		System.out.println("카카오:" + kakaoAuthUrl);
+//		//카카오
+
+		model.addAttribute("naverUrl", naverAuthUrl);
+//		model.addAttribute("kakaoUrl", kakaoAuthUrl);
 		return "user/login";
+
 	}
 
 	//네이버 로그인 성공시 callback호출 메소드
-	@RequestMapping(value="/callback", method={ RequestMethod.GET, RequestMethod.POST })
-	public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session)
+	@RequestMapping(value="callback.do", method={ RequestMethod.GET, RequestMethod.POST })
+	public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session, User user)
 			throws IOException, ParseException {
 		System.out.println("여기는 callback");
 		OAuth2AccessToken oauthToken;
@@ -63,20 +75,33 @@ public class LoginController {
 		//3. 데이터 파싱
 		//Top레벨 단계 _response 파싱
 		JSONObject response_obj = (JSONObject) jsonObj.get("response");
-		//response의 nickname값 파싱
-		String nickname = (String) response_obj.get("nickname");
-		System.out.println(nickname);
-		//4.파싱 닉네임 세션으로 저장
-		session.setAttribute("sessionId", nickname); // 세션 생성
+		System.out.println(response_obj);
+		//response의 name값 파싱
+		String name = (String)response_obj.get("name");
+		String email = (String)response_obj.get("email");
+//		System.out.println(name);
+		
+		user.setUser_name(name);
+		user.setUser_email(email);
+		
+		if(userService.insertUser(user) > 0) {
+			System.out.println("디비저장완료");
+		}else {
+			System.out.println("디비저장실패");
+		}
+		
+//		//4.파싱 네임 세션으로 저장
+//		session.setAttribute("sessionId", name); // 세션 생성
+		session.setAttribute("loginUser", user);
 		model.addAttribute("result", apiResult);
-		return "user/login";
+		return "common/main";
 	}
 
 	//로그아웃
-	@RequestMapping(value = "/logout", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value="logout.do", method = { RequestMethod.GET, RequestMethod.POST })
 	public String logout(HttpSession session)throws IOException {
-System.out.println("여기는 logout");
-session.invalidate();
-return "redirect:index.jsp";
-}
+		System.out.println("여기는 logout");
+		session.invalidate();
+		return "common/main";
+	}
 }

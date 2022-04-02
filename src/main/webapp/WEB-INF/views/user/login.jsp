@@ -30,7 +30,7 @@ pageEncoding="UTF-8"%>
 				<br>
 				<!-- 네이버 로그인 창으로 이동 -->
 				<div id="naver_id_login" style="text-align:center">
-					<a href="${url}"> <img width="245" src="${ pageContext.servletContext.contextPath }/resources/userImages/btnG_완성형.png" /></a>
+					<a href="${naverUrl}"> <img width="245" src="${ pageContext.servletContext.contextPath }/resources/userImages/btnG_완성형.png" /></a>
 				</div>
 				<br>
 				<!-- 카카오 로그인 창으로 이동 --> <!-- 커밋 -->

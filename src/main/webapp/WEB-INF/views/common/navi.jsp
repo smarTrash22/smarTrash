@@ -15,8 +15,12 @@
                 <c:if test="${ empty sessionScope.sessionId }">
                 	<li class="nav-item"><a class="nav-link" href="login.do">로그인</a></li>
                 </c:if>
-                <c:if test="${ !empty sessionScope.sessionId }">
-                	<li class="nav-item"><a class="nav-link" href="logout">로그아웃</a></li>
+                <c:if test="${ !empty sessionScope.loginUser }">
+                	<c:url var="callMyInfo" value="mypage.do"> <!-- MemberControll 의 메소드 실행 myinfo.do 찾아서 -->
+						<c:param name="user" value="${ sessionScope.logunUser }" />
+					</c:url>
+					<li class="nav-item"><a class="nav-link" href="${ callMyInfo }">마이페이지</a></li>
+                	<li class="nav-item"><a class="nav-link" href="logout.do">로그아웃</a></li>
                 </c:if>
             </ul>
         </div>

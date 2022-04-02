@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 
 
 import com.st.smartrash.user.model.dao.UserDao;
+import com.st.smartrash.user.model.vo.User;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -114,6 +115,11 @@ public class UserServiceImpl implements UserService {
 			e.printStackTrace();
 		}
 		return userInfo;
+	}
+	
+	@Override
+	public int insertUser(User user) {
+		return userDao.insertUser(user);
 	}
 	
 }
