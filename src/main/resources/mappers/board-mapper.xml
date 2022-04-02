@@ -29,7 +29,7 @@
 		<![CDATA[
 			SELECT * FROM (
     			SELECT ROWNUM RNUM, N.* FROM (
-        			SELECT * FROM BOARD ORDER BY BOARD_DATE DESC
+        			SELECT * FROM T_BOARD ORDER BY BOARD_DATE DESC
     			) N
 			)
 			where rnum >= #{startRow} and rnum <= #{endRow}

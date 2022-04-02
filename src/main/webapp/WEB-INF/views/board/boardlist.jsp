@@ -112,36 +112,51 @@ input::placeholder {
 			</table>
 		</div>
 		<br>
-		<div style="text-align: center;">
+		<div id="pg">
+			<ul class="pagination">
 			<!-- 1페이지로 이동처리 -->
 			<c:if test="${ currentPage eq 1 }">
-	[맨처음] &nbsp;
-</c:if>
+				<li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+			</c:if>
 			<c:if test="${ currentPage > 1 }">
-				<c:url var="blf" value="/blist.do">
+				<c:url var="blf" value="/boardlist.do">
 					<c:param name="page" value="1" />
 				</c:url>
-				<a href="${ blf }">[맨처음]</a>
+				<li class="page-item"><a class="page-link" href="${ blf }">&laquo;</a></li>
 			</c:if>
 			<!--  이전페이지 그룹으로 이동처리  -->
 			<c:if
 				test="${ (currentPage -10) < startPage and (currentPage - 10) > 1 }">
-				<c:url var="blf2" value="/blist.do">
+				<c:url var="blf2" value="/boardlist.do">
+					<c:param name="page" value="${ startPage - 10 }" />
+				</c:url>
+				<li class="page-item"><a class="page-link" href="${ blf2 }">@</a></li>
+			</c:if>
+			<c:if
+				test="${ !((currentPage -10) < startPage and (currentPage - 10) > 1) }">
+				<li class="page-item disabled"><a class="page-link" href="${ blf2 }">@</a></li>
+			</c:if>
+			<li class="page-item active"><a class="page-link" href="#">1</a></li>
+			</ul>
+			</div>
+		<div style="text-align: center;">
+			<!-- 1페이지로 이동처리 -->
+			<!--  이전페이지 그룹으로 이동처리  -->
+			<c:if
+				test="${ (currentPage -10) < startPage and (currentPage - 10) > 1 }">
+				<c:url var="blf2" value="/boardlist.do">
 					<c:param name="page" value="${ startPage - 10 }" />
 				</c:url>
 				<a href="${ blf2 }">[이전그룹]</a>
 			</c:if>
-			<c:if
-				test="${ !((currentPage -10) < startPage and (currentPage - 10) > 1) }">
-	[이전그룹] &nbsp;
-</c:if>
+		
 			<!-- 현재 페이지가 속한 페이지 그룹 출력 -->
 			<c:forEach var="p" begin="${ startPage }" end="${ endPage }" step="1">
 				<c:if test="${ p eq currentPage }">
 					<font size="4" color="red">[${ p }]</font>
 				</c:if>
 				<c:if test="${ p ne currentPage }">
-					<c:url var="blf5" value="/blist.do">
+					<c:url var="blf5" value="/boardlist.do">
 						<c:param name="page" value="${ p }" />
 					</c:url>
 					<a href="${ blf5 }">${ p }</a>
@@ -150,7 +165,7 @@ input::placeholder {
 			<!--  다음페이지 그룹으로 이동처리  -->
 			<c:if
 				test="${ (currentPage +10) > endPage and (currentPage + 10) < maxPage }">
-				<c:url var="blf3" value="/blist.do">
+				<c:url var="blf3" value="/boardlist.do">
 					<c:param name="page" value="${ endPage + 10 }" />
 				</c:url>
 				<a href="${ blf3 }">[이전그룹]</a>
@@ -164,11 +179,23 @@ input::placeholder {
 	[맨끝] &nbsp;
 </c:if>
 			<c:if test="${ currentPage < maxPage }">
-				<c:url var="blf4" value="/blist.do">
+				<c:url var="blf4" value="/boardlist.do">
 					<c:param name="page" value="${ maxPage }" />
 				</c:url>
 				<a href="${ blf4 }">[맨끝]</a>
 			</c:if>
+		</div>
+		<div id="pg">
+			<ul class="pagination">
+				<li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+				<li class="page-item active"><a class="page-link" href="#">1</a></li>
+				<li class="page-item"><a class="page-link" href="#">2</a></li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<li class="page-item"><a class="page-link" href="#">4</a></li>
+				<li class="page-item"><a class="page-link" href="#">5</a></li>
+				<li class="page-item"><a class="page-link" href="#">&raquo;</a>
+				</li>
+			</ul>
 		</div>
 	</main>
 	<!-- Footer-->

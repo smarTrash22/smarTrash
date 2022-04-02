@@ -23,12 +23,12 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
-	@RequestMapping(value = "boardlist.do", method = RequestMethod.GET)
+	@RequestMapping(value = "boardlist2.do", method = RequestMethod.GET)
 	public String aboutViewForward() {
 		return "board/boardlist";
 	}
 	
-	@RequestMapping("boardlist2.do")
+	@RequestMapping("boardlist.do")
 	public ModelAndView boardListMethod(@RequestParam(name="page", required=false) String page, ModelAndView mv) {
 		int currentPage = 1;
 		if(page != null) {
