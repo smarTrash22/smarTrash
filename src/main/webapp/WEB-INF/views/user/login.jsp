@@ -33,7 +33,7 @@ pageEncoding="UTF-8"%>
 					<a href="${url}"> <img width="245" src="${ pageContext.servletContext.contextPath }/resources/userImages/btnG_완성형.png" /></a>
 				</div>
 				<br>
-				<!-- 카카오 로그인 창으로 이동 -->
+				<!-- 카카오 로그인 창으로 이동 --> <!-- 커밋 -->
 				<a href="https://kauth.kakao.com/oauth/authorize?client_id=deb4c9afa0906ffd568af7df8f8a4567&redirect_uri=http://127.0.0.1:8888/smartrash/&response_type=code">
 				<img width="250" src="${ pageContext.servletContext.contextPath }/resources/userImages/kakao_login_medium_narrow.png">
 <%-- 				<div id="kakaoLoginForm">
