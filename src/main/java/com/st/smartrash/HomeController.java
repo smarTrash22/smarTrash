@@ -58,4 +58,5 @@ public class HomeController {
 	public String portfolio_overviewViewForward() {
 		return "common/portfolio-overview";
 	}
+	
 }

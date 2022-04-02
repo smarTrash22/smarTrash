@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/smartrash/">SmarTrash</a>
@@ -10,7 +11,13 @@
                 <li class="nav-item"><a class="nav-link" href="faq.do">공지 게시판</a></li>
                 <li class="nav-item"><a class="nav-link" href="contact.do">검사 갤러리</a></li>
                 <li class="nav-item"><a class="nav-link" href="category.do">분리수거 정보</a></li>
-                <li class="nav-item"><a class="nav-link" href="">로그인</a></li>
+                <%-- <li class="nav-item"><a class="nav-link" href="loginPage.do">로그인</a></li> --%>
+                <c:if test="${ empty sessionScope.sessionId }">
+                	<li class="nav-item"><a class="nav-link" href="login.do">로그인</a></li>
+                </c:if>
+                <c:if test="${ !empty sessionScope.sessionId }">
+                	<li class="nav-item"><a class="nav-link" href="logout">로그아웃</a></li>
+                </c:if>
             </ul>
         </div>
     </div>

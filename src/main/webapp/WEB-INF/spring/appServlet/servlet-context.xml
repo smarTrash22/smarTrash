@@ -50,6 +50,9 @@
 	</beans:bean>
 
 	<context:component-scan base-package="com.st.smartrash" />
+	
+	<!-- NaverLoginBO Class에 대한 Bean설정 추가 -->
+	<beans:bean id="naverLoginBO" class="com.st.smartrash.user.model.vo.NaverLoginBO" />
 		
 	<!-- <beans:bean id="memberService" class="com.test.first.member.model.service.MemberServiceImpl" /> -->
 	
