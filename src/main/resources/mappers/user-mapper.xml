@@ -12,8 +12,19 @@
 		<result property="user_date" column="user_date" />
 	</resultMap>
 	
+	<select id="dupCheck" parameterType="String" resultType="User">
+		select *
+		from t_user
+		where user_email = #{ user_email }
+	</select>
+	
 	<insert id="insertUser" parameterType="User">
 		insert into t_user values(T_UN_S.nextval, #{ user_email }, #{ user_name }, default, default)
 	</insert>
+	
+	<select id="selectUser" parameterType="int" resultType="User">
+		select * from t_user
+		where user_no = #{ user_no }
+	</select>
 	
 </mapper>

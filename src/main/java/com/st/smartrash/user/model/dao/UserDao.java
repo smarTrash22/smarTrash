@@ -16,6 +16,14 @@ public class UserDao {
 	public int insertUser(User user) {
 		return session.insert("userMapper.insertUser", user);
 	}
+
+	public User selectUser(int user_no) {
+		return session.selectOne("userMapper.selectUser", user_no);
+	}
+
+	public User dupCheck(String user_email) {
+		return session.selectOne("userMapper.dupCheck", user_email);
+	}
 	
 	
 }

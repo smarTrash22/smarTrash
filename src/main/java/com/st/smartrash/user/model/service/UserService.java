@@ -12,4 +12,8 @@ public interface UserService {
 
 	int insertUser(User user);
 
+	User selectUser(int user_no);
+
+	User dupCheck(String email);
+
 }

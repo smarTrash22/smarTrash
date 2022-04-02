@@ -118,8 +118,19 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public User dupCheck(String email) {
+		return userDao.dupCheck(email);
+	}
+	
+	@Override
 	public int insertUser(User user) {
 		return userDao.insertUser(user);
 	}
+	
+	@Override
+	public User selectUser(int user_no) {
+		return userDao.selectUser(user_no);
+	}
+	
 	
 }

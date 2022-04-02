@@ -81,15 +81,19 @@ public class LoginController {
 		String email = (String)response_obj.get("email");
 //		System.out.println(name);
 		
-		user.setUser_name(name);
-		user.setUser_email(email);
-		
-		if(userService.insertUser(user) > 0) {
-			System.out.println("디비저장완료");
+		if(userService.dupCheck(email) != null) {
+			user= userService.dupCheck(email);
 		}else {
-			System.out.println("디비저장실패");
+			user.setUser_name(name);
+			user.setUser_email(email);
+			if(userService.insertUser(user) > 0) {
+				System.out.println("디비저장완료");
+			}else {
+				System.out.println("디비저장실패");
+			}
 		}
-		
+
+		System.out.println(user.toString());
 //		//4.파싱 네임 세션으로 저장
 //		session.setAttribute("sessionId", name); // 세션 생성
 		session.setAttribute("loginUser", user);

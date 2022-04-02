@@ -7,6 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -30,7 +31,6 @@ import com.st.smartrash.user.model.vo.KakaoUserInfo;
 import com.st.smartrash.user.model.vo.User;
 
 @Controller
-@RequestMapping(value="/user/*")
 public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
@@ -81,7 +81,7 @@ public class UserController {
 	 * return code; }
 	 */
 	
-	@RequestMapping(value="kakaoLogin.do", method=RequestMethod.GET)
+	@RequestMapping("kakaoLogin.do")
 	public String kakaoLogin(@RequestParam(value = "code"/* , required = false */) String code) throws Exception {
 		System.out.println("#########" + code);
 		
@@ -95,8 +95,17 @@ public class UserController {
 		return "common/main";
 	}
 	
-//	@RequestMapping(value="mypage.do", method=RequestMethod.POST)
-//	public ModelAndView myInfoMethod(@RequestParam("user") User user, ModelAndView mv) {
-//		
-//	}
+	@RequestMapping("mypage.do")
+	public ModelAndView myInfoMethod(HttpServletRequest request, ModelAndView mv) {
+		HttpSession session = request.getSession();
+
+		User user = (User)session.getAttribute("loginUser");
+
+		if(user != null) {
+			mv.addObject("user", user);
+			mv.setViewName("user/myPage");
+		}
+		
+		return mv;
+	}
 }
