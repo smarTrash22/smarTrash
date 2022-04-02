@@ -4,7 +4,8 @@ import java.sql.Date;
 
 import org.springframework.stereotype.Component;
 
-//@Component("searchDate")  // 자동 들곡하면 DI기능 사용할 수 있음
+
+//@Component("searchDate")  //자동 등록하면 DI 기능 사용할 수 있음
 public class SearchDate implements java.io.Serializable {
 	private static final long serialVersionUID = 5880625008368618729L;
 	
@@ -42,5 +43,6 @@ public class SearchDate implements java.io.Serializable {
 	@Override
 	public String toString() {
 		return "SearchDate [begin=" + begin + ", end=" + end + "]";
-	}
+	}	
+
 }

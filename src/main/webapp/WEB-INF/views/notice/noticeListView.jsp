@@ -2,58 +2,139 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<c:set var="listCount" value="${ listCount }" />
+<c:set var="startPage" value="${ startPage }" />
+<c:set var="endPage" value="${ endPage }" />
+<c:set var="maxPage" value="${ maxPage }" />
+<c:set var="currentPage" value="${ currentPage }" />
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>first</title>
-<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.0.min.js"></script>
+<title>SmarTrash - ${ page_title }</title>
 <script type="text/javascript">
-
+/* function showWriteForm(){
+	location.href = "${ pageContext.servletContext.contextPath }/nwform.do";
+} */
 </script>
+<c:import url="/WEB-INF/views/common/head.jsp" />
+<style type="text/css">
+	ul {
+	  text-align: center;
+	}
+	a { 
+		text-align: center; text-decoration: none; color: inherit;
+	}
+</style>
 </head>
 <body>
-<!-- 상대경로로 대상 파일의 위치를 지정한 경우 -->
-<c:import url="../common/menubar.jsp" />
-<!-- jstl에서 절대경로 표기 : /WEB-INF/views/common/menubar.jsp -->
-<hr>
-<h1 align="center">공지 사항</h1>
-
-<!-- 로그인한 회원이 관리자인 경우는 공지사항 등록 버튼이 보이게 함 -->
-<center>
-	<c:if test="${ loginMember.admin eq 'Y'.charAt(0) }">
-		<!-- jsp에서 jsp로의 이동은 반드시 컨트롤러로 페이지  이동 요청을 해서 페이지가 바뀌게 함
-			 스프링에서는 뷰리졸버를 거쳐서 뷰 페이지가 바뀌게 처리하도록 되어있음 -->
-		<%-- <button onclick="javascript:location.href='${ pageContext.servletContext.contextPath }/WEB-INF/views/notice/noticewriteForm.jsp';">공지글 등록</button> --%>
-		<button onclick="javascript:location.href='${ pageContext.servletContext.contextPath }/movewrite.do';">새 공지글 등록</button>
-	</c:if>
-</center>
-<!-- 검색 항목 -->
-
-<!-- 목록 출력 -->
-
+<c:import url="/WEB-INF/views/common/navi.jsp" />
 <br>
-<table align="center" width="500" border="1" cellspacing="0" cellpadding="1">
-	<tr><th>번호</th><th>제목</th><th>작성자</th><th>첨부파일</th><th>날짜</th></tr>
+<h2 align="center">Notice Board</h2>
+<c:if test="${ !empty sessionScope.loginMember }">
+	<div>
+		<button onclick="showWriteForm();">글쓰기</button>
+	</div>
+</c:if>
+<div style="padding-left: 10%; padding-right: 10%; padding-bottom: 10px;">
+<table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">No</th>
+        <th scope="col" colspan="3">Subject</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col">File</th>
+        <th scope="col">Date</th>
+        <th scope="col">Views</th>
+      </tr>
+    </thead>
+<tbody>
 	<c:forEach items="${ requestScope.list }" var="n">
-		<tr align="center">
-			<td>${ n.noticeno }</td>
-			<!-- 공지 제목 클릭 시 상세보기로 넘어가게 처리 -->
+	<tr align="center">
+		<td align="left">${ n.notice_no }</td>
 			<c:url var="ndt" value="/ndetail.do">
-				<c:param name="noticeno" value="${ n.noticeno }" />
+				<c:param name="notice_no" value="${ n.notice_no }" />
+				<c:param name="page" value="${ currentPage }" />
 			</c:url>
-			<td><a href="${ ndt }">${ n.noticetitle }</a></td>
-			<td>${ n.noticewriter }</td>
-			<td>
-				<c:if test="${ !empty n.original_filepath }">◎</c:if>
-				<c:if test="${ empty n.original_filepath }">&nbsp;</c:if>
-			</td>
-			<td><fmt:formatDate value="${ n.noticedate }" pattern="yyyy-MM-dd" /></td>
-		</tr>
-	</c:forEach>
+		<td colspan="3" align="left"><a href="${ ndt }">${ n.notice_title }</a></td>
+		<td align="left"></td>
+		<td align="left"></td>
+		<td align="left">${ n.notice_writer }</td>
+		<td align="left">
+			<c:if test="${ !empty n.notice_original_filepath }">O</c:if>
+			<c:if test="${ empty n.notice_original_filepath }">&nbsp;</c:if>
+		</td>
+		<td align="left"><fmt:formatDate value="${ n.notice_date}" type="date" pattern="yyyy-MM-dd" /></td>
+		<td align="left">${ n.notice_readcount }</td>
+	</tr>
+</c:forEach>
+</tbody>
 </table>
-
-<hr>
-<c:import url="../common/footer.jsp" />
+<!-- 페이징 -->
+</div>
+<div class="d-flex justify-content-center" >
+	<nav aria-label="Page navigation example">
+	  <ul class="pagination pagination-sm">
+<!-- 맨처음 페이지 -->
+	  <c:if test="${ currentPage eq 1 }">
+		<li class="page-item disabled" ><a class="page-link" href="#"><i class="bi bi-chevron-double-left"></i></a></li>
+	  </c:if>
+	  <c:if test="${ currentPage > 1 }">
+	  	<c:url var="nlf" value="/nlist.do">
+	  		<c:param name="page" value="1"></c:param>
+	  	</c:url>
+		<li class="page-item " ><a class="page-link" href="${ nlf }"><i class="bi bi-chevron-double-left"></i></a></li>
+	  </c:if>
+<!-- 이전 페이지 -->
+	  <c:if test="${ !((currentPage - 10) < startPage and (currentPage - 10) > 1) }">
+	  	<li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a></li>
+	  </c:if>
+	  <c:if test="${ (currentPage - 10) < startPage and (currentPage - 10) > 1 }">
+	  	<c:url var="nlf3" value="/nlist.do">
+	  		<c:param name="page" value="${ startPage - 10 }" />
+	  	</c:url>
+		<li class="page-item"><a class="page-link" href="${ nlf3 }"><i class="bi bi-chevron-left"></i></a></li>
+	  </c:if>
+<!-- 현재 페이지가 속한 페이지그룹 출력 -->
+<c:forEach var="p" begin="${ startPage }" end="${ endPage }" step="1">
+	<c:if test="${ p eq currentPage }">
+		<li class="page-item disabled"><a class="page-link" href="#">${ p }</a></li>
+	</c:if>
+	<c:if test="${ p ne currentPage }">
+	<c:url var="nlf5" value="/nlist.do">
+		<c:param name="page" value="${ p }"/>
+	</c:url>
+	<li class="page-item"><a class="page-link" href="${ nlf5 }">${ p }</a></li>
+	</c:if>
+</c:forEach>
+<!-- 다음 페이지 -->
+	  <c:if test="${ !((currentPage + 10) > endPage and (currentPage + 10) < maxPage) }">
+	  	<li class="page-item disabled" ><a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a></li>
+	  </c:if>
+	  <c:if test="${ (currentPage + 10) > endPage and (currentPage + 10) < maxPage }">
+	  	<c:url var="nlf4" value="/nlist.do">
+	  		<c:param name="page" value="${ endPage + 10 }" />
+	  	</c:url>
+		<li class="page-item"><a class="page-link" href="${ nlf4 }"><i class="bi bi-chevron-right"></i></a></li>
+	  </c:if>
+<!-- 맨끝 페이지 -->
+	  <c:if test="${ currentPage eq maxPage }">
+		<li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-double-right"></i></a></li>
+	  </c:if>
+	  <c:if test="${ currentPage < maxPage }">
+	  	<c:url var="nlf2" value="/nlist.do">
+	  		<c:param name="page" value="${ maxPage }"></c:param>
+	  	</c:url>
+		<li class="page-item"><a class="page-link" href="${ nlf2 }"><i class="bi bi-chevron-double-right"></i></a></li>
+	  </c:if>	  
+	  </ul>
+	</nav>
+</div>
+<c:import url="/WEB-INF/views/common/foot.jsp" />
 </body>
 </html>

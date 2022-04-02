@@ -3,19 +3,28 @@
 "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="noticeMapper">
-	
+
 <resultMap type="Notice" id="resultNotice">
 		<id column="notice_no" property="notice_no" />
 		<result column="notice_title" property="notice_title" />
 		<result column="notice_date" property="notice_date" />
 		<result column="notice_writer" property="notice_writer" />
+		<result column="notice_content" property="notice_content" />
+		<result column="notice_original_filepath" property="notice_original_filepath" />
+		<result column="notice_rename_filepath" property="notice_rename_filepath" />
+		<result column="notice_readcount" property="notice_readcount" />
 	</resultMap>
-
-	<select id="selectAll" resultMap="resultNotice">
-		select * from t_notice
-		order by notice_no desc
+	
+	<select id="getListCount" resultType="_int">
+		select count(*) from t_notice
+	</select>	
+	
+	<select id="selectList" parameterType="Paging" resultMap="resultNotice">
+	<![CDATA[
+			select * from (
+    		select rownum num, n.* from (
+        	select * from t_notice order by notice_date desc ) n )
+			where num >= ${startRow} and num <= ${endRow}
+	]]>
 	</select>
-
-
-
 </mapper>
