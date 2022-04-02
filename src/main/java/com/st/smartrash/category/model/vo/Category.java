@@ -5,6 +5,7 @@ public class Category implements java.io.Serializable {
 	
 	private int category_no;
 	private String category_name;
+	private String category_name_kor;
 	private String category_content;
 	private String category_tip;
 	
@@ -55,6 +56,14 @@ public class Category implements java.io.Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getCategory_name_kor() {
+		return category_name_kor;
+	}
+
+	public void setCategory_name_kor(String category_name_kor) {
+		this.category_name_kor = category_name_kor;
 	}
 
 	@Override

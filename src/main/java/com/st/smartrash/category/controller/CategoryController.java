@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.st.smartrash.category.model.service.CategoryService;
 import com.st.smartrash.category.model.vo.Category;
+import com.st.smartrash.common.CategoryTranslation;
 
 @Controller
 public class CategoryController {
@@ -25,6 +26,12 @@ public class CategoryController {
 	@RequestMapping("category.do")
 	public String categoryList(Model model) {
 		ArrayList<Category> list = categoryService.selectList();
+		CategoryTranslation ct = new CategoryTranslation();
+		
+		for(Category c : list) {
+			c.setCategory_name_kor(ct.categoryTranslation(c.getCategory_name()));
+		}
+		
 		model.addAttribute("list", list);
 		return "category/categoryList";
 	}
@@ -32,8 +39,10 @@ public class CategoryController {
 	@RequestMapping("categoryDetail.do")
 	public String categoryDetail(@RequestParam("category_no") int category_no, Model model, HttpSession session) {
 		Category category = categoryService.selectCategory(category_no);
-		
+
 		if(category != null) {
+			CategoryTranslation ct = new CategoryTranslation();
+			category.setCategory_name_kor(ct.categoryTranslation(category.getCategory_name()));
 			model.addAttribute("category", category);
 			return "category/categoryDetail";
 		} else {

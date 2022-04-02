@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!-- Page Title -->
-<c:set var="page_title" value="${ category.category_name } 정보" />
+<c:set var="page_title" value="${ category.category_name_kor } 정보" />
 
 <!DOCTYPE html>
 <html>
@@ -20,7 +20,7 @@
             <section class="bg-light py-4">
                 <div class="container px-5">
                     <div class="text-center mb-5">
-                        <h1 class="fw-bolder">${ category.category_name } 정보</h1>
+                        <h1 class="fw-bolder">${ category.category_name_kor } 정보</h1>
                     </div>
                     <div class="row gx-5 justify-content-center">
                         <!-- Pricing card free-->
@@ -28,8 +28,8 @@
 							<div class="align-items-center d-flex justify-content-center">
 								<img style="width:100%;" class="rounded-circle" src="${ pageContext.servletContext.contextPath }/resources/images/category/${ category.category_name }.png"/></a>
 							</div>
-							<div class="text-center">
-								<h5>${ category.category_name }</h5>
+							<div class="text-center mt-1">
+								<h5>${ category.category_name_kor }</h5>
 								<p>${ category.category_content }</p>
 								<p>${ category.category_tip }</p>
 								<button class="btn btn-outline-secondary" onclick="javascript:location.href='category.do';">뒤로 가기</button>
