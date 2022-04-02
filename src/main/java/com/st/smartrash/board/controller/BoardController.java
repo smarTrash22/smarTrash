@@ -28,7 +28,7 @@ public class BoardController {
 		return "board/boardlist";
 	}
 	
-	@RequestMapping("blist.do")
+	@RequestMapping("boardlist2.do")
 	public ModelAndView boardListMethod(@RequestParam(name="page", required=false) String page, ModelAndView mv) {
 		int currentPage = 1;
 		if(page != null) {
@@ -36,7 +36,7 @@ public class BoardController {
 		}
 		
 		// 페이징 계산 처리 ----- 별도의 클래스로 작성해서 사용해도 됨 -----
-		int limit = 9;  // 한 페이지에 출력할 목록 갯수
+		int limit = 10;  // 한 페이지에 출력할 목록 갯수
 		// 페이지 수 계산을 위해 총 목록갯수 조회
 		int listCount = boardService.selectListCount();
 		// 페이지 수 계산
@@ -70,7 +70,7 @@ public class BoardController {
 			mv.addObject("endPage", endPage);
 			mv.addObject("limit", limit);
 			
-			mv.setViewName("board/boardListView");
+			mv.setViewName("board/boardlist");
 		} else {
 			mv.addObject("message", "[" + currentPage + "]페이지 목록 조회 실패");
 			mv.setViewName("common/error");

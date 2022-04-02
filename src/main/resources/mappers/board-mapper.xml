@@ -6,14 +6,11 @@
 
 	<resultMap type="Board" id="resultBoard">
 		<id column="board_no" property="board_no" />
+		<result column="board_ref" property="board_ref" />
 		<result column="trash_no" property="trash_no" />
 		<result column="board_content" property="board_content" />
 		<result column="hashtag" property="hashtag" />
 		<result column="board_readcount" property="board_readcount" />
-		<result column="board_ref" property="board_ref" />
-		<result column="board_reply_ref" property="board_reply_ref" />
-		<result column="board_lev" property="board_lev" />
-		<result column="board_reply_seq" property="board_reply_seq" />
 		<result column="board_date" property="board_date" />
 	</resultMap>
 	<!-- 비교연산자를 쿼리문에 그냥 사용하면 
@@ -30,116 +27,62 @@
 	<select id="selectList" 
 	parameterType="Paging" resultMap="resultBoard">
 		<![CDATA[
-			SELECT *  
-			FROM (SELECT ROWNUM RNUM, BOARD_NO, TRASH_NO, BOARD_CONTENT, HASHTAG, BOARD_READCOUNT, BOARD_REF,
-				BOARD_REPLY_REF, BOARD_LEV, BOARD_REPLY_SEQ, BOARD_DATE 
-			       FROM (SELECT * FROM T_BOARD 
-			              ORDER BY BOARD_REF DESC, BOARD_REPLY_REF DESC, 
-			                        BOARD_LEV ASC, BOARD_REPLY_SEQ ASC))  
+			SELECT * FROM (
+    			SELECT ROWNUM RNUM, N.* FROM (
+        			SELECT * FROM BOARD ORDER BY BOARD_DATE DESC
+    			) N
+			)
 			where rnum >= #{startRow} and rnum <= #{endRow}
 		]]>
 	</select>
 	
 	<insert id="insertOriginBoard" parameterType="Board" >
-		insert into board 	(board_num, board_title, board_writer,
-				board_content, board_original_filename, 
-				board_rename_filename, board_date, 
-				board_lev, board_ref, board_reply_ref,
-				board_reply_seq,  board_readcount)	
-		values ((select max(board_num) + 1 from board), 
-				#{board_title}, #{board_writer}, #{board_content}, 
-				#{board_original_filename}, #{board_rename_filename}, 
-				sysdate, 1, 
-				(select max(board_num) + 1 from board), 
-				default, default, default)		
+		insert into board 	
+		values (T_BN_S.NEXTVAL, T_BN_S.CURRVAL, #{trash_no}, #{board_content}, #{hashtag}, DEFAULT, DEFAULT);		
 	</insert>
 
 	<update id="addReadCount" parameterType="_int">
 		update board 
 		set board_readcount = board_readcount + 1 
-		where board_num = #{board_num}
+		where board_no = #{board_no}
 	</update>
 
 	<select id="selectBoard" parameterType="int" resultMap="resultBoard">
 		select * from board 
-		where board_num = #{board_num}
+		where board_no = #{board_no}
 	</select>	
 	
 	<update id="updateReplySeq1" parameterType="Board" >
-		update board 
-		set board_reply_seq = board_reply_seq + 1 
-		where board_ref = #{board_ref} 
-		and board_lev = #{board_lev}		
+			
 	</update>
 	
 	<update id="updateReplySeq2" parameterType="Board" >
-		update board 
-		set board_reply_seq = board_reply_seq + 1 
-		where board_ref = #{board_ref} 
-		and board_lev = #{board_lev} 
-		and board_reply_ref = 	#{board_reply_ref}
+	
 	</update>
 	
 	<insert id="insertReply1" parameterType="Board">
-		insert into board (board_num, board_title, board_writer,
-				board_content, board_original_filename, 
-				board_rename_filename, board_date, 
-				board_lev, board_ref, board_reply_ref,
-				board_reply_seq, board_readcount)
-		values ((select max(board_num) + 1 from board), 
-				#{board_title}, #{board_writer}, #{board_content}, 
-				null, null, sysdate, 2, #{board_ref}, 
-				(select max(board_num) + 1 from board), 
-				#{board_reply_seq}, default)		
+		
 	</insert>
 	
 	<insert id="insertReply2" parameterType="Board">
-		insert into board (board_num, board_title, board_writer,
-				board_content, board_original_filename, 
-				board_rename_filename, board_date, 
-				board_lev, board_ref, board_reply_ref,
-				board_reply_seq, board_readcount)
-		values ((select max(board_num) + 1 from board), 
-				#{board_title}, #{board_writer}, #{board_content}, 
-				null, null, sysdate, 3, #{board_ref}, 
-				#{board_reply_ref}, #{board_reply_seq}, default)
+	
 	</insert>
 
 	<delete id="deleteBoard" parameterType="Board">
 		delete from board 
-		<if test="board_lev == 1">
-			where board_ref = #{board_num}
-		</if>
-		<if test="board_lev == 2">
-			where board_reply_ref = #{board_num}
-		</if>
-		<if test="board_lev == 3">
-			where board_num = #{board_num}
-		</if>		
+		where board_num = #{board_num}	
 	</delete>
 	
 	<update id="updateReply" parameterType="Board">
 		update board 
-		set board_title = #{board_title}, 
-			board_content = #{board_content}
-		where board_num = #{board_num}						
+		set board_content = #{board_content}
+		where board_num = #{board_no}						
 	</update>
 	
 	<update id="updateOrigin" parameterType="Board">
 		update board 
-		set board_title = #{board_title}, 
-			board_content = #{board_content}
-			<if test="board_original_filename != null">
-			, 
-			board_original_filename = #{board_original_filename}, 
-			board_rename_filename = #{board_rename_filename} 
-			</if>
-			<if test="board_original_filename == null">
-			, 
-			board_original_filename = null, 
-			board_rename_filename = null 
-			</if>
-		where board_num = #{board_num}
+		set board_content = #{board_content}		
+		where board_num = #{board_no}
 	</update>
 	
 </mapper>

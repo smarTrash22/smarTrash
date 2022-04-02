@@ -12,7 +12,6 @@ public interface BoardService {
 	int updateAddReadcount(int board_num);  // 상세보기 시에 조회수 1증가 처리용
 	int insertOriginBoard(Board board);  // 원글 등록용
 	int insertReply(Board reply);  // 댓글 등록용
-	int updateReplySeq(Board reply);  // 댓글 등록 시 기존 댓글순번 1증가 처리용
 	int updateOrigin(Board board);  // 원글 수정용
 	int updateReply(Board reply);  // 댓글 수정용
 	int deleteBoard(Board board);  // 게시글 삭제용

@@ -47,11 +47,6 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int updateReplySeq(Board reply) {
-		return boardDao.updateReplySeq(reply);
-	}
-
-	@Override
 	public int updateOrigin(Board board) {
 		return boardDao.updateOrigin(board);
 	}

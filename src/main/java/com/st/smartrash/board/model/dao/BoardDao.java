@@ -47,11 +47,6 @@ public class BoardDao {
 		return 0;
 	}
 
-	public int updateReplySeq(Board reply) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public int updateOrigin(Board board) {
 		// TODO Auto-generated method stub
 		return 0;
