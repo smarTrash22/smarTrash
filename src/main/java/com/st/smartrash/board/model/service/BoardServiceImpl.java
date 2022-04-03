@@ -27,13 +27,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Board selectBoard(int board_num) {
-		return boardDao.selectBoard(board_num);
+	public Board selectBoard(int board_no) {
+		return boardDao.selectBoard(board_no);
 	}
 
 	@Override
-	public int updateAddReadcount(int board_num) {
-		return boardDao.updateAddReadcount(board_num);
+	public int updateAddReadcount(int board_no) {
+		return boardDao.updateAddReadcount(board_no);
 	}
 
 	@Override

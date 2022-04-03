@@ -32,7 +32,7 @@
         			SELECT * FROM T_BOARD ORDER BY BOARD_DATE DESC
     			) N
 			)
-			where rnum >= #{startRow} and rnum <= #{endRow}
+			where rnum >= #{startRow} and rnum <= #{endRow} and BOARD_NO = BOARD_REF
 		]]>
 	</select>
 	
@@ -42,13 +42,13 @@
 	</insert>
 
 	<update id="addReadCount" parameterType="_int">
-		update board 
+		update t_board 
 		set board_readcount = board_readcount + 1 
 		where board_no = #{board_no}
 	</update>
 
 	<select id="selectBoard" parameterType="int" resultMap="resultBoard">
-		select * from board 
+		select * from t_board 
 		where board_no = #{board_no}
 	</select>	
 	
