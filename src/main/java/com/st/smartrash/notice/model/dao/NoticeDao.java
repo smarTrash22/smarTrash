@@ -22,8 +22,8 @@ public class NoticeDao {
 		return (ArrayList<Notice>)list;
 	}
 
-	public Notice selectOne(int noticeno) {
-		return session.selectOne("noticeMapper.selectNotice", noticeno);
+	public Notice selectOne(int notice_no) {
+		return session.selectOne("noticeMapper.selectNotice", notice_no);
 	}
 
 	public int insertNotice(Notice notice) {
@@ -34,8 +34,8 @@ public class NoticeDao {
 		return session.update("noticeMapper.updateNotice", notice);
 	}
 
-	public int deleteNotice(int noticeno) {
-		return session.delete("noticeMapper.deleteNotice", noticeno);
+	public int deleteNotice(int notice_no) {
+		return session.delete("noticeMapper.deleteNotice", notice_no);
 	}
 
 	public ArrayList<Notice> selectNewTop3() {
@@ -61,6 +61,10 @@ public class NoticeDao {
 
 	public int selectListCount() {
 		return session.selectOne("noticeMapper.getListCount");
+	}
+
+	public int addReadCount(int notice_no) {
+		return session.update("noticeMapper.addReadCount", notice_no);
 	}
 
 	

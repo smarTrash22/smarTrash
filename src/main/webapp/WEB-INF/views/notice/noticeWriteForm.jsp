@@ -5,17 +5,31 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>first</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
-<!--  절대경로로 대상 파일의 위치를 지정한 경우 -->
-<c:import url="../common/menubar.jsp" />
-<hr>
-<h2 align="center">새 공지글 등록 페이지</h2>
+<c:import url="../common/navi.jsp" />
 <br>
+<form action="ninsert.do" method="post" enctype="multipart/form-data">
+    <fieldset>
+      <div style="padding-left: 20%; padding-right: 20%; padding-bottom: 10px;">
+      	<input style="width: 200px;" class="form-control" name="notice_writer" type="text" value="songwonseop" aria-label="readonly input example" readonly><br>
+        <input style="width: 450px;" type="text" class="form-control" name="notice_title" placeholder="Insert title here">
+      <br>
+        <textarea class="form-control" name="notice_content" rows="5"></textarea>
+      <br>
+        <input style="width: 300px;" class="form-control" type="file" name="upfile">
+      <br>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding-top: 10px;">
+        <button class="btn btn-primary me-md-2" type="reset">Cancle</button>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
+    </div>
+    </fieldset>
+</form>
 <!-- form에서 입력된 값들과 첨부파일을 같이 전송하려면, 반드시 enctype속성을 추가해야 함
 	 enctype="multipart/form-data" 값을 지정해야 함 -->
-<form action="ninsert.do" method="post" enctype="multipart/form-data">
+<%-- <form action="ninsert.do" method="post" enctype="multipart/form-data">
 <table align="center" width="500" border="1" cellspacing="0" cellpadding="5">
 	<tr><th>제목</th><td><input type="text" name="noticetitle" /></td></tr>
 	<tr><th>작성자</th><td><input type="text" name="noticewriter" readonly value="${ loginMember.userid }" /></td></tr>
@@ -31,7 +45,7 @@
 </table>
 </form>
 <br>
-<hr>
-<c:import url="../common/footer.jsp" />
+<hr> --%>
+<c:import url="../common/foot.jsp" />
 </body>
 </html>

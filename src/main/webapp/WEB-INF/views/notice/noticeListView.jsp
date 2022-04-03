@@ -66,7 +66,7 @@
 		<td align="left"></td>
 		<td align="left">${ n.notice_writer }</td>
 		<td align="left">
-			<c:if test="${ !empty n.notice_original_filepath }">O</c:if>
+			<c:if test="${ !empty n.notice_original_filepath }"><i class="bi bi-file-earmark-arrow-down"></i></c:if>
 			<c:if test="${ empty n.notice_original_filepath }">&nbsp;</c:if>
 		</td>
 		<td align="left"><fmt:formatDate value="${ n.notice_date}" type="date" pattern="yyyy-MM-dd" /></td>
@@ -75,6 +75,20 @@
 </c:forEach>
 </tbody>
 </table>
+<div align="right">
+<c:if test="${ loginMember.admin eq 'Y' }">
+	<button type="button" class="btn btn-sm btn-primary" disabled onclick="javascript:location.href='movewrite.do';">Write</button>
+</c:if>
+<c:if test="${ loginMember.admin != 'Y' }">
+	<button type="button" class="btn btn-sm btn-primary" onclick="javascript:location.href='movewrite.do';">Write</button>
+</c:if>
+<c:if test="${ loginMember.admin eq 'Y' }">
+	<button type="button" class="btn btn-sm btn-primary" disabled onclick="javascript:location.href='movedelete.do';">delete</button>
+</c:if>
+<c:if test="${ loginMember.admin != 'Y' }">
+	<button type="button" class="btn btn-sm btn-primary" disabled onclick="javascript:location.href='movedelete.do';">delete</button>
+</c:if>
+</div>
 <!-- 페이징 -->
 </div>
 <div class="d-flex justify-content-center" >
@@ -135,6 +149,7 @@
 	  </ul>
 	</nav>
 </div>
+
 <c:import url="/WEB-INF/views/common/foot.jsp" />
 </body>
 </html>

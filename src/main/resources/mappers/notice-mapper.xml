@@ -23,8 +23,58 @@
 	<![CDATA[
 			select * from (
     		select rownum num, n.* from (
-        	select * from t_notice order by notice_date desc ) n )
+        	select * from t_notice order by notice_no desc ) n )
 			where num >= ${startRow} and num <= ${endRow}
 	]]>
 	</select>
+	
+	<insert id="insertNotice" parameterType="Notice">
+	insert into t_notice values 
+		(t_nn_s.nextval, #{ notice_title }, #{ notice_writer }, #{notice_content}, 
+		#{ notice_original_filepath, jdbcType=VARCHAR },
+		#{ notice_rename_filepath, jdbcType=VARCHAR }, default, default)
+			 
+<!-- 			 
+		insert into t_notice 		
+			(notice_no, notice_title, notice_writer, 
+			notice_content, notice_original_filepath, notice_rename_filepath, 
+			notice_date, notice_readcount)
+			values ((select max(notice_no) + 1 from t_notice), 
+			#{ notice_title }, #{ notice_writer }, #{notice_content}, 
+			sysdate, #{ notice_original_filepath, jdbcType=VARCHAR },
+			 #{ notice_rename_filepath, jdbcType=VARCHAR })		 -->
+	</insert>
+	
+	<update id="addReadCount" parameterType="_int">
+		update t_notice 
+		set notice_readcount = notice_readcount + 1 
+		where notice_no = #{notice_no}
+	</update>
+
+	<select id="selectNotice" parameterType="_int" resultMap="resultNotice">
+		select * from t_notice 
+		where notice_no = #{notice_no}
+	</select>
+	
+	<delete id="deleteNotice" parameterType="notice">
+		delete from t_notice 
+			where notice_ref = #{notice_no}	
+	</delete>
+	
+	<update id="updateOrigin" parameterType="notice">
+		update t_notice 
+		set notice_title = #{notice_title}, 
+			notice_content = #{notice_content}
+			<if test="notice_original_fileapth != null">
+			, 
+			notice_original_filepath = #{notice_original_filepath}, 
+			notice_rename_filepath = #{notice_rename_filepath} 
+			</if>
+			<if test="notice_original_filepath == null">
+			, 
+			notice_original_filepath = null, 
+			notice_rename_filepath = null 
+			</if>
+		where notice_no = #{notice_no}
+	</update>
 </mapper>

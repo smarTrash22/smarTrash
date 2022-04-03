@@ -9,11 +9,12 @@ import com.st.smartrash.notice.model.vo.Notice;
 public interface NoticeService {
 	
 	ArrayList<Notice> selectList(Paging page);
-	Notice selectNotice(int noticeno);
+	Notice selectNotice(int notice_no);
 	int selectListCount();
 	int insertNotice(Notice notice);
 	int updateNotice(Notice notice);
-	int deleteNotice(int noticeno);
+	int deleteNotice(int notice_no);
+	int addReadcount(int notice_no);
 	ArrayList<Notice> selectNewTop3();
 	ArrayList<Notice> selectSearchTitle(String keyword);
 	ArrayList<Notice> selectSearchWriter(String keyword);

@@ -38,11 +38,11 @@ public class NoticeController {
 
 	@RequestMapping("nlist.do")
 	public ModelAndView boardListMethod(@RequestParam(name="page", required=false) String page, 
-	         ModelAndView mv) {
-	      int currentPage = 1;
-	      if(page != null){
-	         currentPage = Integer.parseInt(page);
-	      }
+			ModelAndView mv) {
+		int currentPage = 1;
+		if(page != null){
+			currentPage = Integer.parseInt(page);
+		}
 	      
 
 	      int limit = 10; 
@@ -84,4 +84,93 @@ public class NoticeController {
 	      
 	      return mv;
 	   }
+	
+	//상세보기
+	@RequestMapping("ndetail.do")
+	public ModelAndView noticeDetailMethod(ModelAndView mv, 
+			@RequestParam("notice_no") int notice_no,
+			@RequestParam(name= "page", required=false) String page) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		noticeService.addReadcount(notice_no);
+		
+		Notice notice = noticeService.selectNotice(notice_no);
+		
+		if(notice != null) {
+			mv.addObject("notice", notice);
+			mv.addObject("currnetPage", currentPage);
+			mv.setViewName("notice/noticeDetailView");
+			
+		}else {
+			mv.addObject("message", "게시글 조회 실패");
+			mv.setViewName("common/error");
+		}
+		
+		return mv;
+	}
+	
+	//공지사항 글쓰기(관리자)
+	@RequestMapping("movewrite.do")
+	public String moveWritePage() {
+		return "notice/noticeWriteForm";
+	}
+	
+	//공지 등록
+	@RequestMapping(value="ninsert.do", method=RequestMethod.POST)
+	public String noticeInsertMethod(Notice notice, HttpServletRequest request, Model model,
+			@RequestParam(name="upfile", required=false) MultipartFile mfile) {
+		
+		String savePath = request.getSession().getServletContext().getRealPath("resources/notice_upfiles");
+		if(!mfile.isEmpty()) {
+			String fileName = mfile.getOriginalFilename(); //파일 꺼내기
+			if(fileName != null && fileName.length() > 0) {
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+				String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis()));
+				renameFileName += "." + fileName.substring(fileName.lastIndexOf(".") + 1);
+		
+				File originFile = new File(savePath + "\\" + fileName);
+				File renameFile = new File(savePath + "\\" + renameFileName);
+				
+				try {
+					mfile.transferTo(renameFile);
+				} catch (Exception e) {
+					e.printStackTrace();
+					model.addAttribute("message", "파일 저장 실패.");
+					return "common/error";
+				}
+				
+				notice.setNotice_original_filepath(fileName);
+				notice.setNotice_rename_filepath(renameFileName);
+			}
+		} 
+		
+		if(noticeService.insertNotice(notice) > 0) { 
+			return "redirect:nlist.do";
+		}else {
+			model.addAttribute("message", "공지글 등록 실패.");
+			return "common/error";
+		}
+	}
+	
+	//첨부파일 다운로드
+	@RequestMapping("nfiledown.do")
+	public ModelAndView fileDownMethod(HttpServletRequest request,
+			@RequestParam("ofile") String originFileName,
+			@RequestParam("rfile") String renameFileName, ModelAndView mv) {
+		String savePath = request.getSession().getServletContext().getRealPath("resources/notice_upfiles");
+		File renameFile = new File(savePath + "\\" + renameFileName);
+		File originFile = new File(originFileName);
+		
+		mv.setViewName("filedown");
+		mv.addObject("renameFile", renameFile);
+		mv.addObject("originFile", originFile);
+		
+		return mv;
+		
+		
+	}
 }
