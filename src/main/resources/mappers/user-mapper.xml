@@ -12,6 +12,16 @@
 		<result property="user_date" column="user_date" />
 	</resultMap>
 	
+	<resultMap id="selectLatest5Result" type="Trash">
+		<id property="trash_no" column="trash_no"/>
+		<result property="trash_path" column="trash_path"/>
+	</resultMap>
+	
+	<resultMap id="selectMygal5Result" type="Board">
+		<id property="board_no" column="board_no"/>
+		<result property="board_content" column="board_content"/>
+	</resultMap>
+	
 	<select id="dupCheck" parameterType="String" resultType="User">
 		select *
 		from t_user
@@ -22,9 +32,33 @@
 		insert into t_user values(T_UN_S.nextval, #{ user_email }, #{ user_name }, default, default)
 	</insert>
 	
-	<select id="selectUser" parameterType="int" resultType="User">
+	<select id="selectUser" parameterType="String" resultType="User">
 		select * from t_user
+		where user_email = #{ user_email }
+	</select>
+	
+	<select id="updateNick" parameterType="User">
+		update t_user
+		set user_name = #{ user_name }
 		where user_no = #{ user_no }
 	</select>
 	
+	<delete id="deleteUser" parameterType="_int">
+		delete from t_user
+		where user_no = #{ user_no }
+	</delete>
+	
+	<select id="selectLatest5" resultMap="selectLatest5Result" parameterType="_int">
+		select *
+		from t_trash
+		where user_no = #{ user_no }
+	</select>
+	
+	<select id="selectMygal5" resultMap="selectMygal5Result" parameterType="_int">
+		SELECT *
+		FROM t_board
+		where trash_no in (SELECT trash_no
+                           FROM t_trash
+                           WHERE  user_no = ${ user_no })
+	</select>
 </mapper>
