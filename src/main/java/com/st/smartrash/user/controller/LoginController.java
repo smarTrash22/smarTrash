@@ -82,7 +82,7 @@ public class LoginController {
 //		System.out.println(name);
 		
 		if(userService.dupCheck(email) != null) {
-			user= userService.dupCheck(email);
+			user = userService.dupCheck(email);
 		}else {
 			user.setUser_name(name);
 			user.setUser_email(email);
@@ -92,7 +92,7 @@ public class LoginController {
 				System.out.println("디비저장실패");
 			}
 		}
-
+		user = userService.selectUser(email);
 		System.out.println(user.toString());
 //		//4.파싱 네임 세션으로 저장
 //		session.setAttribute("sessionId", name); // 세션 생성

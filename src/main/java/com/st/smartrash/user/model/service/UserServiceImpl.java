@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 //import org.codehaus.jackson.JsonParser;
@@ -16,8 +17,8 @@ import org.springframework.stereotype.Service;
 import com.google.gson.JsonParser; 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-
+import com.st.smartrash.board.model.vo.Board;
+import com.st.smartrash.trash.model.vo.Trash;
 import com.st.smartrash.user.model.dao.UserDao;
 import com.st.smartrash.user.model.vo.User;
 
@@ -128,9 +129,28 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User selectUser(int user_no) {
-		return userDao.selectUser(user_no);
+	public User selectUser(String user_email) {
+		return userDao.selectUser(user_email);
 	}
 	
+	@Override
+	public int updateNick(User user) {
+		return userDao.updateNick(user);
+	}
+	
+	@Override
+	public int deleteUser(int user_no) {
+		return userDao.deleteUser(user_no);
+	}
+	
+	@Override
+	public ArrayList<Trash> selectLatest5(int user_no) {
+		return userDao.selectLatest5(user_no);
+	}
+	
+	@Override
+	public ArrayList<Board> selectMygal5(int user_no) {
+		return userDao.selectMygal5(user_no);
+	}
 	
 }
