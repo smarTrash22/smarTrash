@@ -11,14 +11,14 @@
                 <li class="nav-item"><a class="nav-link" href="${ pageContext.servletContext.contextPath }/nlist.do?page=1">공지 게시판</a></li>
                 <li class="nav-item"><a class="nav-link" href="boardlist.do">검사 갤러리</a></li>
                 <li class="nav-item"><a class="nav-link" href="category.do">분리수거 정보</a></li>
-                <c:if test="${ empty sessionScope.sessionId }">
+                <c:if test="${ empty sessionScope.loginUser }">
                 	<li class="nav-item"><a class="nav-link" href="login.do">로그인</a></li>
                 </c:if>
                 <c:if test="${ !empty sessionScope.loginUser }">
-                	<c:url var="callMyInfo" value="mypage.do"> <!-- MemberControll 의 메소드 실행 myinfo.do 찾아서 -->
-						<c:param name="user" value="${ sessionScope.logunUser }" />
-					</c:url>
-					<li class="nav-item"><a class="nav-link" href="${ callMyInfo }">마이페이지</a></li>
+<%--                 	<c:url var="callMyInfo" value="/mypage.do"> 
+						<c:param name="user_no" value="${ sessionScope.loginUser.user_no }"/>
+					</c:url> --%>
+					<li class="nav-item"><a class="nav-link" href="mypage.do">마이페이지</a></li>
                 	<li class="nav-item"><a class="nav-link" href="logout.do">로그아웃</a></li>
                 </c:if>
                 <li class="nav-item"><a class="nav-link" href="trashMenubar.do">쓰레기 관리</a></li>
