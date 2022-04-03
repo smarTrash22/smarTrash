@@ -27,14 +27,12 @@ public class BoardDao {
 		return (ArrayList<Board>)list;
 	}
 
-	public Board selectBoard(int board_num) {
-		// TODO Auto-generated method stub
-		return null;
+	public Board selectBoard(int board_no) {
+		return session.selectOne("boardMapper.selectBoard", board_no);
 	}
 
 	public int updateAddReadcount(int board_num) {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.update("boardMapper.addReadCount", board_num);
 	}
 
 	public int insertOriginBoard(Board board) {
