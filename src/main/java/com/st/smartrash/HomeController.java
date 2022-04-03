@@ -59,19 +59,4 @@ public class HomeController {
 		return "common/portfolio-overview";
 	}
 	
-	
-	@RequestMapping(value = "trashInsert.do", method = RequestMethod.GET)
-	public String trashInsertViewForward() {
-		return "trash/trashInsert";
-	}
-	
-	@RequestMapping(value = "trashMenubar.do", method = RequestMethod.GET)
-	public String trashMenubarViewForward() {
-		return "trash/trashMenubar";
-	}
-	
-	@RequestMapping(value = "trashListView.do", method = RequestMethod.GET)
-	public String trashListViewViewForward() {
-		return "trash/trashListView";
-	}
 }

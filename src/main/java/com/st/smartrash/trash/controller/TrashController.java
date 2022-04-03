@@ -24,63 +24,69 @@ import com.st.smartrash.trash.model.vo.Trash;
 @Controller
 public class TrashController {
 
-	private static final Logger logger = LoggerFactory.getLogger(TrashController.class);
+   private static final Logger logger = LoggerFactory.getLogger(TrashController.class);
 
-	@Autowired
-	private TrashService TrashService;
+   @Autowired
+   private TrashService trashService;
+   
+   @RequestMapping(value = "trashMenubar.do", method = RequestMethod.GET)
+   public String trashMenubarViewForward() {
+      return "trash/trashMenubar";
+   }
+   
+   // 쓰레기 등록
+   @RequestMapping(value = "trashInsert.do", method = RequestMethod.POST)
+   public String trashInsertMethod(Trash trash, HttpServletRequest request, Model model,
+         @RequestParam(name = "upfile", required = false) MultipartFile mfile) {
+      // 업로드된 파일 저장 폴더 지정
+      String savePath = request.getSession().getServletContext().getRealPath("resources/trash_upfiles");
 
-	// 쓰레기 등록
-	@RequestMapping(value = "trashInsert.do", method = RequestMethod.POST)
-	public String trashInsertMethod(Trash trash, HttpServletRequest request, Model model,
-			@RequestParam(name = "upfile", required = false) MultipartFile mfile) {
-		// 업로드된 파일 저장 폴더 지정
-		String savePath = request.getSession().getServletContext().getRealPath("resources/trash_upfiles");
+      // 첨부파일이 있을때만 업로드된 파일을 지정 폴더로 옮기기
+      if (!mfile.isEmpty()) {
+         String fileName = mfile.getOriginalFilename();
+         // 이름바꾸기 처리 : 년월일시분초.확장자
+         if (fileName != null && fileName.length() > 0) {
+            // 바꿀 파일명에 대한 문자열 만들기
+            // 공지글 등록 요청시점의 날짜정보를 이용함
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            // 변경할 파일이름 만들기
+            String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis()));
+            // 원본파일의 확장자를 추출해서 변경 파일명에 붙여줌
+            renameFileName += "." + fileName.substring(fileName.lastIndexOf(".") + 1);
 
-		// 첨부파일이 있을때만 업로드된 파일을 지정 폴더로 옮기기
-		if (!mfile.isEmpty()) {
-			String fileName = mfile.getOriginalFilename();
-			// 이름바꾸기 처리 : 년월일시분초.확장자
-			if (fileName != null && fileName.length() > 0) {
-				// 바꿀 파일명에 대한 문자열 만들기
-				// 공지글 등록 요청시점의 날짜정보를 이용함
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-				// 변경할 파일이름 만들기
-				String renameFileName = sdf.format(new java.sql.Date(System.currentTimeMillis()));
-				// 원본파일의 확장자를 추출해서 변경 파일명에 붙여줌
-				renameFileName += "." + fileName.substring(fileName.lastIndexOf(".") + 1);
+            trash.setTrash_path(renameFileName);
 
-				trash.setTrash_path(renameFileName);
+            // 파일 객체 만들기
+            File originFile = new File(savePath + "\\" + fileName);
+            File renameFile = new File(savePath + "\\" + renameFileName);
 
-				// 파일 객체 만들기
-				File originFile = new File(savePath + "\\" + fileName);
-				File renameFile = new File(savePath + "\\" + renameFileName);
+            // 업로드 파일 저장시키고 바로 이름 바꾸기 실행함
+            try {
+               mfile.transferTo(renameFile);
+            } catch (Exception e) {
+               e.printStackTrace();
+               model.addAttribute("message", "전송파일 저장 실패");
+               return "common/error";
+            }
 
-				// 업로드 파일 저장시키고 바로 이름 바꾸기 실행함
-				try {
-					mfile.transferTo(renameFile);
-				} catch (Exception e) {
-					e.printStackTrace();
-					model.addAttribute("message", "전송파일 저장 실패");
-					return "common/error";
-				}
+         }
+      } // 첨부파일이 있을때만
 
-			}
-		} // 첨부파일이 있을때만
+      if (trashService.trashInsert(trash) != null) { // 새 공지글 등록 성공시
+         model.addAttribute("message", "새 쓰레기 등록 성공!");
+         return "trash/trashInsert";
+      } else {
+         model.addAttribute("message", "새 쓰레기 등록 실패!");
+         return "common/error";
+      }
+   }
 
-		if (TrashService.trashInsert(trash) != null) { // 새 공지글 등록 성공시
-			model.addAttribute("message", "새 쓰레기 등록 성공!");
-			return "trash/trashInsert";
-		} else {
-			model.addAttribute("message", "새 쓰레기 등록 실패!");
-			return "common/error";
-		}
-	}
-
-	// 쓰레기 전체조회
-	@RequestMapping("trash.do")
-	public String selectTrashAllMethod(Model model) {
-		ArrayList<Trash> list = TrashService.selectTrashAll();
-		model.addAttribute("list", list);
-		return "trash/trashListView";
-	}
+   // 쓰레기 전체조회
+   @RequestMapping("trash.do")
+   public String selectTrashAllMethod(Model model) {
+      ArrayList<Trash> list = trashService.selectTrashAll();
+      System.out.println(list.toString());
+      model.addAttribute("list", list);
+      return "trash/trashListView";
+   }
 }
