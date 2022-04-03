@@ -8,7 +8,7 @@
 	<c:import url="/WEB-INF/views/common/head.jsp" />
 	</head>
     <body class="d-flex flex-column">
-<!--     <main class="flex-shrink-0"> -->
+	 <!--     <main class="flex-shrink-0"> -->
      <!-- Navigation-->
 	 <c:import url="/WEB-INF/views/common/navi.jsp" />
     <hr>	
@@ -19,9 +19,9 @@
 		<!-- <tr><th>쓰레기 번호</th><td><input type="text" name="trash_no"></td></tr> -->
 		<tr><th>유저 번호</th><td><input type="text" name="user_no"></td></tr>
 		<tr><th>카테고리 번호</th><td><input type="text" name="category_no"></td></tr>
-		<tr><th>쓰레기 첨부파일</th><td><input type="file" name="trash_path"></td></tr>
+		<tr><th>쓰레기 첨부파일</th><td><input type="file" name="upfile"></td></tr>
 		<!-- <tr><th>쓰레기 등록날짜</th><td><input type="date" name="trash_date"></td></tr> -->
-		<!-- <tr><th>신고 여부(Y/N)</th><td><input type="text" name="report"></td></tr> -->	
+		<!-- <tr><th>신고 여부(Y/N)</th><td><input type="text" name="report"></td></tr>  -->	
 		<tr><td colspan="2">
 		<input type="submit" value="등록하기"> &nbsp;
 		<input type="reset" value="작성취소"> &nbsp;
