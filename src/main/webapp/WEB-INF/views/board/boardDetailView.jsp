@@ -31,12 +31,16 @@
 			.td1 {
 				padding:9px
 			}
+			
 			div#photo {
 				height: 300px;
 				width: 250px;
 				background-color: lightgray;
 				color: white;
 				margin:5px;
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: center;
 			}
 			textarea {
 			width: 48%;
@@ -72,7 +76,11 @@
 		<div>
 			<table id="tb" align="center" border="1" cellspacing="0" >
 				<tr>
-					<td class="td1" rowspan="3"><div id="photo">${ board.trash_no }쓰레기번호 사진</div></td>
+					<td class="td1" rowspan="3">
+						<div id="photo" style="background-image: url('${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${board.trash_path}');">
+							<%-- <img src="${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${board.trash_path}" /> --%>
+						</div>
+					</td>
 					<td class="td1" width="200" height="20"><b>&nbsp;${ board.trash_no }쓰레기의 유저 아이디</b></td>
 					<td align="right" class="td1" width="200"><fmt:formatDate value="${ board.board_date }" type="date"
 						pattern="yyyy-MM-dd kk:mm:ss" /></td>

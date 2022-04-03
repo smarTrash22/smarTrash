@@ -10,6 +10,8 @@ public class Board {
 	private String hashtag;
 	private int board_readcount;
 	private java.sql.Date board_date;
+	private String trash_path;
+	private String user_name;
 	
 	public Board() {
 		super();
@@ -25,6 +27,20 @@ public class Board {
 		this.hashtag = hashtag;
 		this.board_readcount = board_readcount;
 		this.board_date = board_date;
+	}
+	
+	public Board(int board_no, int board_ref, int trash_no, String board_content, String hashtag, int board_readcount,
+			Date board_date, String trash_path, String user_name) {
+		super();
+		this.board_no = board_no;
+		this.board_ref = board_ref;
+		this.trash_no = trash_no;
+		this.board_content = board_content;
+		this.hashtag = hashtag;
+		this.board_readcount = board_readcount;
+		this.board_date = board_date;
+		this.trash_path = trash_path;
+		this.user_name = user_name;
 	}
 
 	public int getBoard_no() {
@@ -83,14 +99,26 @@ public class Board {
 		this.board_date = board_date;
 	}
 
+	public String getTrash_path() {
+		return trash_path;
+	}
+
+	public void setTrash_path(String trash_path) {
+		this.trash_path = trash_path;
+	}
+
+	public String getUser_name() {
+		return user_name;
+	}
+
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
+	}
+
 	@Override
 	public String toString() {
 		return "Board [board_no=" + board_no + ", board_ref=" + board_ref + ", trash_no=" + trash_no
 				+ ", board_content=" + board_content + ", hashtag=" + hashtag + ", board_readcount=" + board_readcount
-				+ ", board_date=" + board_date + "]";
+				+ ", board_date=" + board_date + ", trash_path=" + trash_path + ", user_name=" + user_name + "]";
 	}
-
-	
-	
-	
 }

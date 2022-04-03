@@ -13,6 +13,8 @@ import com.st.smartrash.common.Paging;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +26,7 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@RequestMapping("boardlist.do")
-	public ModelAndView boardListMethod(@RequestParam(name="page", required=false) String page, ModelAndView mv) {
+	public ModelAndView boardListMethod(HttpServletRequest request, @RequestParam(name="page", required=false) String page, ModelAndView mv) {
 		int currentPage = 1;
 		if(page != null) {
 			currentPage = Integer.parseInt(page);
@@ -56,6 +58,13 @@ public class BoardController {
 		// 서비스 메소드 실행하고 결과받기
 		ArrayList<Board> list = boardService.selectList(paging);
 		
+//		String path = request.getSession().getServletContext().getRealPath("resources/trash_upfiles");
+//		
+//		for(Board b : list) {
+//			b.setTrash_path(path + b.getTrash_path());
+//			System.out.println(b.getTrash_path());
+//		}
+		
 		if(list != null && list.size() > 0) {
 			mv.addObject("list", list);
 			mv.addObject("listCount", listCount);
@@ -74,7 +83,7 @@ public class BoardController {
 	}
 	//게시글 상세보기 처리
 		@RequestMapping("bdetail.do")
-		public ModelAndView boardDetailMethod(ModelAndView mv,@RequestParam("board_no") int board_no, @RequestParam(name="page", required=false) String page) {
+		public ModelAndView boardDetailMethod(HttpServletRequest request, ModelAndView mv,@RequestParam("board_no") int board_no, @RequestParam(name="page", required=false) String page) {
 			int currentPage = 1;
 			if(page != null) {
 				currentPage = Integer.parseInt(page);
@@ -85,6 +94,11 @@ public class BoardController {
 			//해당 게시글 조회
 			Board board = boardService.selectBoard(board_no);
 			if(board != null) {
+//				String path = request.getSession().getServletContext().getRealPath("resources/trash_upfiles");
+//				
+//				board.setTrash_path(path + "\\" + board.getTrash_path());
+//				System.out.println(board.getTrash_path());
+				
 				mv.addObject("board", board);
 				mv.addObject("currentPage", currentPage);
 				mv.setViewName("board/boardDetailView");

@@ -69,6 +69,17 @@ input::placeholder {
 	width: 200px;
 	margin: 0px auto;
 }
+
+div.photo {
+	height: 300px;
+	width: 250px;
+	/* background-color: lightgray; */
+	color: white;
+	margin:5px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
 </style>
 </head>
 <body class="d-flex flex-column">
@@ -101,7 +112,12 @@ input::placeholder {
 					<c:param name="board_no" value="${ b.board_no }" />
 					<c:param name="page" value="${ currentPage }" />
 					</c:url>
-					<td><a href="${ bdt }"><div class="photo">${ b.trash_no }</div></a></td>
+					<td><a href="${ bdt }">
+							<div class="photo" style="background-image: url('${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${b.trash_path}');">
+							<%-- <img src="${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${board.trash_path}" /> --%>
+							</div>
+						</a>
+					</td>
 					<c:if test="${ status.count eq 3 or status.count eq 6 }">
 						</tr>
 						<tr align="center">

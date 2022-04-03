@@ -12,6 +12,8 @@
 		<result column="hashtag" property="hashtag" />
 		<result column="board_readcount" property="board_readcount" />
 		<result column="board_date" property="board_date" />
+		<result column="trash_path" property="trash_path" />
+		<result column="user_name" property="user_name" />
 	</resultMap>
 	<!-- 비교연산자를 쿼리문에 그냥 사용하면 
 		태그 앨리먼트 꺽쇠괄호 등(<, >, &)과 혼동하는 문제가 발생할 수 있음.
@@ -27,12 +29,22 @@
 	<select id="selectList" 
 	parameterType="Paging" resultMap="resultBoard">
 		<![CDATA[
-			SELECT * FROM (
-    			SELECT ROWNUM RNUM, N.* FROM (
-        			SELECT * FROM T_BOARD ORDER BY BOARD_DATE DESC
-    			) N
-			)
-			where rnum >= #{startRow} and rnum <= #{endRow} and BOARD_NO = BOARD_REF
+			SELECT *
+			FROM ( SELECT ROWNUM RNUM, N.*
+			       FROM (SELECT B.BOARD_NO BOARD_NO, 
+			                    B.BOARD_REF BOARD_REF,
+			                    B.TRASH_NO TRASH_NO,
+			                    B.BOARD_CONTENT BOARD_CONTENT,
+			                    B.HASHTAG HASHTAG,
+			                    B.BOARD_READCOUNT BOARD_READCOUNT,
+			                    B.BOARD_DATE BOARD_DATE,
+			                    T.TRASH_PATH TRASH_PATH,
+			                    U.USER_NAME USER_NAME
+			             FROM T_BOARD B
+			             JOIN T_TRASH T ON T.TRASH_NO = B.TRASH_NO 
+			             JOIN T_USER U ON U.USER_NO = T.USER_NO
+			             ORDER BY BOARD_NO DESC) N)
+			WHERE RNUM >= #{ startRow } AND RNUM <= #{ endRow } AND BOARD_NO = BOARD_REF
 		]]>
 	</select>
 	
@@ -48,8 +60,19 @@
 	</update>
 
 	<select id="selectBoard" parameterType="int" resultMap="resultBoard">
-		select * from t_board 
-		where board_no = #{board_no}
+		SELECT B.BOARD_NO BOARD_NO, 
+		       B.BOARD_REF BOARD_REF,
+		       B.TRASH_NO TRASH_NO,
+		       B.BOARD_CONTENT BOARD_CONTENT,
+		       B.HASHTAG HASHTAG,
+		       B.BOARD_READCOUNT BOARD_READCOUNT,
+		       B.BOARD_DATE BOARD_DATE,
+		       T.TRASH_PATH TRASH_PATH,
+		       U.USER_NAME USER_NAME
+		FROM T_BOARD B
+		JOIN T_TRASH T ON T.TRASH_NO = B.TRASH_NO 
+		JOIN T_USER U ON U.USER_NO = T.USER_NO
+		WHERE BOARD_NO = #{ board_no }
 	</select>	
 	
 	<update id="updateReplySeq1" parameterType="Board" >
