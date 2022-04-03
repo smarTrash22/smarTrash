@@ -5,7 +5,6 @@
 <mapper namespace="trashMapper">
 
 	<resultMap type="Trash" id="resultList">
-
 		<result column="trash_no" property="trash_no" />
 		<result column="user_no" property="user_no" />
 		<result column="category_no" property="category_no" />
