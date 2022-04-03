@@ -48,6 +48,11 @@
 			font-size: 14px;
 			resize: none;
 			}
+			#line2 {
+				width:52%;
+				height:2px;
+				background-color: gray;
+			}
 			::placeholder { opacity:0.5 };
 		</style>
 	</head>
@@ -100,6 +105,16 @@
 		</div>
 		<!-- 댓글 영역 -->
 		<div class="board_cmt" align="center">
+			<div style="width:52%;"><div align="left">댓글 <b>n</b>개</div></div>
+		</div>
+		<div class="board_cmt" align="center">
+			<div align="center" id="line2"></div>
+			<br>
+		</div>
+		<div class="board_cmt" align="center">
+			댓글목록 영역------------------------
+			<br>
+			<br>
 			<form>
 				<textarea maxlength="150" placeholder="댓글을입력하세요"></textarea>
 				<button type="button" class="btn btn-primary" style="position: relative;
