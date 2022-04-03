@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<c:set var="currentPage" value="${ requestScope.currnetPage }" />
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -67,7 +70,7 @@
 			<c:if test="${ loginMember.admin != 'Y' }">
 				<button type="button" class="btn btn-sm btn-primary" disabled onclick="javascript:location.href='moveupdate.do';">Update</button>
 			</c:if>
-         	<button onclick="javascript:history.go(-1);" class="btn btn-primary" type="button">List</button>
+         	<button onclick="javascript:location.href='nlist.do?page=${ currentPage }';" class="btn btn-primary" type="button">List</button>
        </div></td>
     </tr>
     </tbody>
