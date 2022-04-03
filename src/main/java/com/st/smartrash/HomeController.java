@@ -63,7 +63,7 @@ public class HomeController {
 	public String portfolio_overviewViewForward() {
 		return "common/portfolio-overview";
 	}
-
+	
 	@RequestMapping(value = "uploadFile.do", method = RequestMethod.POST)
 	@ResponseBody
 	public String uploadFile(HttpServletRequest request, Model model,

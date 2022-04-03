@@ -11,7 +11,6 @@
                 <li class="nav-item"><a class="nav-link" href="${ pageContext.servletContext.contextPath }/nlist.do?page=1">공지 게시판</a></li>
                 <li class="nav-item"><a class="nav-link" href="boardlist.do">검사 갤러리</a></li>
                 <li class="nav-item"><a class="nav-link" href="category.do">분리수거 정보</a></li>
-                <%-- <li class="nav-item"><a class="nav-link" href="loginPage.do">로그인</a></li> --%>
                 <c:if test="${ empty sessionScope.sessionId }">
                 	<li class="nav-item"><a class="nav-link" href="login.do">로그인</a></li>
                 </c:if>
@@ -22,6 +21,7 @@
 					<li class="nav-item"><a class="nav-link" href="${ callMyInfo }">마이페이지</a></li>
                 	<li class="nav-item"><a class="nav-link" href="logout.do">로그아웃</a></li>
                 </c:if>
+                <li class="nav-item"><a class="nav-link" href="trashMenubar.do">쓰레기 관리</a></li>
             </ul>
         </div>
     </div>

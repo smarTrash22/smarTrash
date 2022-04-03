@@ -5,13 +5,13 @@ import java.sql.Date;
 public class Trash implements java.io.Serializable {
 
 	private static final long serialVersionUID = -2168193368861104940L;
-	
+
 	private int trash_no; // 쓰레기 번호
-	private int user_no;	// 유저 번호
-	private int category_no;	// 카테고리 번호
-	private String trash_path;	// 쓰레기 이미지 경로
-	private Date trash_date;	// 쓰레기 올린날짜
-	private char report;	// 신고 여부
+	private int user_no; // 유저 번호
+	private int category_no; // 카테고리 번호
+	private String trash_path; // 쓰레기 이미지 경로
+	private Date trash_date; // 쓰레기 올린날짜
+	private char report; // 신고 여부
 
 	public Trash() {
 		super();
@@ -83,18 +83,6 @@ public class Trash implements java.io.Serializable {
 	public String toString() {
 		return "Trash [trash_no=" + trash_no + ", user_no=" + user_no + ", category_no=" + category_no + ", trash_path="
 				+ trash_path + ", trash_date=" + trash_date + ", report=" + report + "]";
-	}
-
-	public void setOriginal_filepath(String fileName) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-
-
-	public void setRename_filepath(String renameFileName) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
