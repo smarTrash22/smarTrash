@@ -8,12 +8,12 @@ public class User implements java.io.Serializable {
 	private int user_no;
 	private String user_name;
 	private String user_email;
-	private char user_admin;
+	private String user_admin;
 	private Date user_date;
 	
 	public User() {}
 
-	public User(int user_no, String user_name, String user_email, char user_admin, Date user_date) {
+	public User(int user_no, String user_name, String user_email, String user_admin, Date user_date) {
 		super();
 		this.user_no = user_no;
 		this.user_name = user_name;
@@ -54,11 +54,11 @@ public class User implements java.io.Serializable {
 		this.user_date = user_date;
 	}
 
-	public char getUser_admin() {
+	public String getUser_admin() {
 		return user_admin;
 	}
 
-	public void setUser_admin(char user_admin) {
+	public void setUser_admin(String user_admin) {
 		this.user_admin = user_admin;
 	}
 

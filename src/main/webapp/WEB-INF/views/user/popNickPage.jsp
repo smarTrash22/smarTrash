@@ -40,12 +40,10 @@ button:active {
 </head>
 <body>
 <form id="f" action="upnick.do" method="post">
-<%-- 	<input type="hidden" name="page" value="${ loginUser }"> --%>
 	<table align="center" width="300" border="1" cellspacing="0" cellpadding="5">
 		<tr><th>닉네임</th><td><input type="text" name="user_name" value="${ loginUser.user_name }"></td></tr> 
 		<tr><td colspan="2">
 			<input id ="s1" class="btn" type="submit" value="수정하기" style="float:left">
-			<input id ="s2" class="btn" type="button" value="수정하기" style="float:left">
 			<input class="btn" type="reset" value="수정취소" onclick="window.close();" style="float:right">
 			</td>
 	</table>

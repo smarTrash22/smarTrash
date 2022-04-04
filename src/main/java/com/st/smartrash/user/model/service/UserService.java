@@ -27,4 +27,6 @@ public interface UserService {
 
 	ArrayList<Board> selectMygal5(int user_no);
 
+	int updateAdmin(User user);
+
 }

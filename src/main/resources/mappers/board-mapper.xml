@@ -41,8 +41,8 @@
 			                    T.TRASH_PATH TRASH_PATH,
 			                    U.USER_NAME USER_NAME
 			             FROM T_BOARD B
-			             JOIN T_TRASH T ON T.TRASH_NO = B.TRASH_NO 
-			             JOIN T_USER U ON U.USER_NO = T.USER_NO
+			             left JOIN T_TRASH T ON T.TRASH_NO = B.TRASH_NO 
+			             left JOIN T_USER U ON U.USER_NO = T.USER_NO
 			             ORDER BY BOARD_NO DESC) N)
 			WHERE RNUM >= #{ startRow } AND RNUM <= #{ endRow } AND BOARD_NO = BOARD_REF
 		]]>
@@ -70,8 +70,8 @@
 		       T.TRASH_PATH TRASH_PATH,
 		       U.USER_NAME USER_NAME
 		FROM T_BOARD B
-		JOIN T_TRASH T ON T.TRASH_NO = B.TRASH_NO 
-		JOIN T_USER U ON U.USER_NO = T.USER_NO
+		left JOIN T_TRASH T ON T.TRASH_NO = B.TRASH_NO 
+		left JOIN T_USER U ON U.USER_NO = T.USER_NO
 		WHERE BOARD_NO = #{ board_no }
 	</select>	
 	

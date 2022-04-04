@@ -99,9 +99,17 @@ public class UserController {
 		HttpSession session = request.getSession();
 
 		User user = (User)session.getAttribute("loginUser");
-
+		
+		ArrayList<Board> blist = userService.selectMygal5(user.getUser_no());
+		ArrayList<Trash> tlist = userService.selectLatest5(user.getUser_no());
+		
+		System.out.println("여기는 mypage.do, blist" + blist);
+		System.out.println("여기는 mypage.do, tlist" + tlist);
+		
 		if(user != null) {
 			mv.addObject("user", user);
+			mv.addObject("blist", blist);
+			mv.addObject("tlist", tlist);
 			mv.setViewName("user/myPage");
 		}
 		
@@ -128,11 +136,11 @@ public class UserController {
 		HttpSession session = request.getSession();
 
 		User user = (User)session.getAttribute("loginUser");
-		System.out.println("여기는 닉네임" + user);
+		System.out.println("여기는 nickname.do" + user);
 
 		if(user != null) {
 			mv.addObject("user", user);
-			mv.setViewName("user/nickname");
+			mv.setViewName("user/popNickPage");
 		}
 
 		return mv;
@@ -170,7 +178,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="latest5.do", method=RequestMethod.POST)
-	@ResponseBody // noticeNewTop3Method() 의 정보는 ResponseBody 에 담겨져서 보낸다 선언.
+	@ResponseBody
 	public String latest5Method(HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException {
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("loginUser");
@@ -202,7 +210,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="mygal5.do", method=RequestMethod.POST)
-	@ResponseBody // noticeNewTop3Method() 의 정보는 ResponseBody 에 담겨져서 보낸다 선언.
+	@ResponseBody 
 	public String mygal5Method(HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException {
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("loginUser");
@@ -231,5 +239,41 @@ public class UserController {
 		
 		return sendJson.toJSONString();  //json 을 json string 형으로 바꿔서 전송함
 		//servlet-context.xml 뷰리졸버에게로 리턴됨
+	}
+	
+	@RequestMapping(value="manager.do")
+	public ModelAndView managerLoginMethod(HttpServletRequest request, ModelAndView mv) {
+		HttpSession session = request.getSession();
+
+		User user = (User)session.getAttribute("loginUser");
+		System.out.println("여기는 manager.do : " + user);
+		
+		if(user != null) {
+			mv.addObject("user", user);
+			mv.setViewName("user/popAdminPage");
+		}
+
+		return mv;
+	}
+	
+	@RequestMapping(value="manageOn.do", method=RequestMethod.POST)
+	public String UpdateAdminMethod(HttpServletRequest request, Model model, @RequestParam("user_admin") String user_admin) {
+		HttpSession session = request.getSession();
+		User user = (User)session.getAttribute("loginUser");
+		System.out.println("여기는 manageOn.do, 받은 세션user : " + user);
+		
+		if(user.getUser_admin().equals("Y")) {
+			user.setUser_admin("N");
+		}else {
+			user.setUser_admin(user_admin);
+		}
+		
+		if(userService.updateAdmin(user) > 0) {
+			System.out.println("관리자 변경 ok");
+			return "redirect:mypage.do?user";
+		}else {
+			System.out.println("닉네임 변경 실패");
+			return "user/myPage";
+		}
 	}
 }

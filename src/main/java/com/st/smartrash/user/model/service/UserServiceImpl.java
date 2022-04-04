@@ -153,4 +153,8 @@ public class UserServiceImpl implements UserService {
 		return userDao.selectMygal5(user_no);
 	}
 	
+	@Override
+	public int updateAdmin(User user) {
+		return userDao.updateAdmin(user);
+	}
 }

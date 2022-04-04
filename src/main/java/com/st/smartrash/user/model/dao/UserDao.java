@@ -47,6 +47,10 @@ public class UserDao {
 		List<Board> list = session.selectList("userMapper.selectMygal5", user_no);
 		return (ArrayList<Board>)list;
 	}
+
+	public int updateAdmin(User user) {
+		return session.update("userMapper.updateAdmin", user);
+	}
 	
 	
 }

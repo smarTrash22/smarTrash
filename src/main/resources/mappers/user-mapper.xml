@@ -43,10 +43,14 @@
 		where user_no = #{ user_no }
 	</select>
 	
-	<delete id="deleteUser" parameterType="_int">
-		delete from t_user
+	<update id="deleteUser" parameterType="_int">
+		update t_user
+		set user_email = '탈퇴한이메일',
+			user_name = '탈퇴한아이디',
+			user_admin = 'N',
+			user_date = sysdate
 		where user_no = #{ user_no }
-	</delete>
+	</update>
 	
 	<select id="selectLatest5" resultMap="selectLatest5Result" parameterType="_int">
 		select *
@@ -61,4 +65,10 @@
                            FROM t_trash
                            WHERE  user_no = ${ user_no })
 	</select>
+	
+	<update id="updateAdmin" parameterType="User">
+		update t_user
+		set user_admin = #{ user_admin }
+		where user_no = #{ user_no }
+	</update>
 </mapper>

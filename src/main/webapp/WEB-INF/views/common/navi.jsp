@@ -14,12 +14,14 @@
                 <c:if test="${ empty sessionScope.loginUser }">
                 	<li class="nav-item"><a class="nav-link" href="login.do">로그인</a></li>
                 </c:if>
-                <c:if test="${ !empty sessionScope.loginUser }">
-<%--                 	<c:url var="callMyInfo" value="/mypage.do"> 
-						<c:param name="user_no" value="${ sessionScope.loginUser.user_no }"/>
-					</c:url> --%>
+                <c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'N' }">
 					<li class="nav-item"><a class="nav-link" href="mypage.do">마이페이지</a></li>
                 	<li class="nav-item"><a class="nav-link" href="logout.do">로그아웃</a></li>
+                </c:if>
+                <c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
+					<li class="nav-item"><a class="nav-link" href="mypage.do">마이페이지</a></li>
+                	<li class="nav-item"><a class="nav-link" href="logout.do">로그아웃</a></li>
+                	<li class="nav-item"><a class="nav-link" href="">관리자페이지</a></li>
                 </c:if>
                 <li class="nav-item"><a class="nav-link" href="trashMenubar.do">쓰레기 관리</a></li>
             </ul>
