@@ -6,6 +6,7 @@ public class Board {
 	private int board_no;
 	private int board_ref;
 	private int trash_no;
+	private int user_no;
 	private String board_content;
 	private String hashtag;
 	private int board_readcount;
@@ -17,24 +18,26 @@ public class Board {
 		super();
 	}
 
-	public Board(int board_no, int board_ref, int trash_no, String board_content, String hashtag, int board_readcount,
+	public Board(int board_no, int board_ref, int trash_no, int user_no,String board_content, String hashtag, int board_readcount,
 			Date board_date) {
 		super();
 		this.board_no = board_no;
 		this.board_ref = board_ref;
 		this.trash_no = trash_no;
+		this.user_no = user_no;
 		this.board_content = board_content;
 		this.hashtag = hashtag;
 		this.board_readcount = board_readcount;
 		this.board_date = board_date;
 	}
 	
-	public Board(int board_no, int board_ref, int trash_no, String board_content, String hashtag, int board_readcount,
+	public Board(int board_no, int board_ref, int trash_no, int user_no, String board_content, String hashtag, int board_readcount,
 			Date board_date, String trash_path, String user_name) {
 		super();
 		this.board_no = board_no;
 		this.board_ref = board_ref;
 		this.trash_no = trash_no;
+		this.user_no = user_no;
 		this.board_content = board_content;
 		this.hashtag = hashtag;
 		this.board_readcount = board_readcount;
@@ -65,6 +68,14 @@ public class Board {
 
 	public void setTrash_no(int trash_no) {
 		this.trash_no = trash_no;
+	}
+
+	public int getUser_no() {
+		return user_no;
+	}
+
+	public void setUser_no(int user_no) {
+		this.user_no = user_no;
 	}
 
 	public String getBoard_content() {
@@ -117,8 +128,11 @@ public class Board {
 
 	@Override
 	public String toString() {
-		return "Board [board_no=" + board_no + ", board_ref=" + board_ref + ", trash_no=" + trash_no
-				+ ", board_content=" + board_content + ", hashtag=" + hashtag + ", board_readcount=" + board_readcount
-				+ ", board_date=" + board_date + ", trash_path=" + trash_path + ", user_name=" + user_name + "]";
+		return "Board [board_no=" + board_no + ", board_ref=" + board_ref + ", trash_no=" + trash_no + ", user_no="
+				+ user_no + ", board_content=" + board_content + ", hashtag=" + hashtag + ", board_readcount="
+				+ board_readcount + ", board_date=" + board_date + ", trash_path=" + trash_path + ", user_name="
+				+ user_name + "]";
 	}
+
+	
 }

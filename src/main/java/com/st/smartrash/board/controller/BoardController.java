@@ -2,19 +2,26 @@ package com.st.smartrash.board.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.st.smartrash.board.model.service.BoardService;
 import com.st.smartrash.board.model.vo.Board;
 import com.st.smartrash.common.Paging;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +31,7 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService boardService;
+	
 	
 	@RequestMapping("boardlist.do")
 	public ModelAndView boardListMethod(HttpServletRequest request, @RequestParam(name="page", required=false) String page, ModelAndView mv) {
@@ -91,6 +99,9 @@ public class BoardController {
 			//조회수 1증가 처리
 			boardService.updateAddReadcount(board_no);
 			
+			//댓글 리스트 저장-------
+			ArrayList<Board> list = boardService.selectReplyList(board_no);
+			int listCount = boardService.selectReplyCount(board_no);
 			//해당 게시글 조회
 			Board board = boardService.selectBoard(board_no);
 			if(board != null) {
@@ -99,6 +110,9 @@ public class BoardController {
 //				board.setTrash_path(path + "\\" + board.getTrash_path());
 //				System.out.println(board.getTrash_path());
 				
+				//댓글 리스트보내기
+				mv.addObject("list", list);
+				mv.addObject("listCount", listCount);
 				mv.addObject("board", board);
 				mv.addObject("currentPage", currentPage);
 				mv.setViewName("board/boardDetailView");
@@ -109,6 +123,8 @@ public class BoardController {
 			
 			return mv;
 		}
-	
+		
+		
+		
 	
 }

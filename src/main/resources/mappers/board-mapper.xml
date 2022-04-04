@@ -8,6 +8,7 @@
 		<id column="board_no" property="board_no" />
 		<result column="board_ref" property="board_ref" />
 		<result column="trash_no" property="trash_no" />
+		<result column="user_no" property="user_no" />
 		<result column="board_content" property="board_content" />
 		<result column="hashtag" property="hashtag" />
 		<result column="board_readcount" property="board_readcount" />
@@ -23,7 +24,7 @@
 	 -->
 
 	<select id="getListCount" resultType="_int">
-		select count(*) from t_board
+		select count(*) from t_board where board_no = board_ref
 	</select>	
 	
 	<select id="selectList" 
@@ -34,6 +35,7 @@
 			       FROM (SELECT B.BOARD_NO BOARD_NO, 
 			                    B.BOARD_REF BOARD_REF,
 			                    B.TRASH_NO TRASH_NO,
+			                    B.USER_NO USER_NO,
 			                    B.BOARD_CONTENT BOARD_CONTENT,
 			                    B.HASHTAG HASHTAG,
 			                    B.BOARD_READCOUNT BOARD_READCOUNT,
@@ -43,26 +45,34 @@
 			             FROM T_BOARD B
 			             JOIN T_TRASH T ON T.TRASH_NO = B.TRASH_NO 
 			             JOIN T_USER U ON U.USER_NO = T.USER_NO
+			             WHERE BOARD_NO = BOARD_REF
 			             ORDER BY BOARD_NO DESC) N)
-			WHERE RNUM >= #{ startRow } AND RNUM <= #{ endRow } AND BOARD_NO = BOARD_REF
+			WHERE RNUM >= #{ startRow } AND RNUM <= #{ endRow } 
 		]]>
 	</select>
 	
+	
+	
+<!-- 	
 	<insert id="insertOriginBoard" parameterType="Board" >
 		insert into board 	
-		values (T_BN_S.NEXTVAL, T_BN_S.CURRVAL, #{trash_no}, #{board_content}, #{hashtag}, DEFAULT, DEFAULT);		
+		values (T_BN_S.NEXTVAL, T_BN_S.CURRVAL, #{trash_no},#{user_no}, #{board_content}, #{hashtag}, DEFAULT, DEFAULT);		
 	</insert>
-
+ -->
 	<update id="addReadCount" parameterType="_int">
+		<![CDATA[
 		update t_board 
 		set board_readcount = board_readcount + 1 
 		where board_no = #{board_no}
+		]]>
 	</update>
 
 	<select id="selectBoard" parameterType="int" resultMap="resultBoard">
+		<![CDATA[
 		SELECT B.BOARD_NO BOARD_NO, 
 		       B.BOARD_REF BOARD_REF,
 		       B.TRASH_NO TRASH_NO,
+		       B.USER_NO USER_NO,
 		       B.BOARD_CONTENT BOARD_CONTENT,
 		       B.HASHTAG HASHTAG,
 		       B.BOARD_READCOUNT BOARD_READCOUNT,
@@ -73,39 +83,56 @@
 		JOIN T_TRASH T ON T.TRASH_NO = B.TRASH_NO 
 		JOIN T_USER U ON U.USER_NO = T.USER_NO
 		WHERE BOARD_NO = #{ board_no }
+		]]>
 	</select>	
 	
-	<update id="updateReplySeq1" parameterType="Board" >
-			
-	</update>
 	
-	<update id="updateReplySeq2" parameterType="Board" >
-	
-	</update>
-	
-	<insert id="insertReply1" parameterType="Board">
-		
-	</insert>
-	
-	<insert id="insertReply2" parameterType="Board">
-	
-	</insert>
-
+<!-- 
 	<delete id="deleteBoard" parameterType="Board">
 		delete from board 
-		where board_num = #{board_num}	
+		where board_no = #{board_no}	
 	</delete>
 	
-	<update id="updateReply" parameterType="Board">
-		update board 
-		set board_content = #{board_content}
-		where board_num = #{board_no}						
-	</update>
 	
 	<update id="updateOrigin" parameterType="Board">
 		update board 
 		set board_content = #{board_content}		
-		where board_num = #{board_no}
+		where board_no = #{board_no}
 	</update>
+ -->	
+	<!-- 댓글관련 -->
+	<select id="selectReplyList" parameterType="int" resultMap="resultBoard">
+		<![CDATA[
+			SELECT B.BOARD_NO BOARD_NO, 
+			        B.BOARD_REF BOARD_REF,
+			        B.TRASH_NO TRASH_NO,
+			        B.USER_NO USER_NO,
+			        B.BOARD_CONTENT BOARD_CONTENT,
+			        B.HASHTAG HASHTAG,
+			        B.BOARD_READCOUNT BOARD_READCOUNT,
+			        B.BOARD_DATE BOARD_DATE,
+			        T.TRASH_PATH TRASH_PATH,
+			        U.USER_NAME USER_NAME
+			 FROM T_BOARD B
+			 JOIN T_TRASH T ON T.TRASH_NO = B.TRASH_NO
+			 JOIN T_USER U ON U.USER_NO = B.USER_NO
+			 WHERE BOARD_NO <> BOARD_REF AND BOARD_REF = #{board_no}
+			 ORDER BY BOARD_NO ASC
+		]]>
+	</select>
+	
+	<select id="getReplyCount" parameterType="int" resultType="_int">
+		<![CDATA[
+		SELECT COUNT(*) FROM T_BOARD WHERE BOARD_NO <> BOARD_REF AND BOARD_REF = #{board_no}
+		]]>
+	</select>
+	
+	
+	
+	<insert id="insertReply1" parameterType="Board">
+	<![CDATA[
+			INSERT INTO T_BOARD VALUES(T_BN_S.NEXTVAL, #{board_no}, 1, 7, #{board_content}, NULL, DEFAULT, DEFAULT)
+	]]>
+	</insert>
 	
 </mapper>
