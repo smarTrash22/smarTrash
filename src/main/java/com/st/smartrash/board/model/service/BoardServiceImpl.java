@@ -61,4 +61,14 @@ public class BoardServiceImpl implements BoardService {
 		return boardDao.deleteBoard(board);
 	}
 
+	@Override
+	public ArrayList<Board> selectReplyList(int board_no) {
+		return boardDao.selectReplyList(board_no);
+	}
+
+	@Override
+	public int selectReplyCount(int board_no) {
+		return boardDao.selectReplyCount(board_no);
+	}
+
 }

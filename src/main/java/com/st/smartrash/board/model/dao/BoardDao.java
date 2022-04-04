@@ -22,6 +22,10 @@ public class BoardDao {
 		return session.selectOne("boardMapper.getListCount");
 	}
 	
+	public int selectReplyCount(int board_no) {
+		return session.selectOne("boardMapper.getReplyCount", board_no);
+	}
+	
 	public ArrayList<Board> selectList(Paging page) {
 		List<Board> list = session.selectList("boardMapper.selectList", page);
 		return (ArrayList<Board>)list;
@@ -34,29 +38,29 @@ public class BoardDao {
 	public int updateAddReadcount(int board_num) {
 		return session.update("boardMapper.addReadCount", board_num);
 	}
+	
+	public ArrayList<Board> selectReplyList(int board_no){
+		List<Board> list = session.selectList("boardMapper.selectReplyList",board_no);
+		return (ArrayList<Board>)list;
+	}
 
 	public int insertOriginBoard(Board board) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public int insertReply(Board reply) {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.insert("boardMapper.insertReply1", reply);
 	}
 
 	public int updateOrigin(Board board) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public int updateReply(Board reply) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public int deleteBoard(Board board) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }

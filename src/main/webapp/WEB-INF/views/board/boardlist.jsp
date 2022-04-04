@@ -28,12 +28,7 @@ div td {
 	padding: 7px;
 }
 
-div.photo {
-	height: 180px;
-	width: 180px;
-	background-color: lightgray;
-	color: white;
-}
+
 
 input[type=text] {
 	padding: 5px;
@@ -70,15 +65,16 @@ input::placeholder {
 	margin: 0px auto;
 }
 
-div.photo {
+div.photobox {
 	height: 300px;
 	width: 250px;
-	/* background-color: lightgray; */
-	color: white;
-	margin:5px;
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: center;
+	overflow:hidden;
+	margin: 0 auto;
+}
+img.photo{
+	width:100%;
+	height:100%;
+	object-fit:cover;
 }
 </style>
 </head>
@@ -113,8 +109,8 @@ div.photo {
 					<c:param name="page" value="${ currentPage }" />
 					</c:url>
 					<td><a href="${ bdt }">
-							<div class="photo" style="background-image: url('${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${b.trash_path}');">
-							<%-- <img src="${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${board.trash_path}" /> --%>
+							<div class="photobox">
+								<img class="photo" src="${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${b.trash_path}" />
 							</div>
 						</a>
 					</td>
