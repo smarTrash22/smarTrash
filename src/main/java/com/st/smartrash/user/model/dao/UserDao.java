@@ -51,6 +51,21 @@ public class UserDao {
 	public int updateAdmin(User user) {
 		return session.update("userMapper.updateAdmin", user);
 	}
+
+	public ArrayList<Trash> selectTodayTrash() {
+		List<Trash> list = session.selectList("userMapper.selectTodayTrash");
+		return (ArrayList<Trash>)list;
+	}
+
+	public ArrayList<Trash> selectReportTrash() {
+		List<Trash> list = session.selectList("userMapper.selectReportTrash");
+		return (ArrayList<Trash>)list;
+	}
+
+	public ArrayList<Trash> selectTodayReportTrash() {
+		List<Trash> list = session.selectList("userMapper.selectTodayReportTrash");
+		return (ArrayList<Trash>)list;
+	}
 	
 	
 }

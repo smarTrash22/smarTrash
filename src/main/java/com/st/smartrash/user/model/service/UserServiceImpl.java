@@ -157,4 +157,19 @@ public class UserServiceImpl implements UserService {
 	public int updateAdmin(User user) {
 		return userDao.updateAdmin(user);
 	}
+	
+	@Override
+	public ArrayList<Trash> selectTodayTrash() {
+		return userDao.selectTodayTrash();
+	}
+	
+	@Override
+	public ArrayList<Trash> selectReportTrash() {
+		return userDao.selectReportTrash();
+	}
+	
+	@Override
+	public ArrayList<Trash> selectTodayReportTrash() {
+		return userDao.selectTodayReportTrash();
+	}
 }

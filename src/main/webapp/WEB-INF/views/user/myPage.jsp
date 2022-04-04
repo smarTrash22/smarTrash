@@ -167,7 +167,7 @@
  							<div>
 		 						<div class="n" id="nick_title" style="float:left; width:150px; font-weight:bold;">
 		 							<a style="text-decoration:none; color:inherit;" 
-		 							onclick="window.open('${ pageContext.servletContext.contextPath }/manager.do', '_blank', 'width=500, height=100, toolbars=no, scrollbars=yes'); return false;">닉네임</a>
+		 							onclick="window.open('${ pageContext.servletContext.contextPath }/popManager.do', '_blank', 'width=500, height=100, toolbars=no, scrollbars=yes'); return false;">닉네임</a>
 		 						</div>
 		 						<div class="n" id="nick" style="float:left; width:100px;">${ user.user_name }</div>
 		 						<div style="float:right; border-radius:5px 5px; background-color:skyblue; font-size:18px;"><a class="nav-link" href="nickname.do" style="color:white" 
