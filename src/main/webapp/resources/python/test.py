@@ -1,10 +1,14 @@
 import os
 import cv2
+import csv
 import timm
 import torch
 import numpy as np
 import albumentations as A
 from torch.utils.data import Dataset, DataLoader
+
+C:\smartrash_workspace\smartrash\src\main\webapp\resources\python\csv
+print("path : " + os.getcwd())
 
 model_name = "swsl_resnext50_32x4d"
 batch_size = 96
@@ -35,7 +39,14 @@ device = torch.device("cpu")  # cpu
 # device = torch.device("cuda")  # gpu
 
 class_path = './dataset/'
-class_list = os.listdir(class_path)
+class_list = ['can',
+              'fluorescent_light',
+              'glass',
+              'paper',
+              'plastic',
+              'polystyrene',
+              'vinyl']
+print(class_list)
 class_encoder = {}
 for i in class_list:
     class_encoder.update({class_list[class_list.index(i)]: class_list.index(i)})

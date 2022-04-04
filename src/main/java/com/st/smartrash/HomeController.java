@@ -1,8 +1,16 @@
 package com.st.smartrash;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+
 /**
  * Handles requests for the application home page.
  */
@@ -25,8 +34,84 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@RequestMapping(value = "main.do", method = RequestMethod.GET)
-	public String mainViewForward() {
-		return "common/main";  // 내보낼 뷰파일명 리턴
+	public String mainViewForward(HttpServletRequest request) {
+		try {
+			String testPath = request.getSession().getServletContext().getRealPath("resources/python/");
+			String filePath = request.getSession().getServletContext().getRealPath("resources/trash_upfiles/") + "21_X001_C053_1112_0.jpg";
+			
+			String command = request.getSession().getServletContext().getRealPath("resources/python/venv/Scripts/") + "python.exe";
+			String arg1 = request.getSession().getServletContext().getRealPath("resources/python/") + "test.py";
+			
+			System.out.println("command : " + command);
+			System.out.println("arg1 : " + arg1);
+			// 인자
+			ProcessBuilder builder = new ProcessBuilder(command, arg1);
+			Process process;
+			
+			builder.redirectErrorStream(true);  // 표준 에러도 표준 출력에 쓴다
+			process = builder.start();
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream(), "utf-8"));
+
+			int exitVal = process.waitFor();  // 자식 프로세스가 종료될 때까지 기다림
+			String line;
+			while ((line = br.readLine()) != null) {
+				System.out.println(">>> " + line);  // 표준출력에 쓴다
+			}
+			if(exitVal != 0) {
+				// 비정상 종료
+				System.out.println("서브 프로세스가 비정상 종료되었다.");
+			}
+			
+			
+			
+			try (PrintWriter writer = new PrintWriter(new File(testPath + "csv\\test.csv"))) {
+
+	            StringBuilder sb = new StringBuilder();
+	            sb.append("testPath");
+	            sb.append(',');
+	            sb.append("filePath");
+	            sb.append('\n');
+
+	            sb.append(testPath);
+	            sb.append(',');
+	            sb.append(filePath);
+	            sb.append(',');
+	            sb.append('\n');
+
+	            writer.write(sb.toString());
+	            writer.close();
+	            System.out.println("done!");
+
+	        } catch (FileNotFoundException e) {
+	            System.out.println(e.getMessage());
+	        }
+			
+			String cmd = request.getSession().getServletContext().getRealPath("resources/python/") + "test.bat";
+			
+		    Process p = Runtime.getRuntime().exec(cmd);
+
+		    inheritIO(p.getInputStream(), System.out);
+		    inheritIO(p.getErrorStream(), System.err);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		return "common/main";
+	}
+	
+	private static void inheritIO(final InputStream src, final PrintStream dest) {
+	    new Thread(new Runnable() {
+	        public void run() {
+	            Scanner sc = new Scanner(src);
+	            while (sc.hasNextLine()) {
+	                dest.println(sc.nextLine());
+	            }
+	        }
+	    }).start();
 	}
 	
 	@RequestMapping(value = "about.do", method = RequestMethod.GET)
