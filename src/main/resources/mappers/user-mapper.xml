@@ -4,7 +4,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="userMapper">
 	
-	<resultMap id="resultList" type="User"> <!-- 컬럼명, 멤버명 같으면 작성 안해도되지만 혹시몰라서 작성함 -->
+	<resultMap id="userResultList" type="User"> <!-- 컬럼명, 멤버명 같으면 작성 안해도되지만 혹시몰라서 작성함 -->
 		<result property="user_no" column="user_no" />
 		<result property="user_email" column="user_email" />
 		<result property="user_name" column="user_name" />
@@ -12,9 +12,13 @@
 		<result property="user_date" column="user_date" />
 	</resultMap>
 	
-	<resultMap id="selectLatest5Result" type="Trash">
+	<resultMap id="trashResultList" type="Trash">
 		<id property="trash_no" column="trash_no"/>
+		<result property="user_no" column="user_no"/>
+		<result property="category_no" column="category_no"/>
 		<result property="trash_path" column="trash_path"/>
+		<result property="trash_date" column="trash_date"/>
+		<result property="report" column="report"/>
 	</resultMap>
 	
 	<resultMap id="selectMygal5Result" type="Board">
@@ -52,7 +56,7 @@
 		where user_no = #{ user_no }
 	</update>
 	
-	<select id="selectLatest5" resultMap="selectLatest5Result" parameterType="_int">
+	<select id="selectLatest5" resultMap="trashResultList" parameterType="_int">
 		select *
 		from t_trash
 		where user_no = #{ user_no }
@@ -71,4 +75,16 @@
 		set user_admin = #{ user_admin }
 		where user_no = #{ user_no }
 	</update>
+	
+	<select id="selectTodayTrash" resultMap="trashResultList">
+		select *
+		from t_trash
+		where to_char(trash_date, 'YYMMDD') = to_char(sysdate, 'YYMMDD');
+	</select>
+	
+	<select id="selectReportTrash" resultMap="trashResultList">
+		select *
+		from t_trash
+		where report = 'Y'
+	</select>
 </mapper>

@@ -21,7 +21,7 @@
                 <c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
 					<li class="nav-item"><a class="nav-link" href="mypage.do">마이페이지</a></li>
                 	<li class="nav-item"><a class="nav-link" href="logout.do">로그아웃</a></li>
-                	<li class="nav-item"><a class="nav-link" href="">관리자페이지</a></li>
+                	<li class="nav-item"><a class="nav-link" href="manager.do">관리자페이지</a></li>
                 </c:if>
                 <li class="nav-item"><a class="nav-link" href="trashMenubar.do">쓰레기 관리</a></li>
             </ul>

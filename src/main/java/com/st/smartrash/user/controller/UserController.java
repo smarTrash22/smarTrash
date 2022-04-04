@@ -241,12 +241,12 @@ public class UserController {
 		//servlet-context.xml 뷰리졸버에게로 리턴됨
 	}
 	
-	@RequestMapping(value="manager.do")
+	@RequestMapping("popManager.do")
 	public ModelAndView managerLoginMethod(HttpServletRequest request, ModelAndView mv) {
 		HttpSession session = request.getSession();
 
 		User user = (User)session.getAttribute("loginUser");
-		System.out.println("여기는 manager.do : " + user);
+		System.out.println("여기는 popManager.do : " + user);
 		
 		if(user != null) {
 			mv.addObject("user", user);
@@ -256,11 +256,11 @@ public class UserController {
 		return mv;
 	}
 	
-	@RequestMapping(value="manageOn.do", method=RequestMethod.POST)
+	@RequestMapping(value="admin.do", method=RequestMethod.POST)
 	public String UpdateAdminMethod(HttpServletRequest request, Model model, @RequestParam("user_admin") String user_admin) {
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("loginUser");
-		System.out.println("여기는 manageOn.do, 받은 세션user : " + user);
+		System.out.println("여기는 admin.do, 받은 세션user : " + user);
 		
 		if(user.getUser_admin().equals("Y")) {
 			user.setUser_admin("N");
@@ -275,5 +275,23 @@ public class UserController {
 			System.out.println("닉네임 변경 실패");
 			return "user/myPage";
 		}
+	}
+	
+	@RequestMapping("manager.do")
+	public ModelAndView managerPageMethod(HttpServletRequest request, ModelAndView mv) {
+		HttpSession session = request.getSession();
+
+		User user = (User)session.getAttribute("loginUser");
+		System.out.println("여기는 manager.do : " + user);
+		
+		ArrayList<Trash> tlist = userService.selectTodayTrash();
+		ArrayList<Trash> rlist = userService.selectReportTrash();
+		ArrayList<Trash> trlist = userService.selectTodayReportTrash();
+		
+		mv.addObject("user", user);
+		mv.setViewName("user/managerPage");
+
+		return mv;
+		
 	}
 }

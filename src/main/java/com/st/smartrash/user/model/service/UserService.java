@@ -29,4 +29,11 @@ public interface UserService {
 
 	int updateAdmin(User user);
 
+	ArrayList<Trash> selectTodayTrash();
+
+	ArrayList<Trash> selectReportTrash();
+
+	ArrayList<Trash> selectTodayReportTrash();
+
+
 }
