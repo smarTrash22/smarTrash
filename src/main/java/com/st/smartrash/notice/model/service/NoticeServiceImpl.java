@@ -69,4 +69,7 @@ public class NoticeServiceImpl implements NoticeService{
 	public int addReadcount(int notice_no) {
 		return noticeDao.addReadCount(notice_no);
 	}
+
+
+
 }
