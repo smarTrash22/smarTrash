@@ -7,8 +7,23 @@ import numpy as np
 import albumentations as A
 from torch.utils.data import Dataset, DataLoader
 
-C:\smartrash_workspace\smartrash\src\main\webapp\resources\python\csv
-print("path : " + os.getcwd())
+# 절대경로 수정필요
+absolute_path = 'C:/smartrash_workspace/smartrash/src/main/webapp/resources/python/csv/'
+
+f = open(absolute_path + 'test.csv', 'r')
+rdr = csv.reader(f)
+
+testPath = ''
+filePath = ''
+
+for line in rdr:
+    testPath = line[0]
+    filePath = line[1]
+
+print(testPath)
+print(filePath)
+
+f.close()
 
 model_name = "swsl_resnext50_32x4d"
 batch_size = 96
@@ -38,15 +53,8 @@ class TestDataset(Dataset):
 device = torch.device("cpu")  # cpu
 # device = torch.device("cuda")  # gpu
 
-class_path = './dataset/'
-class_list = ['can',
-              'fluorescent_light',
-              'glass',
-              'paper',
-              'plastic',
-              'polystyrene',
-              'vinyl']
-print(class_list)
+class_path = testPath + 'dataset/'
+class_list = os.listdir(class_path)
 class_encoder = {}
 for i in class_list:
     class_encoder.update({class_list[class_list.index(i)]: class_list.index(i)})
@@ -58,9 +66,7 @@ test_transforms_ = A.Compose([
     A.Normalize()
 ])
 
-test_files = os.listdir("./test/")
-test_files = sorted(test_files)
-test_files = list(map(lambda x: "/".join(["./test", x]), test_files))
+test_files = [filePath]
 
 test_dataset = TestDataset(file_lists=test_files, transforms=test_transforms_)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
@@ -68,7 +74,7 @@ test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 answer_logits = []
 
 model = timm.create_model(model_name, pretrained=True, num_classes=len(class_list)).to(device)
-model.load_state_dict(torch.load("./model.pth", map_location="cpu"))
+model.load_state_dict(torch.load(testPath + 'model.pth', map_location="cpu"))
 model.eval()
 
 with torch.no_grad():

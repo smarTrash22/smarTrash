@@ -63,8 +63,6 @@ public class HomeController {
 				System.out.println("서브 프로세스가 비정상 종료되었다.");
 			}
 			
-			
-			
 			try (PrintWriter writer = new PrintWriter(new File(testPath + "csv\\test.csv"))) {
 
 	            StringBuilder sb = new StringBuilder();
@@ -76,23 +74,23 @@ public class HomeController {
 	            sb.append(testPath);
 	            sb.append(',');
 	            sb.append(filePath);
-	            sb.append(',');
 	            sb.append('\n');
 
 	            writer.write(sb.toString());
 	            writer.close();
-	            System.out.println("done!");
 
 	        } catch (FileNotFoundException e) {
 	            System.out.println(e.getMessage());
 	        }
 			
-			String cmd = request.getSession().getServletContext().getRealPath("resources/python/") + "test.bat";
 			
-		    Process p = Runtime.getRuntime().exec(cmd);
-
-		    inheritIO(p.getInputStream(), System.out);
-		    inheritIO(p.getErrorStream(), System.err);
+			// 배치파일로 파이썬
+//			String cmd = request.getSession().getServletContext().getRealPath("resources/python/") + "test.bat";
+//			
+//		    Process p = Runtime.getRuntime().exec(cmd);
+//
+//		    inheritIO(p.getInputStream(), System.out);
+//		    inheritIO(p.getErrorStream(), System.err);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -103,16 +101,16 @@ public class HomeController {
 		return "common/main";
 	}
 	
-	private static void inheritIO(final InputStream src, final PrintStream dest) {
-	    new Thread(new Runnable() {
-	        public void run() {
-	            Scanner sc = new Scanner(src);
-	            while (sc.hasNextLine()) {
-	                dest.println(sc.nextLine());
-	            }
-	        }
-	    }).start();
-	}
+//	private static void inheritIO(final InputStream src, final PrintStream dest) {
+//	    new Thread(new Runnable() {
+//	        public void run() {
+//	            Scanner sc = new Scanner(src);
+//	            while (sc.hasNextLine()) {
+//	                dest.println(sc.nextLine());
+//	            }
+//	        }
+//	    }).start();
+//	}
 	
 	@RequestMapping(value = "about.do", method = RequestMethod.GET)
 	public String aboutViewForward() {
