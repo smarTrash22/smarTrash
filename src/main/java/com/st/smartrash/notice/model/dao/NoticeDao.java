@@ -1,8 +1,10 @@
 package com.st.smartrash.notice.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -67,7 +69,5 @@ public class NoticeDao {
 		return session.update("noticeMapper.addReadCount", notice_no);
 	}
 
-	
-	
-	
+
 }

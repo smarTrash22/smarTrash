@@ -56,16 +56,16 @@
 		where notice_no = #{notice_no}
 	</select>
 	
-	<delete id="deleteNotice" parameterType="notice">
+	<delete id="deleteNotice" parameterType="_int">
 		delete from t_notice 
-			where notice_ref = #{notice_no}	
+			where notice_no = #{notice_no}	
 	</delete>
 	
-	<update id="updateOrigin" parameterType="notice">
+	<update id="updateNotice" parameterType="Notice">
 		update t_notice 
 		set notice_title = #{notice_title}, 
 			notice_content = #{notice_content}
-			<if test="notice_original_fileapth != null">
+			<if test="notice_original_filepath != null">
 			, 
 			notice_original_filepath = #{notice_original_filepath}, 
 			notice_rename_filepath = #{notice_rename_filepath} 
@@ -77,4 +77,20 @@
 			</if>
 		where notice_no = #{notice_no}
 	</update>
+	
+<!-- 	<select id="searchNotice" parameterType="Notice">
+		<if test='searchType.equals("noitce_title)"'>
+		select * from t_notice
+		where notice_title like '%' || #{keyword}, || '%';
+		</if>
+		<if test='searchType.equals("noitce_writer)"'>
+		select * from t_notice
+		where notice_writer like '%' || #{keyword}, || '%';
+		</if>
+	</select> -->
+	
+	<select id="searchTitle" parameterType="string" resultMap="resultNotice">
+		select * from t_notice
+		where notice_title like '%' || #{ keyword } || '%'
+	</select>
 </mapper>
