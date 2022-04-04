@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.st.smartrash.common.Paging;
+import com.st.smartrash.common.SearchDate;
 import com.st.smartrash.trash.model.vo.Trash;
 
 @Repository("trashDao")
@@ -22,7 +23,7 @@ public class TrashDao {
 
 	// 전체 쓰레기 조회
 	public ArrayList<Trash> selectTrashAll() {
-		List<Trash> list = session.selectList("trashMapper.selectTrashAll");
+		List<Trash> list = session.selectList("trashMapper.trashSelectAll");
 		return (ArrayList<Trash>) list;
 	}
 
@@ -37,4 +38,44 @@ public class TrashDao {
 		return session.selectOne("trashMapper.getListCount");
 	}
 
+	// 쓰레기 페이지 처리 리스트
+	public ArrayList<Trash> selectList(Paging page) {
+		List<Trash> list = session.selectList("trashMapper.selectList", page);
+		return (ArrayList<Trash>) list;
+	}
+
+	// 쓰레기 유저번호로 검색
+	public ArrayList<Trash> selectSearchUserNo(int keyword) {
+		List<Trash> list = session.selectList("trashMapper.searchUserNo", keyword);
+		return (ArrayList<Trash>) list;
+	}
+
+	// 쓰레기 카테고리 번호로 검색
+	public ArrayList<Trash> selectSearchCategoryNo(int keyword) {
+		List<Trash> list = session.selectList("trashMapper.searchCategoryNo", keyword);
+		return (ArrayList<Trash>) list;
+	}
+
+	// 쓰레기 날짜로 검색
+	public ArrayList<Trash> selectSearchDate(SearchDate date) {
+		List<Trash> list = session.selectList("trashMapper.searchDate", date);
+		return (ArrayList<Trash>) list;
+	}
+
+	// 신고된 쓰레기 검색
+	public ArrayList<Trash> selectSearchReport(String keyword) {
+		List<Trash> list = session.selectList("trashMapper.searchReport", keyword);
+		return (ArrayList<Trash>) list;
+	}
+
+	// 최근 업로드 쓰레기 출력(사진) - 구현중
+	public ArrayList<Trash> selectRecentList() {
+		List<Trash> list = session.selectList("trashMapper.selectRecentList");
+		return (ArrayList<Trash>) list;
+	}
+
+	// 오늘의 쓰레기 갯수
+		public int selectTodayCount() {
+			return session.selectOne("trashMapper.selectTodayCount");
+		}
 }

@@ -13,20 +13,85 @@
 		<result column="report" property="report" />
 	</resultMap>
 
+	<resultMap id="selectRecentList" type="Trash">
+		<id property="trash_no" column="trash_no" />
+		<result property="trash_path" column="trash_path" />
+
+	</resultMap>
+
 	<!-- 전체 쓰레기 조회 -->
- 	<select id="selectTrashAll" resultMap="resultList">
+	<select id="trashSelectAll" resultMap="resultList">
 		select * from t_trash
-	</select> 
+	</select>
 
 	<!-- 쓰레기 추가 -->
-	<insert id="trashInsert" parameterType="Trash">
+	<insert id="trashInsert"  parameterType="Trash">
 		insert into t_trash
-		values ( t_tn_s.nextval, #{user_no}, #{category_no}, #{trash_path}, default, default )
+		values ( t_tn_s.nextval, #{user_no}, #{category_no}, #{trash_path},
+		default, default )
 	</insert>
 
-	<!--  쓰레기 개수 카운트 -->	
+	<!-- 쓰레기 개수 카운트 -->
 	<select id="getListCount" resultType="_int">
-		select count(*) from t_trash
-	</select>	
+		select count(*) from
+		t_trash
+	</select>
+
+	<!-- 쓰레기 리스트 페이지 처리 -->
+	<select id="selectList" parameterType="Paging"
+		resultMap="resultList">
+		<![CDATA[
+			SELECT * FROM (SELECT ROWNUM RNUM,TRASH_NO,USER_NO,
+			CATEGORY_NO, TRASH_PATH,TRASH_DATE,REPORT
+			FROM (SELECT * FROM T_TRASH
+			ORDER BY TRASH_NO DESC))
+			where rnum >= #{startRow} and rnum <= #{endRow}
+		]]>
+	</select>
+
+	<!-- 쓰레기 유저번호로 검색 -->
+	<select id="searchUserNo" parameterType="_int"
+		resultMap="resultList">
+		select * from t_trash
+		where user_no like '%' || #{ keyword }
+		|| '%'
+	</select>
+
+	<!-- 쓰레기 카테고리 번호로 검색 -->
+	<select id="searchCategoryNo" parameterType="_int"
+		resultMap="resultList">
+		select * from t_trash
+		where category_no like '%' || #{
+		keyword } || '%'
+	</select>
+
+	<!-- 쓰레기 날짜로 검색 -->
+	<select id="searchDate" parameterType="SearchDate"
+		resultMap="resultList">
+		select * from t_trash
+		where trash_date between #{ begin } and
+		#{ end }
+	</select>
+
+	<!-- 신고된 쓰레기 조회 -->
+	<select id="searchReport" parameterType="String"
+		resultMap="resultList">
+		select * from t_trash
+		where report = #{ keyword }
+	</select>
+
+
+	<!-- 최근 쓰레기 조회 -->
+	<!-- <select id="selectRecentList" resultMap="selectRecentList"> <![CDATA[ 
+		SELECT * FROM (SELECT ROWNUM RNUM, trash_no, trash_path, FROM (SELECT * FROM 
+		t_trash)) WHERE RNUM >= 1 AND RNUM <= 3 ]]> </select> -->
+
+	<!-- 오늘의 쓰레기 갯수 -->
+	<!-- <select id="selectTodayCount" parameterType="_int"
+		resultMap="resultList">
+		select * from t_trash
+		where trash_date like sysdate
+	</select> -->
+
 
 </mapper>
