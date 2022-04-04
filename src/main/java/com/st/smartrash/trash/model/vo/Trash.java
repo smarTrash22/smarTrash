@@ -11,13 +11,13 @@ public class Trash implements java.io.Serializable {
 	private int category_no; // 카테고리 번호
 	private String trash_path; // 쓰레기 이미지 경로
 	private Date trash_date; // 쓰레기 올린날짜
-	private char report; // 신고 여부
+	private String report; // 신고 여부
 
 	public Trash() {
 		super();
 	}
 
-	public Trash(int trash_no, int user_no, int category_no, String trash_path, Date trash_date, char report) {
+	public Trash(int trash_no, int user_no, int category_no, String trash_path, Date trash_date, String report) {
 		super();
 		this.trash_no = trash_no;
 		this.user_no = user_no;
@@ -67,11 +67,11 @@ public class Trash implements java.io.Serializable {
 		this.trash_date = trash_date;
 	}
 
-	public char getReport() {
+	public String getReport() {
 		return report;
 	}
 
-	public void setReport(char report) {
+	public void setReport(String report) {
 		this.report = report;
 	}
 
