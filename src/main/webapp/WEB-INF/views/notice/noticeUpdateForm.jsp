@@ -3,11 +3,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="currnetPage" value="${ requestScope.currnetPage }" />
+<c:set var="currentPage" value="${ requestScope.currentPage }" />
 
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript">
+function cancle() {
+	if(confirm("글작성을 취소하시겠습니까?")){
+		javascript:history.go(-1);
+	}else{
+		return false;
+	}
+}</script>
 <meta charset="UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
@@ -25,7 +33,7 @@
       	<input style="width: 200px;" class="form-control" name="notice_writer" type="text" value="${ notice.notice_writer }" aria-label="readonly input example" readonly><br>
         <input style="width: 450px;" type="text" class="form-control" name="notice_title" value="${ notice.notice_title }">
       <br>
-        <textarea class="form-control" name="notice_content" rows="5" value="${ notice.notice_content }"></textarea>
+        <textarea class="form-control" name="notice_content" rows="5">${ notice.notice_title }</textarea>
       <br>
       <c:if test="${ !empty notice.notice_original_filepath }">
       	${ notice.notice_original_filepath } &nbsp;
@@ -34,9 +42,9 @@
         <input style="width: 300px;" class="form-control" type="file" name="upfile">
       <br>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding-top: 10px;">
-        <button class="btn btn-primary me-md-2" type="reset">Reset</button>
+        <!-- <button class="btn btn-primary" type="reset">Reset</button> -->
         <button class="btn btn-primary" type="submit">Update</button>
-        <button onclick="javascript:history.go(-1); retunr flase;" class="btn btn-primary" type="button">List</button>
+        <button onclick="cancle();" class="btn btn-primary" type="button">Cancle</button>
       </div>
     </div>
     </fieldset>

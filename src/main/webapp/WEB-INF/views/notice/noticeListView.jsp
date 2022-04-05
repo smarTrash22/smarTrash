@@ -19,6 +19,39 @@
 	/* function showWriteForm(){
 	 location.href = "${ pageContext.servletContext.contextPath }/nwform.do";
 	 } */
+	 function NoticeDelete() {
+		if(confirm("정말로 삭제하시겠습니까?")){
+			
+		}
+	}
+	 function deleteReport(){
+	        var cnt = $("input[name='reportChkBxRow']:checked").length;
+	        var arr = new Array();
+	        $("input[name='reportChkBxRow']:checked").each(function() {
+	            arr.push($(this).attr('id'));
+	        });
+	        if(cnt == 0){
+	            alert("선택된 글이 없습니다.");
+	        }
+	        else{
+	            $.ajax = {
+	                type: "POST"
+	                url: "OOOO.do"
+	                data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
+	                dataType:"json",
+	                success: function(jdata){
+	                    if(jdata != 1) {
+	                        alert("삭제 오류");
+	                    }
+	                    else{
+	                        alert("삭제 성공");
+	                    }
+	                },
+	                error: function(){alert("서버통신 오류");}
+	            };
+	        }
+	    }
+
 </script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style type="text/css">
@@ -36,55 +69,70 @@ a {
 <body>
 	<c:import url="/WEB-INF/views/common/navi.jsp" />
 	<br>
-	<h2 align="center">Notice Board</h2>
+	<!-- <h2 align="center">Notice Board</h2> -->
 	<%-- <c:if test="${ !empty sessionScope.loginMember }">
 	<div>
 		<button onclick="showWriteForm();">글쓰기</button>
 	</div>
 </c:if> --%>
 	<div
-		style="padding-left: 10%; padding-right: 10%; padding-bottom: 10px;">
+		style="padding-left: 20%; padding-right: 20%; ">
+		<hr>
 		<table class="table table-striped table-hover">
 			<thead>
 				<tr>
-					<th scope="col">No</th>
-					<th scope="col" colspan="3">Subject</th>
-					<th scope="col"></th>
-					<th scope="col"></th>
-					<th scope="col">Name</th>
-					<th scope="col">File</th>
-					<th scope="col">Date</th>
-					<th scope="col">Views</th>
+					<th width="5%" scope="col">No</th>
+					<th width="55%" scope="col">        Subject</th>
+					<th width="15%" scope="col">Name</th>
+					<th width="5%" scope="col">File</th>
+					<th width="5%" scope="col">Date</th>
+					<th width="5%" scope="col">Views</th>
+					<th width="3%" scope="col"></th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${ requestScope.list }" var="n">
 					<tr align="center">
-						<td align="left">${ n.notice_no }</td>
+						<td width="5%" align="left"><font size="2">${ n.notice_no }</font></td>
 						<c:url var="ndt" value="/ndetail.do">
 							<c:param name="notice_no" value="${ n.notice_no }" />
 							<c:param name="page" value="${ currentPage }" />
 						</c:url>
-						<td colspan="3" align="left"><a href="${ ndt }">${ n.notice_title }</a></td>
-						<td align="left"></td>
-						<td align="left"></td>
-						<td align="left">${ n.notice_writer }</td>
-						<td align="left"><c:if
+						<td width="55%" align="left"><a href="${ ndt }">${ n.notice_title }</a></td>
+						<td width="15%" align="left"><font size="2">${ n.notice_writer }</font></td>
+						<td width="5%" align="left"><c:if
 								test="${ !empty n.notice_original_filepath }">
 								<i class="bi bi-file-earmark-arrow-down"></i>
 							</c:if> <c:if test="${ empty n.notice_original_filepath }">&nbsp;</c:if>
 						</td>
-						<td align="left"><fmt:formatDate value="${ n.notice_date}"
-								type="date" pattern="yyyy-MM-dd" /></td>
-						<td align="left">${ n.notice_readcount }</td>
+						<td width="5%" align="left"><font size="2"><fmt:formatDate value="${ n.notice_date}"
+								type="date" pattern="yy.MM.dd" /></font></td>
+						<td width="5%" align="center"><font size="2">${ n.notice_readcount }</font></td>
+						<td width="3%">
+						<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
+						<div class="form-check">
+						  <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled">
+						</div>
+						</c:if>
+						<c:if test="${ empty sessionScope.loginUser or sessionScope.loginUser.user_admin eq 'N' }">
+						<div class="form-check">
+						   <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled>
+						</div>
+						</c:if>
+						</td>
+						
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 		<div align="right">
-			<c:if test="${ loginMember.admin != 'Y' }">
+			<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
 				<button type="button" class="btn btn-sm btn-primary"
-					onclick="javascript:location.href='movewrite.do';">Write</button>
+					onclick="javascript:location.href='movewrite.do';">${ loginMember.user_admin } Write</button>
+			</c:if>
+			<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
+				<button type="button" class="btn btn-sm btn-primary"
+					onclick="NoticeDelete;">delete</button>
 			</c:if>
 		</div>
 		<!-- 페이징 -->
@@ -160,23 +208,26 @@ a {
 			</ul>
 		</nav>
 	</div>
-	<form name="fomr1" action="nserach.do" method="post">
+	<form action="nserach.do" method="post">
 		<div style="width: 400px;" class="input-group mb-3 container">
 			<div class="input-group-text p-0 ">
-				<select name="selectType"
+				<select name="type"
 					class="form-select form-select-xsm shadow-none bg-light border-0">
-					<option value="title">Title</option>
-					<option value="writer">Writer</option>
+					<option value="title">제목</option>
+					<option value="writer">글쓴이</option>
+					<option value="titleOrWriter">제목+내용</option>
 				</select>
 			</div>
 			<input style="width: 10px;" type="text" class="form-control"
 				placeholder="Search Here" name="keyword">
-			<button class="input-group-text shadow-none px-4 btn-secondary">
+			<button class="input-group-text shadow-none px-4 btn-secondary" type="submit">
 				<i class="bi bi-search"></i>
 			</button>
 		</div>
 	</form>
-
+ 	<div style="padding-left: 20%; padding-right: 20%; ">
+	<hr>
+	</div>
 	<c:import url="/WEB-INF/views/common/foot.jsp" />
 </body>
 </html>

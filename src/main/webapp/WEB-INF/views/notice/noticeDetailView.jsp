@@ -10,6 +10,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script type="text/javascript">
+/* function NoticeDelete() {
+	if(confirm("정말로 삭제하시겠습니까?")){
+		javascript:location.href='${ ndel }';
+	}else{
+		return false;
+	}
+} */
+</script>
 <style type="text/css">
 a:link {
 	color: black;
@@ -40,7 +49,7 @@ a:link {
 			</thead>
 			<tbody>
 				<tr>
-					<td style="font-size: 10px;">${ notice.notice_writer }|<fmt:formatDate
+					<td style="font-size: 10px;">${ notice.notice_writer } | <fmt:formatDate
 							value="${ notice.notice_date}" type="date"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
 				</tr>
@@ -67,10 +76,11 @@ a:link {
 				<tr>
 					<td><div class="d-grid gap-2 d-md-flex justify-content-md-end"
 							style="padding-top: 10px;">
-							<c:if test="${ loginMember.admin != 'Y' }">
+							<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
 								<button type="button" class="btn btn-sm btn-primary"
 									onclick="javascript:location.href='movewrite.do';">Write</button>
 							</c:if>
+							
 							<c:url var="ndel" value="/ndel.do">
 								<c:param name="notice_no" value="${ notice.notice_no }" />
 								<c:if test="${ !empty notice.notice_original_filepath }">
@@ -78,12 +88,14 @@ a:link {
 										value="${ notice.notice_rename_filepath }" />
 								</c:if>
 							</c:url>
+							<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
 							<button type="button" class="btn btn-sm btn-primary"
 								onclick="javascript:location.href='${ ndel }';">delete</button>
+							</c:if>	
 							<c:url var="numove" value="/moveupdate.do">
 								<c:param name="notice_no" value="${ notice.notice_no }" />
 							</c:url>
-							<c:if test="${ loginMember.admin != 'Y' }">
+							<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
 								<button type="button" class="btn btn-sm btn-primary"
 									onclick="javascript:location.href='${ numove }'">Update</button>
 							</c:if>

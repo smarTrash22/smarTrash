@@ -275,5 +275,86 @@ public class NoticeController {
 			}
 		}
 		
+	//공지사항 검색
+//	@RequestMapping(value="nserach.do", method=RequestMethod.POST)
+//	public String noticeSearchMethod(
+//			@RequestParam("keyword") String keyword,
+//			@RequestParam("type") String type,
+//			Model model) {
+//		
+//		Map<String,Object> map = new HashMap<>();
+//		
+//		map.put("type", type);
+//        map.put("keyword", keyword);
+//        
+//        ArrayList<Notice> list = noticeService.selectSearch(map);
+//		
+//        
+//		if(list.size() > 0) {
+//			model.addAttribute("list", list);
+//			return "notice/noticeListView";
+//		}else {
+//			model.addAttribute("message", keyword + "로 검색된 공지 정보가 없습니다.");
+//			return "common/error";
+//		}
+//	}
+	@RequestMapping(value="nserach.do", method=RequestMethod.POST)
+	public ModelAndView noticeSearchMethod(
+			@RequestParam(value="keyword", defaultValue="") String keyword,
+			@RequestParam(value="type", defaultValue="") String type,
+			@RequestParam(name="page", required=false) String page,
+			ModelAndView mv){
+		int currentPage = 1;
+		if(page != null){
+			currentPage = Integer.parseInt(page);
+		}
+	      
 
+	      int limit = 10; 
+
+	      int listCount = noticeService.selectListCount();
+	 
+	
+	      int maxPage = (int)((double)listCount / limit + 0.9);
+
+	      int startPage = (int)((double)currentPage / 10 + 0.9);
+
+	      int endPage = startPage + 10 - 1;
+	      
+	      if(maxPage < endPage) {
+	         endPage = maxPage;
+	      }
+	
+	      int startRow = (currentPage - 1) * limit + 1;
+	      int endRow = startRow + limit - 1;
+//	      Paging paging = new Paging(startRow, endRow);
+	      
+		Map<String,Object> map = new HashMap<>();
+		
+		map.put("type", type);
+        map.put("keyword", keyword);
+//        map.put("paging", paging);
+        map.put("startRow", startRow);
+        map.put("endRow", endRow);
+        
+        ArrayList<Notice> list = noticeService.selectSearch(map);
+		
+        
+        if(list != null && list.size() > 0) {
+	         mv.addObject("list", list);
+	         mv.addObject("listCount", listCount);
+	         mv.addObject("maxPage", maxPage);
+	         mv.addObject("currentPage", currentPage);
+	         mv.addObject("startPage", startPage);
+	         mv.addObject("endPage", endPage);
+	         mv.addObject("limit", limit);
+	         
+	         mv.setViewName("notice/noticeListView");
+	      }else {
+	         mv.addObject("message", currentPage + "페이지 목록 조회 실패.");
+	         mv.setViewName("common/error");
+	      }
+	      
+	      return mv;
+	}
 }

@@ -33,16 +33,6 @@
 		(t_nn_s.nextval, #{ notice_title }, #{ notice_writer }, #{notice_content}, 
 		#{ notice_original_filepath, jdbcType=VARCHAR },
 		#{ notice_rename_filepath, jdbcType=VARCHAR }, default, default)
-			 
-<!-- 			 
-		insert into t_notice 		
-			(notice_no, notice_title, notice_writer, 
-			notice_content, notice_original_filepath, notice_rename_filepath, 
-			notice_date, notice_readcount)
-			values ((select max(notice_no) + 1 from t_notice), 
-			#{ notice_title }, #{ notice_writer }, #{notice_content}, 
-			sysdate, #{ notice_original_filepath, jdbcType=VARCHAR },
-			 #{ notice_rename_filepath, jdbcType=VARCHAR })		 -->
 	</insert>
 	
 	<update id="addReadCount" parameterType="_int">
@@ -78,19 +68,55 @@
 		where notice_no = #{notice_no}
 	</update>
 	
-<!-- 	<select id="searchNotice" parameterType="Notice">
-		<if test='searchType.equals("noitce_title)"'>
+<!-- 	<select id="searchNotice" parameterType="HashMap" resultType="Notice">
+		<if test='type.equals("title")'>
 		select * from t_notice
-		where notice_title like '%' || #{keyword}, || '%';
+		where notice_title like '%' || #{keyword} || '%'
 		</if>
-		<if test='searchType.equals("noitce_writer)"'>
+		<if test='type.equals("writer")'>
 		select * from t_notice
-		where notice_writer like '%' || #{keyword}, || '%';
+		where notice_writer like '%' || #{keyword} || '%'
 		</if>
+		<if test='type.equals("titleOrWriter")'>
+		select * from t_notice
+		where notice_writer like '%' || #{keyword} || '%'
+        or notice_content  like '%' || #{keyword} || '%'
+        </if>
+
 	</select> -->
 	
-	<select id="searchTitle" parameterType="string" resultMap="resultNotice">
-		select * from t_notice
-		where notice_title like '%' || #{ keyword } || '%'
+		<select id="searchNotice" parameterType="HashMap" resultType="Notice">
+		<if test='type.equals("title")'>
+		<![CDATA[
+		select * from (
+		select rownum num, n.* from (
+		select * from (select * from t_notice
+		where notice_title like '%' || #{keyword} || '%') order by notice_no desc ) n)
+		where num >= ${startRow} and num <= ${endRow}
+		]]>
+		</if>
+		
+		<if test='type.equals("writer")'>
+		<![CDATA[
+		select * from (
+		select rownum num, n.* from (
+		select * from (select * from t_notice
+		where notice_writer like '%' || #{keyword} || '%') order by notice_no desc ) n)
+		where num >= ${startRow} and num <= ${endRow}
+		]]>
+		</if>
+		
+		<if test='type.equals("titleOrWriter")'>
+		<![CDATA[
+		select * from (
+		select rownum num, n.* from (
+		select * from (select * from t_notice
+		where notice_writer like '%' || #{keyword} || '%'
+        or notice_content  like '%' || #{keyword} || '%') order by notice_no desc ) n)
+		where num >= ${startRow} and num <= ${endRow}
+		]]>
+        </if>
+
 	</select>
+	
 </mapper>

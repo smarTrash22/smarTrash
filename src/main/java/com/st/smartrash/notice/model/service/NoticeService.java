@@ -1,6 +1,7 @@
 package com.st.smartrash.notice.model.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.st.smartrash.common.Paging;
 import com.st.smartrash.common.SearchDate;
@@ -19,4 +20,5 @@ public interface NoticeService {
 	ArrayList<Notice> selectSearchTitle(String keyword);
 	ArrayList<Notice> selectSearchWriter(String keyword);
 	ArrayList<Notice> selectSearchDate(SearchDate date);
+	ArrayList<Notice> selectSearch(Map<String, Object> map);
 }

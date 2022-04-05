@@ -3,6 +3,7 @@ package com.st.smartrash.notice.model.dao;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -69,5 +70,8 @@ public class NoticeDao {
 		return session.update("noticeMapper.addReadCount", notice_no);
 	}
 
-
+	public ArrayList<Notice> selectSearch(Map<String, Object> map) {
+		List<Notice> list = session.selectList("noticeMapper.searchNotice", map);
+		return (ArrayList<Notice>)list;
+	}
 }

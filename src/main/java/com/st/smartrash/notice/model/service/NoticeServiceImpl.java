@@ -1,6 +1,7 @@
 package com.st.smartrash.notice.model.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,12 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDao.addReadCount(notice_no);
 	}
 
+	@Override
+	public ArrayList<Notice> selectSearch(Map<String, Object> map) {
+		return noticeDao.selectSearch(map);
+	}
 
+
+	
 
 }
