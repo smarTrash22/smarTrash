@@ -17,8 +17,13 @@ img#photo {
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body>
-쓰레기 파일 : ${ file }
-카테고리 : ${ category }
+쓰레기 파일 : ${ trash_path } <br>
+카테고리 : [${ category.category_no }, ${ category.category_name }, ${ category.category_content }, ${ category.category_tip }] <br>
+카테고리 리스트  <br>
+<c:forEach items="${ requestScope.category_list }" var="cl">
+[${ cl.category_no }, ${ cl.category_name }, ${ cl.category_content }, ${ cl.category_tip }] <br>
+</c:forEach>
+유저 : [${ sessionScope.loginUser.user_no }, ${ sessionScope.loginUser.user_email }, ${ sessionScope.loginUser.user_name }, ${ sessionScope.loginUser.user_admin }, ${ sessionScope.loginUser.user_date }]
 
 	<!-- Navigation-->
 	<c:import url="/WEB-INF/views/common/navi.jsp" />

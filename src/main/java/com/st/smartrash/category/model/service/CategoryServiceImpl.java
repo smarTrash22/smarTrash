@@ -29,4 +29,9 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryDao.selectListCount();
 	}
 
+	@Override
+	public Category selectSearchName(String category_name) {
+		return categoryDao.selectSearchName(category_name);
+	}
+
 }

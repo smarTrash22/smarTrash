@@ -10,7 +10,7 @@
 	
 	<typeAliases>
 		<typeAlias type="com.st.smartrash.user.model.vo.User" alias="User" />
-		 <typeAlias type="com.st.smartrash.trash.model.vo.Trash" alias="Trash" />
+		<typeAlias type="com.st.smartrash.trash.model.vo.Trash" alias="Trash" />
 		<typeAlias type="com.st.smartrash.category.model.vo.Category" alias="Category" />
 		<typeAlias type="com.st.smartrash.notice.model.vo.Notice" alias="Notice" />
 		<typeAlias type="com.st.smartrash.board.model.vo.Board" alias="Board" />
