@@ -12,7 +12,7 @@
      <!-- Navigation-->
 	 <c:import url="/WEB-INF/views/common/navi.jsp" />
     <hr>	
-	<h2 align="center"><b>쓰레기 등록 페이지 (관리자)</b></h2>
+	<h2 align="center"><b>쓰레기 등록 </b></h2>
 	<br>
 	<form action="trashInsert.do"  method="post" enctype="multipart/form-data">
 	<table align="center" width="500" border="1" cellspacing="0" cellpadding="5">

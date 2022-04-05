@@ -1,10 +1,10 @@
 package com.st.smartrash.trash.model.service;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 import com.st.smartrash.common.Paging;
 import com.st.smartrash.common.SearchDate;
+import com.st.smartrash.common.TrashSet;
 import com.st.smartrash.trash.model.vo.Trash;
 
 public interface TrashService {
@@ -37,4 +37,15 @@ public interface TrashService {
 	
 	// 오늘의 쓰레기 갯수
 	int selectTodayCount();
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 업로드 파일 분류정보 상단
+	ArrayList<TrashSet> trashDesc(TrashSet trashSet);
 }

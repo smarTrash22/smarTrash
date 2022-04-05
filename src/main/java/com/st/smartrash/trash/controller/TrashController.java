@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.st.smartrash.category.model.vo.Category;
+import com.st.smartrash.common.CategoryTranslation;
 import com.st.smartrash.common.Paging;
 import com.st.smartrash.common.SearchDate;
 import com.st.smartrash.trash.model.service.TrashService;
@@ -44,9 +47,13 @@ public class TrashController {
 	}
 
 	@RequestMapping(value = "moveInsertPage.do")
-//  @RequestMapping(value = "trashMenubar.do", method = RequestMethod.POST)
 	public String moveInsertPageViewForward() {
 		return "trash/trashInsert";
+	}
+
+	@RequestMapping(value = "moveDescPage.do")
+	public String moveDescPageViewForward() {
+		return "trash/trashDesc";
 	}
 
 	// 쓰레기 등록
@@ -55,7 +62,7 @@ public class TrashController {
 			@RequestParam(name = "upfile", required = false) MultipartFile mfile) {
 		// 업로드된 파일 저장 폴더 지정
 		String savePath = request.getSession().getServletContext().getRealPath("resources/trash_upfiles");
-//		System.out.println(trash + "," + mfile);
+		// System.out.println(trash + "," + mfile);
 		// 첨부파일이 있을때만 업로드된 파일을 지정 폴더로 옮기기
 		if (!mfile.isEmpty()) {
 			String fileName = mfile.getOriginalFilename();
@@ -136,7 +143,7 @@ public class TrashController {
 		int startRow = (currentPage - 1) * limit + 1;
 		int endRow = startRow + limit - 1;
 		Paging paging = new Paging(startRow, endRow);
-
+		System.out.println(paging);
 		// 별도의 클래스 작성 끝 ------------------------------------------------------
 
 		// 서비스 메소드 실행하고 결과받기
@@ -247,5 +254,22 @@ public class TrashController {
 		return sendJson.toJSONString();
 		// 뷰리졸버에게로 리턴됨
 	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
