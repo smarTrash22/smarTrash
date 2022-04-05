@@ -179,8 +179,32 @@
 						<div class="pb-5">
 								<div class="n" style="float:left; width:150px; font-weight:bold;">작성글 목록</div>
 						</div>
-						<div class="pb-5" border="1">
-							<%-- <table id="mygal" border="1" cellspacing="0">
+						<table class="table table-striped table-hover">
+							<thead>
+								<tr>
+									<th scope="col">No</th>
+									<th scope="col" colspan="3">Content</th>
+									<th scope="col"></th>
+									<th scope="col"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${ blist }" var="b">
+									<tr align="center">
+										<td align="left">${ b.board_no }</td>
+										<c:url var="bd" value="bdetail.do">
+											<c:param name="board_no" value="${ b.board_no }" />
+											<c:param name="page" value="${ currentPage }" />
+										</c:url>
+										<td colspan="3" align="left"><a href="${ bd }" style="text-align: center; text-decoration: none; color: inherit;">${ b.board_content }</a></td>
+										<td align="left"></td>
+										<td align="left"></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+<%-- 						<div class="pb-5" border="1">
+							<table id="mygal" border="1" cellspacing="0">
 								<tr>
 									<th>번호</th>
 									<th>내용</th>
@@ -191,14 +215,14 @@
 										<td>${ b.board_content }</td>
 									</tr>
 								</c:forEach>
-							</table> --%>
+							</table>
 							<c:forEach items="${ blist }" var="b">
 								<div class="pb-4">
 									<div style="float:left; width:80px; font-weight:bold; text-align:center">${ b.board_no }</div>
 									<div style="float:left;"><a href="" style="text-decoration:none; color:inherit;">${ b.board_content }</a></div>
 								</div>
 							</c:forEach>
-						</div>
+						</div> --%>
 						<hr>
 						<div class="pb-5">
 								<div class="n" style="float:left; width:200px; font-weight:bold;">조회한 쓰레기</div>
@@ -206,8 +230,10 @@
 						<div class="pb-5" border="1">
 							<c:forEach items="${ tlist }" var="t">
 								<div>
-									<div style="float:left;"><a href="" style="text-decoration:none; color:inherit; margin:30px;">
-										<img src=${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${ t.trash_path }></a>
+									<div style="float:left;">
+										<a href="" style="text-decoration:none; color:inherit; margin:40px;">
+											<img src=${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${ t.trash_path }>
+										</a>
 									</div>
 								</div>
 							</c:forEach>

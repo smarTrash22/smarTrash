@@ -18,6 +18,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.st.smartrash.board.model.vo.Board;
+import com.st.smartrash.common.Paging;
 import com.st.smartrash.trash.model.vo.Trash;
 import com.st.smartrash.user.model.dao.UserDao;
 import com.st.smartrash.user.model.vo.User;
@@ -139,8 +140,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public int deleteUser(int user_no) {
-		return userDao.deleteUser(user_no);
+	public int deleteUser(String user_email) {
+		return userDao.deleteUser(user_email);
 	}
 	
 	@Override
@@ -171,5 +172,20 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ArrayList<Trash> selectTodayReportTrash() {
 		return userDao.selectTodayReportTrash();
+	}
+	
+	@Override
+	public ArrayList<User> selectUserList() {
+		return userDao.selectUserList();
+	}
+	
+	@Override
+	public int selectListCount() {
+		return userDao.selectListCount();
+	}
+	
+	@Override
+	public ArrayList<Board> selectReportList(Paging page) {
+		return userDao.selectReportList(page);
 	}
 }

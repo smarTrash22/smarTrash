@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.st.smartrash.board.model.vo.Board;
+import com.st.smartrash.common.Paging;
 import com.st.smartrash.trash.model.vo.Trash;
 import com.st.smartrash.user.model.vo.User;
 
@@ -34,8 +35,8 @@ public class UserDao {
 		return session.update("userMapper.updateNick", user);
 	}
 
-	public int deleteUser(int user_no) {
-		return session.delete("userMapper.deleteUser", user_no);
+	public int deleteUser(String user_email) {
+		return session.delete("userMapper.deleteUser", user_email);
 	}
 
 	public ArrayList<Trash> selectLatest5(int user_no) {
@@ -66,6 +67,20 @@ public class UserDao {
 		List<Trash> list = session.selectList("userMapper.selectTodayReportTrash");
 		return (ArrayList<Trash>)list;
 	}
+
+	public ArrayList<User> selectUserList() {
+		List<User> list = session.selectList("userMapper.selectUserList");
+		return (ArrayList<User>)list;
+	}
 	
+	public int selectListCount() {
+		return session.selectOne("boardMapper.getListCount");
+	}
+
+	public ArrayList<Board> selectReportList(Paging page) {
+		List<Board> list = session.selectList("userMapper.selectReportList", page);
+		return (ArrayList<Board>)list;
+	}
 	
+
 }

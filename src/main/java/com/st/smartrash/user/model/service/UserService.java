@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.st.smartrash.board.model.vo.Board;
+import com.st.smartrash.common.Paging;
 import com.st.smartrash.trash.model.vo.Trash;
 import com.st.smartrash.user.model.vo.User;
 
@@ -21,7 +22,7 @@ public interface UserService {
 
 	int updateNick(User user);
 
-	int deleteUser(int user_no);
+	int deleteUser(String user_email);
 
 	ArrayList<Trash> selectLatest5(int user_no);
 
@@ -35,5 +36,9 @@ public interface UserService {
 
 	ArrayList<Trash> selectTodayReportTrash();
 
+	ArrayList<User> selectUserList();
 
+	int selectListCount();
+
+	ArrayList<Board> selectReportList(Paging page);
 }
