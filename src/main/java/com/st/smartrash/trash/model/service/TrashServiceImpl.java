@@ -33,4 +33,9 @@ public class TrashServiceImpl implements TrashService {
 		return trashDao.selectListCount();
 	}
 
+	@Override
+	public ArrayList<Trash> selectTrashNewTop() {
+		return trashDao.selectTrashNewTop();
+	}
+
 }

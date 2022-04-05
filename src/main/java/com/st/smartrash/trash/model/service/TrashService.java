@@ -15,4 +15,7 @@ public interface TrashService {
 
 	// 총 쓰레기 갯수 조회용 (페이지 수 계산용)
 	int selectListCount(); 
+	
+	// 메인 페이지 최근 분류된 쓰레기
+	ArrayList<Trash> selectTrashNewTop();
 }

@@ -36,5 +36,9 @@ public class TrashDao {
 	public int selectListCount() {
 		return session.selectOne("trashMapper.getListCount");
 	}
-
+	
+	public ArrayList<Trash> selectTrashNewTop() {
+		List<Trash> list =  session.selectList("trashMapper.selectTrashNewTop");
+		return (ArrayList<Trash>) list;
+	}
 }

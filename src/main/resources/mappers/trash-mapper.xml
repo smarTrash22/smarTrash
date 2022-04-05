@@ -27,6 +27,14 @@
 	<!--  쓰레기 개수 카운트 -->	
 	<select id="getListCount" resultType="_int">
 		select count(*) from t_trash
-	</select>	
-
+	</select>
+	
+	<!-- 메인 페이지 최근 분류한 쓰레기 -->
+	<select id="selectTrashNewTop" resultMap="resultList">
+		SELECT TRASH_PATH, TRASH_DATE
+		FROM (SELECT *
+		      FROM T_TRASH
+		      ORDER BY TRASH_DATE DESC)
+		WHERE ROWNUM BETWEEN 1 AND 5
+	</select>
 </mapper>

@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Random;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONArray;
@@ -24,6 +26,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.st.smartrash.trash.model.service.TrashService;
+import com.st.smartrash.trash.model.vo.Trash;
+
 
 /**
  * Handles requests for the application home page.
@@ -33,46 +38,53 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
+	@Inject
+	private TrashService trashService;
+	
 	@RequestMapping(value = "main.do", method = RequestMethod.GET)
-	public String mainViewForward() {
+	public String mainViewForward(Model model) {
+		ArrayList<Trash> trash_list = trashService.selectTrashNewTop();
+		ArrayList<Trash> category_list = trashService.selectTrashNewTop();
+		model.addAttribute("trash_list", trash_list);
+		model.addAttribute("category_list", category_list);
 		return "common/main";
 	}
 
 	// 부트스트랩 기본 페이지
-//	@RequestMapping(value = "about.do", method = RequestMethod.GET)
-//	public String aboutViewForward() {
-//		return "common/about";
-//	}
-//	
-//	@RequestMapping(value = "blog-home.do", method = RequestMethod.GET)
-//	public String blog_homeViewForward() {
-//		return "common/blog-home";
-//	}
-//	
-//	@RequestMapping(value = "blog-post.do", method = RequestMethod.GET)
-//	public String blog_postViewForward() {
-//		return "common/blog-post";
-//	}
-//	
-//	@RequestMapping(value = "contact.do", method = RequestMethod.GET)
-//	public String contactViewForward() {
-//		return "common/contact";
-//	}
-//	
-//	@RequestMapping(value = "faq.do", method = RequestMethod.GET)
-//	public String faqViewForward() {
-//		return "common/faq";
-//	}
-//	
-//	@RequestMapping(value = "portfolio-item.do", method = RequestMethod.GET)
-//	public String portfolio_itemViewForward() {
-//		return "common/portfolio-item";
-//	}
-//	
-//	@RequestMapping(value = "portfolio-overview.do", method = RequestMethod.GET)
-//	public String portfolio_overviewViewForward() {
-//		return "common/portfolio-overview";
-//	}
+	@RequestMapping(value = "about.do", method = RequestMethod.GET)
+	public String aboutViewForward() {
+		return "common/about";
+	}
+	
+	@RequestMapping(value = "blog-home.do", method = RequestMethod.GET)
+	public String blog_homeViewForward() {
+		return "common/blog-home";
+	}
+	
+	@RequestMapping(value = "blog-post.do", method = RequestMethod.GET)
+	public String blog_postViewForward() {
+		return "common/blog-post";
+	}
+	
+	@RequestMapping(value = "contact.do", method = RequestMethod.GET)
+	public String contactViewForward() {
+		return "common/contact";
+	}
+	
+	@RequestMapping(value = "faq.do", method = RequestMethod.GET)
+	public String faqViewForward() {
+		return "common/faq";
+	}
+	
+	@RequestMapping(value = "portfolio-item.do", method = RequestMethod.GET)
+	public String portfolio_itemViewForward() {
+		return "common/portfolio-item";
+	}
+	
+	@RequestMapping(value = "portfolio-overview.do", method = RequestMethod.GET)
+	public String portfolio_overviewViewForward() {
+		return "common/portfolio-overview";
+	}
 	
 	@RequestMapping(value = "uploadFile.do", method = RequestMethod.POST)
 	@ResponseBody
