@@ -17,6 +17,9 @@ img#photo {
 <c:import url="/WEB-INF/views/common/head.jsp" />
 </head>
 <body>
+쓰레기 파일 : ${ file }
+카테고리 : ${ category }
+
 	<!-- Navigation-->
 	<c:import url="/WEB-INF/views/common/navi.jsp" />
 
@@ -30,13 +33,6 @@ img#photo {
 			</div>
 		</div>
 	</div>
-
-
-
-
-
-
-
 
 	<!-- 상단게시물 영역 -->
 	<div>
@@ -55,8 +51,6 @@ img#photo {
 			</tr>
 		</table>
 	</div>
-
-
 
 	<br>
 	<br>

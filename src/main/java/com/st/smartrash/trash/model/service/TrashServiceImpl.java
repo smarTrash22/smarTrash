@@ -34,7 +34,7 @@ public class TrashServiceImpl implements TrashService {
 	public int selectListCount() {
 		return trashDao.selectListCount();
 	}
-
+	
 	// 쓰레기 페이지 리스트
 	@Override
 	public ArrayList<Trash> selectList(Paging page) {
@@ -78,15 +78,13 @@ public class TrashServiceImpl implements TrashService {
 		return trashDao.selectListCount();
 	}
 	
-	
-	
-	
-	
-	
-	
-	
 	@Override
 	public ArrayList<TrashSet> trashDesc(TrashSet trashSet) {
 		return trashDao.trashDesc(trashSet);
+	}
+	
+	@Override
+	public ArrayList<Trash> selectTrashNewTop() {
+		return trashDao.selectTrashNewTop();
 	}
 }

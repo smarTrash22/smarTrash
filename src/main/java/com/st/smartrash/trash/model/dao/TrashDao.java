@@ -79,17 +79,6 @@ public class TrashDao {
 	public int selectTodayCount() {
 		return session.selectOne("trashMapper.selectTodayCount");
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	// 쓰레기 페이지 처리 리스트
 	public ArrayList<TrashSet> trashDesc(TrashSet trashSet) {
@@ -97,4 +86,9 @@ public class TrashDao {
 		return (ArrayList<TrashSet>) list;
 	}
 	
+	// 메인페이지 최근 분류한 쓰레기
+	public ArrayList<Trash> selectTrashNewTop() {
+		List<Trash> list =  session.selectList("trashMapper.selectTrashNewTop");
+		return (ArrayList<Trash>) list;
+	}
 }

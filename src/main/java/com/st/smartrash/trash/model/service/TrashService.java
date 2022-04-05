@@ -38,14 +38,9 @@ public interface TrashService {
 	// 오늘의 쓰레기 갯수
 	int selectTodayCount();
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	// 업로드 파일 분류정보 상단
 	ArrayList<TrashSet> trashDesc(TrashSet trashSet);
+	
+	// 메인 페이지 최근 분류된 쓰레기
+	ArrayList<Trash> selectTrashNewTop();
 }
