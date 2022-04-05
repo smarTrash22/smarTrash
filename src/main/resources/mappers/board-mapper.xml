@@ -131,7 +131,7 @@
 	
 	<insert id="insertReply1" parameterType="Board">
 	<![CDATA[
-			INSERT INTO T_BOARD VALUES(T_BN_S.NEXTVAL, #{board_no}, 1, 7, #{board_content}, NULL, DEFAULT, DEFAULT)
+			INSERT INTO T_BOARD VALUES(T_BN_S.NEXTVAL, #{board_ref}, 1, #{user_no}, #{board_content}, NULL, DEFAULT, DEFAULT)
 	]]>
 	</insert>
 	

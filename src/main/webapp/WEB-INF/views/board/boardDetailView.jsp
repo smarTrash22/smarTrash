@@ -83,42 +83,6 @@ textarea#t2 {
 }
 ;
 </style>
-<!-- <script type="text/javascript"
-	src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.0.min.js"></script>
-<script type="text/javascript">
-
-	$(function(){
-		$.ajax({
-			url: "replylist.do",
-			type: "post",
-			data:{
-				board_no:${board.board_no}
-			},
-			dataType: "json",
-			success: function(data){
-				console.log("success : " + data);  // Object로 받아짐
-				
-				// object => string으로 바꿈
-				var jsonStr = JSON.stringify(data);
-				
-				// string => json 객체로 바꿈
-				var json = JSON.parse(jsonStr);
-				
-				var values = "test22";
-				for(var i in json.list){  // i(인덱스) 변수가 자동으로 1씩 증가 처리됨
-					values += "<p>" + json.list[i].board_content
-							+ "</p>";
-				}  // for in
-				
-				$("#replylist").html($("#replylist").html() + values);
-			},
-			error: function(jqXHR, textstatus, errorthrown){
-				console.log("error : " + jqXHR + ", " + textstatus + ", " + errorthrown);
-			}
-		});
-	});
-	
-</script> -->
 </head>
 <body class="d-flex flex-column">
 	<main class="flex-shrink-0">
@@ -167,11 +131,16 @@ textarea#t2 {
 						</c:forTokens>
 					</b></td>
 					<td align="right" class="td1" colspan="3">
+					<c:if test="${ board.user_no eq loginUser.user_no }">
 						<button type="button" class="btn btn-secondary">수정</button>&nbsp;
-						<button type="button" class="btn btn-danger">삭제</button>
+						<button type="button" class="btn btn-danger">삭제</button>&nbsp;
+					</c:if>
+					<c:if test="${ loginUser.user_admin == 'Y' }">
+						<button type="button" class="btn btn-danger">삭제</button>&nbsp;
+					</c:if>
+						<button class="btn btn-primary" type="button" onclick="location.href='boardlist.do?page=${ currentPage }'">돌아가기</button>
 					</td>
-					<!-- <td></td>
-					<td></td> -->
+						
 				</tr>
 			</table>
 		</div>
@@ -191,45 +160,45 @@ textarea#t2 {
 				<tr><td colspan="4" height="9"></td></tr>
 				<tr>
 				<c:forEach items="${ requestScope.list }" var="b"  varStatus="status">
-				<tr>
-					<td width="10"></td>
-					<td colspan="3">
-						<span style="font-weight:900; font-size:17px;">${b.user_name}</span>&nbsp;&nbsp;
-						<span style="opacity:0.5; font-size:13px;"><fmt:formatDate
-							value="${ b.board_date }" type="date"
-							pattern="yyyy-MM-dd kk:mm:ss" /></span>
-					</td>
-				</tr>
-				<tr><td colspan="4" height="10"></td></tr>
-				<tr>
-					<td></td><td colspan="3" width="500" style="font-size:15px">${ b.board_content }</td>
-				</tr>
-				<tr>
-					<td width="20"></td>
-					<td colspan="3"><div align="right">
-					<a href="">수정하기</a>&nbsp; <a href="">삭제하기</a> &nbsp;<a href="">댓글달기</a>&nbsp;
-					</div>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="4"><div align="center" id="line4"></div></td>
-				</tr>
+					<tr>
+						<td width="10"></td>
+						<td colspan="3">
+							<span style="font-weight:900; font-size:17px;">${b.user_name}</span>&nbsp;&nbsp;
+							<span style="opacity:0.5; font-size:13px;"><fmt:formatDate
+								value="${ b.board_date }" type="date"
+								pattern="yyyy-MM-dd kk:mm:ss" /></span>
+						</td>
+					</tr>
+					<tr><td colspan="4" height="10"></td></tr>
+					<tr>
+						<td></td><td colspan="3" width="500" style="font-size:15px">${ b.board_content }</td>
+					</tr>
+					<tr>
+						<td width="20"></td>
+						<td colspan="3"><div align="right">
+						<c:if test="${ b.user_no eq loginUser.user_no }">
+							<a href="">수정하기</a>&nbsp; <a href="">삭제하기</a> &nbsp;
+						</c:if>
+							<a href="">댓글달기(대댓글 아직 미구현)</a>&nbsp;
+						</div>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4"><div align="center" id="line4"></div></td>
+					</tr>
 				</c:forEach>
 				<tr><td colspan="4" height="16"></td></tr>
 				<tr>
 					<td colspan="4" width="770">
-					<div align="center" action="breply.do" method="post">
-						<textarea id="t2" maxlength="150" placeholder="댓글을입력하세요"></textarea>
-							<button type="button" class="btn btn-primary"
-								style="position: relative; top: -76px;">등록</button>
-						<!--  <form>
+					<div align="center">
+						<form action="breply.do" method="post">
+							<input type="hidden" name="board_ref" value="${ board.board_no }">
+							<input type="hidden" name="user_no" value="${ loginUser.user_no }">
+							<input type="hidden" name="page" value="${ currentPage }">
 							<textarea name="board_content" id="t2" maxlength="150" placeholder="댓글을입력하세요"></textarea>
-							<input type="hidden" name="board_ref" value="${ board_no }">
-							<input type="hidden" name="trash_no" value="${ trash_no }">
-							<input type="text" name="board_writer" readonly value="${ loginMember.userid }" />
 							<button type="submit" class="btn btn-primary"
 								style="position: relative; top: -76px;">등록</button>
-						</form> -->
+						</form> 
 					</td>
 					</div>
 				</tr>

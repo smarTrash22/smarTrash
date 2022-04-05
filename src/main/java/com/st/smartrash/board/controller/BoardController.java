@@ -124,6 +124,22 @@ public class BoardController {
 			return mv;
 		}
 		
+		@RequestMapping(value="breply.do", method=RequestMethod.POST)
+		public String replyInsertMethod(Board reply, @RequestParam("board_ref") int board_ref, 
+				@RequestParam("user_no") int user_no, @RequestParam("page") int page,
+				@RequestParam("board_content") String board_content, Model model) {
+			//해당 댓글에 대한 원글 조회
+			reply.setBoard_ref(board_ref);
+			reply.setBoard_content(board_content);
+			reply.setUser_no(user_no);
+			
+			if(boardService.insertReply(reply)>0) {
+				return "redirect:bdetail.do?board_no="+board_ref+"&page="+page;
+			}else {
+				model.addAttribute("message", reply.getBoard_ref()+"번 글에 대한 댓글 등록 실패");
+				return "common/error";
+			}
+		}
 		
 		
 	
