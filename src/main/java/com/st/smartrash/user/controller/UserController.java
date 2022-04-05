@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.st.smartrash.board.model.vo.Board;
+import com.st.smartrash.common.Paging;
 import com.st.smartrash.notice.model.vo.Notice;
 import com.st.smartrash.trash.model.vo.Trash;
 import com.st.smartrash.user.model.service.UserService;
@@ -163,18 +164,21 @@ public class UserController {
 	}
 
 	@RequestMapping(value="udel.do")
-	public String userDeleteMethod(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		User user = (User)session.getAttribute("loginUser");
-		System.out.println("여기는 udel.do, 받은 세션user : " + user);
-		
-		if(userService.deleteUser(user.getUser_no()) > 0) {
+	public String userDeleteMethod(HttpServletRequest request, @RequestParam(value="user_email", required=false) String user_email) {
+		User user;
+		if(user_email != null) {
+			System.out.println("여기는 udel.do, 관리자가 탈퇴요청 : " + user_email);
+			userService.deleteUser(user_email);
+			return "user/managerPage";
+		}else {
+			HttpSession session = request.getSession();
+			user = (User)session.getAttribute("loginUser");
+			System.out.println("여기는 udel.do, 마이페이지 탈퇴 : " + user);
+			userService.deleteUser(user.getUser_email());
 			session.invalidate();
 			return "common/main";
-		}else {
-			System.out.println("탈퇴 실패");
-			return "user/myPage";
 		}
+
 	}
 	
 	@RequestMapping(value="latest5.do", method=RequestMethod.POST)
@@ -277,21 +281,93 @@ public class UserController {
 		}
 	}
 	
-	@RequestMapping("manager.do")
+	@RequestMapping("manager1.do")
 	public ModelAndView managerPageMethod(HttpServletRequest request, ModelAndView mv) {
 		HttpSession session = request.getSession();
 
 		User user = (User)session.getAttribute("loginUser");
 		System.out.println("여기는 manager.do : " + user);
 		
+		ArrayList<User> ulist = userService.selectUserList();
 		ArrayList<Trash> tlist = userService.selectTodayTrash();
 		ArrayList<Trash> rlist = userService.selectReportTrash();
 		ArrayList<Trash> trlist = userService.selectTodayReportTrash();
 		
+		System.out.println("여기는 manager.do : " + rlist);
+		
 		mv.addObject("user", user);
+		mv.addObject("ulist", ulist);
+		mv.addObject("tlist", tlist);
+		mv.addObject("rlist", rlist);
+		mv.addObject("trlist", trlist);
 		mv.setViewName("user/managerPage");
 
 		return mv;
 		
+	}
+	
+	@RequestMapping("manager.do")
+	public ModelAndView boardListMethod(@RequestParam(name="page", required=false) String page,
+										ModelAndView mv) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		//페이징 처리 -- 별도의 클래스로 작성해서 사용해도 됨 ------------------------------------------------------------------------------------
+		int limit = 9;  //한 페이지에 출력할 목록 갯수
+		//페이지 수 계산을 위해 총 목록갯수 조회
+		int listCount = userService.selectListCount();
+		//페이지 수 계산
+		//주의 : 목록이 11개이면, 페이지 수는 2가 됨 (나머지 목록 1개도 페이지가 1개 필요함)
+		int maxPage = (int)((double)listCount / limit + 0.9);
+		//현재 페이지가 포함된 페이지 그룹의 시작값 지정 (뷰 아래쪽에 표시할 페이지 수를 10개씩 한 경우)
+		int startPage = (int)((double)currentPage / 10 + 0.9);
+		//현재 페이지가 포함된 페이지그룹의 끝 값
+		int endPage = startPage + 10 - 1;
+		
+		if(maxPage < endPage) {
+			endPage = maxPage;
+		}
+		
+		//쿼리문에 전달할 현재 페이지에 출력할 목록의 첫 행과 끝 행 객체 처리
+		int startRow = (currentPage - 1) * limit + 1;
+		int endRow = startRow + limit - 1;
+		Paging paging = new Paging(startRow, endRow);
+		
+		//별도의 클래스 작성 끝 ---------------------------------------------------------------------------------------------------------
+		
+		//서비스 메소드 실행하고 결과 받기
+		ArrayList<Board> list = userService.selectReportList(paging);
+		
+		if(list != null && list.size() > 0) {
+			mv.addObject("list", list);
+			mv.addObject("listCount", listCount);
+			mv.addObject("maxPage", maxPage);
+			mv.addObject("currentPage", currentPage);
+			mv.addObject("startPage", startPage);
+			mv.addObject("endPage", endPage);
+			mv.addObject("limit", limit);
+			
+			mv.setViewName("user/boardListView");
+		}else {
+			mv.addObject("message", currentPage + "페이지 목록 조회 실패.");
+			mv.setViewName("common/error");
+		}
+		
+		ArrayList<User> ulist = userService.selectUserList();
+		ArrayList<Trash> tlist = userService.selectTodayTrash();
+		ArrayList<Trash> rlist = userService.selectReportTrash();
+		ArrayList<Trash> trlist = userService.selectTodayReportTrash();
+		
+		System.out.println("여기는 manager.do : " + rlist);
+
+		mv.addObject("ulist", ulist);
+		mv.addObject("tlist", tlist);
+		mv.addObject("rlist", rlist);
+		mv.addObject("trlist", trlist);
+		mv.setViewName("user/managerPage");
+		
+		return mv;
 	}
 }

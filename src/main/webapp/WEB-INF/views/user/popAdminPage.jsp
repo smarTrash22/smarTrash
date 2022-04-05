@@ -60,7 +60,7 @@ button:active {
 <title>닉네임 수정</title>
 </head>
 <body>
-<form id="f" action="admin.do" method="post" onsubmit="return validate();">
+<form id="f" action="admin.do" method="post">
  	<input type="hidden" name="user_admin" value="Y">
 	<table align="center" width="400" border="1" cellspacing="0" cellpadding="5">
 		<tr><th>관리자 비밀번호 입력 </th><td><input type="password" id="managerPwd"></td></tr> 
