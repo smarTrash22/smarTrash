@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.st.smartrash.common.Paging;
 import com.st.smartrash.common.SearchDate;
+import com.st.smartrash.common.TrashSet;
 import com.st.smartrash.trash.model.dao.TrashDao;
 import com.st.smartrash.trash.model.vo.Trash;
 
@@ -75,5 +76,17 @@ public class TrashServiceImpl implements TrashService {
 	@Override
 	public int selectTodayCount() {
 		return trashDao.selectListCount();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public ArrayList<TrashSet> trashDesc(TrashSet trashSet) {
+		return trashDao.trashDesc(trashSet);
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.st.smartrash.common.Paging;
 import com.st.smartrash.common.SearchDate;
+import com.st.smartrash.common.TrashSet;
 import com.st.smartrash.trash.model.vo.Trash;
 
 @Repository("trashDao")
@@ -75,7 +76,25 @@ public class TrashDao {
 	}
 
 	// 오늘의 쓰레기 갯수
-		public int selectTodayCount() {
-			return session.selectOne("trashMapper.selectTodayCount");
-		}
+	public int selectTodayCount() {
+		return session.selectOne("trashMapper.selectTodayCount");
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 쓰레기 페이지 처리 리스트
+	public ArrayList<TrashSet> trashDesc(TrashSet trashSet) {
+		List<TrashSet> list = session.selectList("trashMapper.trashDesc", trashSet);
+		return (ArrayList<TrashSet>) list;
+	}
+	
 }

@@ -65,9 +65,8 @@
 	<hr>
 	<h3 align="center">
 		<b>쓰레기 목록 : 총 ${ list.size() }개</b>
-
 	</h3>
-
+	<br>
 	<div align="center">
 		<h5>
 			<b>검색 항목 선택</b>
@@ -106,15 +105,18 @@
 				type="submit" value="검색">
 		</form>
 	</div>
-
+	<br>
 	<br>
 	<div class="button" align="center">
-		<input type="button" value="목록"
-			onclick="javascript:location.href='tlist.do';" /><br />
-
+		<input type="button" value="목록" align="center"
+			onclick="javascript:location.href='tlist.do';" />&nbsp;&nbsp;
+		<div class="button" name="insertbutton" style="display: inline-block">
+			<input type="button" value="쓰레기 추가"
+				onclick="javascript:location.href='moveInsertPage.do';" />
+		</div>
 	</div>
-
 	<br>
+
 	<table align="center" border="1" width="900" cellspacing="0">
 		<tr>
 			<th>번호</th>
@@ -206,8 +208,7 @@
 		</c:if>
 
 
-	</div>
-	<hr>
-	<c:import url="/WEB-INF/views/common/foot.jsp" />
+		<hr>
+		<c:import url="/WEB-INF/views/common/foot.jsp" />
 </body>
 </html>

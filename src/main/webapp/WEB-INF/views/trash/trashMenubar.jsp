@@ -70,10 +70,7 @@
 				href="${ pageContext.servletContext.contextPath }/tlist.do">전체
 					쓰레기 조회</a></li>
 			<li><a
-				href="${ pageContext.servletContext.contextPath }/moveInsertPage.do">쓰레기
-					추가</a></li>
-			<li><a
-				href="${ pageContext.servletContext.contextPath }/trashDesc.do">업로드파일
+				href="${ pageContext.servletContext.contextPath }/moveDescPage.do">업로드파일
 					분류정보</a></li>
 		</ul>
 	</c:if>
@@ -85,10 +82,7 @@
 				href="${ pageContext.servletContext.contextPath }/tlist.do">전체
 					쓰레기 조회</a></li>
 			<li><a
-				href="${ pageContext.servletContext.contextPath }/moveInsertPage.do">쓰레기
-					추가</a></li>
-			<li><a
-				href="${ pageContext.servletContext.contextPath }/trashDesc.do">업로드파일
+				href="${ pageContext.servletContext.contextPath }/moveDescPage.do">업로드파일
 					분류정보</a></li>
 		</ul>
 	</c:if>
@@ -102,10 +96,7 @@
 				href="${ pageContext.servletContext.contextPath }/tlist.do">전체
 					쓰레기 조회</a></li>
 			<li><a
-				href="${ pageContext.servletContext.contextPath }/moveInsertPage.do">쓰레기
-					추가</a></li>
-			<li><a
-				href="${ pageContext.servletContext.contextPath }/trashDesc.do">업로드파일
+				href="${ pageContext.servletContext.contextPath }/moveDescPage.do">업로드파일
 					분류정보</a></li>
 		</ul>
 	</c:if>
