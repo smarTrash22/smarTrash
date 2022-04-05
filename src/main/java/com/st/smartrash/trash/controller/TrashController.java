@@ -50,12 +50,7 @@ public class TrashController {
 	public String moveInsertPageViewForward() {
 		return "trash/trashInsert";
 	}
-
-	@RequestMapping(value = "moveDescPage.do")
-	public String moveDescPageViewForward() {
-		return "trash/trashDesc";
-	}
-
+	
 	// 쓰레기 등록
 	@RequestMapping(value = "trashInsert.do", method = RequestMethod.POST)
 	public String trashInsertMethod(Trash trash, HttpServletRequest request, Model model,

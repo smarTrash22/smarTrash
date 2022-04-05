@@ -8,4 +8,5 @@ public interface CategoryService {
 	ArrayList<Category> selectList();
 	Category selectCategory(int category_no);
 	int selectListCount();
+	Category selectSearchName(String category_name);
 }

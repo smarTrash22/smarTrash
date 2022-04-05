@@ -27,4 +27,8 @@ public class CategoryDao {
 	public int selectListCount() {
 		return session.selectOne("categoryMapper.getListCount");
 	}
+	
+	public Category selectSearchName(String category_name) {
+		return session.selectOne("categoryMapper.selectSearchName", category_name);
+	}
 }

@@ -2,16 +2,15 @@ package com.st.smartrash;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -26,8 +25,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.st.smartrash.category.model.service.CategoryService;
+import com.st.smartrash.category.model.vo.Category;
+import com.st.smartrash.common.CreateCSV;
+import com.st.smartrash.notice.model.vo.Notice;
 import com.st.smartrash.trash.model.service.TrashService;
 import com.st.smartrash.trash.model.vo.Trash;
+import com.st.smartrash.user.model.vo.User;
 
 
 /**
@@ -37,9 +41,12 @@ import com.st.smartrash.trash.model.vo.Trash;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
+
 	@Inject
 	private TrashService trashService;
+	
+	@Inject
+	private CategoryService categoryService;
 	
 	@RequestMapping(value = "main.do", method = RequestMethod.GET)
 	public String mainViewForward(Model model) {
@@ -49,7 +56,7 @@ public class HomeController {
 		model.addAttribute("category_list", category_list);
 		return "common/main";
 	}
-
+	
 	// 부트스트랩 기본 페이지
 	@RequestMapping(value = "about.do", method = RequestMethod.GET)
 	public String aboutViewForward() {
@@ -118,38 +125,22 @@ public class HomeController {
 				
 				job.put("file", renameFileName);
 				
-				String testPath = request.getSession().getServletContext().getRealPath("resources/python/");
-				String filePath = request.getSession().getServletContext().getRealPath("resources/trash_upfiles/") + renameFileName;
-				
-				System.out.println(testPath);
-				System.out.println(filePath);
-				
-				try (PrintWriter writer = new PrintWriter(new File(testPath + "csv\\test.csv"))) {
-					
-					StringBuilder sb = new StringBuilder();
-					sb.append("testPath");
-					sb.append(',');
-					sb.append("filePath");
-					sb.append('\n');
-					
-					sb.append(testPath);
-					sb.append(',');
-					sb.append(filePath);
-					sb.append('\n');
-					
-					writer.write(sb.toString());
-					writer.close();
-		        } catch (FileNotFoundException e) {
-		        	System.out.println(e.getMessage());
-		        }
-				
 				// 파일 객체 만들기
 				File originFile = new File(savePath + "\\" + fileName);
 				File renameFile = new File(savePath + "\\" + renameFileName);
 				
 				// 업로드 파일 저장시키고, 바로 이름바꾸기 실행함
 				uploadfile.transferTo(renameFile);
+				fileName = renameFileName;
 			}
+			
+			String testPath = request.getSession().getServletContext().getRealPath("resources/python/");
+			String filePath = request.getSession().getServletContext().getRealPath("resources/trash_upfiles/") + fileName;
+			String csvPath = request.getSession().getServletContext().getRealPath("resources/python/csv/") + "test.csv";
+	        
+			CreateCSV cc = new CreateCSV();
+			cc.writeCSV(csvPath, testPath, filePath);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("message", "전송파일 저장 실패");
@@ -200,13 +191,37 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="dataPush.do")
-	public ModelAndView dataPush(@RequestParam(name="file") String file, @RequestParam(name="category") String category, HttpServletRequest request, ModelAndView mv) {
-		System.out.println("file : " + file);
-		System.out.println("category : " + category);
-		mv.addObject("file", file);
-		mv.addObject("category", category);
-		mv.setViewName("trash/trashDesc");
-		return mv;
+	public ModelAndView dataPush(@RequestParam(name="file") String file, @RequestParam(name="category") String category_name, HttpServletRequest request, ModelAndView mv) {
+		Category category = categoryService.selectSearchName(category_name);
+		ArrayList<Category> category_list = categoryService.selectList();
+		for(Category c : category_list) {
+			System.out.println(c.toString());
+		}
+		
+		HttpSession session = request.getSession();
+		
+		if(session.getAttribute("loginUser") != null) {
+			// 로그인 했을 경우 : 회원
+			User user = (User)session.getAttribute("loginUser");
+			System.out.println(user.getUser_no());
+			Trash trash = new Trash();
+			trash.setUser_no(user.getUser_no());
+			trash.setCategory_no(category.getCategory_no());
+			trash.setTrash_path(file);
+			trashService.trashInsert(trash);
+			
+			mv.addObject("trash_path", file);
+			mv.addObject("category", category);
+			mv.addObject("category_list", category_list);
+			mv.setViewName("trash/trashDesc");
+			return mv;
+		} else {
+			// 로그인 안했을 경우 : 비회원
+			mv.addObject("trash_path", file);
+			mv.addObject("category", category);
+			mv.setViewName("trash/trashDesc");
+			return mv;
+		}
 	}
 	
 	// 배치파일로 파이썬 출력받기 쓰레드
