@@ -20,9 +20,6 @@ for line in rdr:
     testPath = line[0]
     filePath = line[1]
 
-print(testPath)
-print(filePath)
-
 f.close()
 
 model_name = "swsl_resnext50_32x4d"
@@ -56,6 +53,7 @@ device = torch.device("cpu")  # cpu
 class_path = testPath + 'dataset/'
 class_list = os.listdir(class_path)
 class_encoder = {}
+
 for i in class_list:
     class_encoder.update({class_list[class_list.index(i)]: class_list.index(i)})
 

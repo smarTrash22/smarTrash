@@ -81,34 +81,32 @@ public class BoardController {
 		}
 		return mv;
 	}
+	
 	//게시글 상세보기 처리
-		@RequestMapping("bdetail.do")
-		public ModelAndView boardDetailMethod(HttpServletRequest request, ModelAndView mv,@RequestParam("board_no") int board_no, @RequestParam(name="page", required=false) String page) {
-			int currentPage = 1;
-			if(page != null) {
-				currentPage = Integer.parseInt(page);
-			}
-			//조회수 1증가 처리
-			boardService.updateAddReadcount(board_no);
-			
-			//해당 게시글 조회
-			Board board = boardService.selectBoard(board_no);
-			if(board != null) {
-//				String path = request.getSession().getServletContext().getRealPath("resources/trash_upfiles");
-//				
-//				board.setTrash_path(path + "\\" + board.getTrash_path());
-//				System.out.println(board.getTrash_path());
-				
-				mv.addObject("board", board);
-				mv.addObject("currentPage", currentPage);
-				mv.setViewName("board/boardDetailView");
-			}else {
-				mv.addObject("message", board_no+"번 게시글 조회 실패");
-				mv.setViewName("common/error");
-			}
-			
-			return mv;
+	@RequestMapping("bdetail.do")
+	public ModelAndView boardDetailMethod(HttpServletRequest request, ModelAndView mv, @RequestParam("board_no") int board_no, @RequestParam(name="page", required=false) String page) {
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
 		}
-	
-	
+		//조회수 1증가 처리
+		boardService.updateAddReadcount(board_no);
+		
+		//해당 게시글 조회
+		Board board = boardService.selectBoard(board_no);
+		if(board != null) {
+//			String path = request.getSession().getServletContext().getRealPath("resources/trash_upfiles");
+//			
+//			board.setTrash_path(path + "\\" + board.getTrash_path());
+//			System.out.println(board.getTrash_path());
+			
+			mv.addObject("board", board);
+			mv.addObject("currentPage", currentPage);
+			mv.setViewName("board/boardDetailView");
+		}else {
+			mv.addObject("message", board_no+"번 게시글 조회 실패");
+			mv.setViewName("common/error");
+		}
+		return mv;
+	}
 }

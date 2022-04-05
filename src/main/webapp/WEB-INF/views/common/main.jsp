@@ -11,14 +11,16 @@
 		<title>SmarTrash - ${ page_title }</title>
 		<c:import url="/WEB-INF/views/common/head.jsp" />
 		<style type="text/css">
-			.drop-zone {
+			#drop-zone {
 			    outline: 10px dashed #fff ;
 			    outline-offset:-10px;  
 			    text-align: center;
 			    width: 50%;
 			    height: 300px;
+			    -webkit-text-stroke-width: 0.5px;
+			    -webkit-text-stroke-color: black;
 			}
-			.drop-zone.hover {
+			#drop-zone.hover {
 				border: 10px dashed #333;
 			}
 		</style>
@@ -26,7 +28,7 @@
 		<script type="text/javascript">
 		$(function() {
 			$image = document.getElementById("upload-file-input")
-			dropZone = document.querySelector(".drop-zone")
+			dropZone = document.querySelector("#drop-zone")
 			
 			$(dropZone)
 				.on("dragover", dragOver)
@@ -87,14 +89,14 @@
 					        "background-repeat": "no-repeat",
 					        "background-position": "center"
 					    });
-
+						
 						selectFile(files)
-
+						
 						ajaxFileUpload()
 					}else{
 						alert('이미지가 아닙니다.');
 						dropZone.innerHTML = "Drop & Click"
-		        		$('.drop-zone').css({
+		        		$('#drop-zone').css({
 					        "background-image": "none"
 					    });
 						return;
@@ -102,7 +104,6 @@
 				} else {
 					alert("ERROR")
 				}
-				
 			})
 			
 			function ajaxFileSelect() {
@@ -119,10 +120,10 @@
 					    });
 			        	return; // no file selected, or no FileReader support
 			        }
-
+			        
 			        if(/^image/.test( files[0].type)){ // only image file
 				    	ajaxFileUpload()
-
+			        	
 			            var reader = new FileReader(); // instance of the FileReader
 			            reader.readAsDataURL(files[0]); // read the local file
 			            reader.onload = function(e) {
@@ -144,21 +145,37 @@
 					    });
 						return;
 			        }
-
+			        
 			    });
 			});
-		
+			
 		    function ajaxFileUpload() {
+		    	
+				$(dropZone).html("업로드한 쓰레기사진을 분류중입니다. <br> 잠시만 기달려 주세요");
+		    	
 		    	$.ajax({
 					url: "uploadFile.do",
 					type: "POST",
 					data: new FormData($("#upload-file-form")[0]),
+					dataType: "json",
 					enctype: 'multipart/form-data',
 					processData: false,
 					contentType: false,
 					cache: false,
-					success: function () {
+					success: function (data) {
 						console.log("success");
+						var jsonStr = JSON.stringify(data);
+						var json = JSON.parse(jsonStr);
+						
+						var values = "";
+						for(var i in json.list){  // i(인덱스) 변수가 자동으로 1씩 증가 처리됨
+							values += "<input type='text' name='file' value='" + json.list[i].file + "'  style='display:none;' />"
+									+ "<input type='text' name='category' value='" + json.list[i].category + "'  style='display:none;' />";
+							console.log("file : " + json.list[i].file);
+							console.log("category : " + json.list[i].category);
+						}
+						$("#data-push-form").html($("#data-push-form").html() + values);
+						jQuery("#data-push-submit").click();
 					},
 					error: function () {
 						console.log("error");
@@ -180,25 +197,30 @@
 	                        <h1 class="display-5 fw-bolder text-white mb-2 text-center">SmarTrash</h1>
 	                    </div>
                     </div>
-	                    <div class="row align-items-center justify-content-center" align="center">
-							<div class="my-2">
-								<form id="upload-file-form">
-									<div class="drop-zone text-white d-flex align-items-center justify-content-center user-select-none">Drop & Click</div>
-									<input id="upload-file-input" type="file" name="uploadfile" style="display:none;" />
-								</form>
-							</div>
-	                    </div>
-	                    <div class="row align-items-center justify-content-center">
-							<div class="my-4 text-center">
-							</div>
-	                    </div>
+                    <div class="row align-items-center justify-content-center" align="center">
+						<div class="my-2">
+							<form id="upload-file-form">
+								<div id=drop-zone class="text-white d-flex align-items-center justify-content-center user-select-none">Drop & Click</div>
+								<input id="upload-file-input" type="file" name="uploadfile" style="display:none;" />
+								<input type="submit" id="upload-file-submit" name="submit" style="display:none;" />
+							</form>
+							
+							<form id="data-push-form" action="dataPush.do" method="post">
+								<input type="submit" id="data-push-submit" name="submit" style="display:none;" />
+							</form>
+						</div>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+						<div class="my-4 text-center">
+						</div>
+                    </div>
                 </div>
             </header>
             <!-- Features section-->
             <section class="py-5" id="features">
                 <div class="container px-5 my-5">
                     <div class="row gx-5">
-                        <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0">A better way to start building.</h2></div>
+                        <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0">${ line }</h2></div>
                         <div class="col-lg-8">
                             <div class="row gx-5 row-cols-1 row-cols-md-2">
                                 <div class="col mb-5 h-100">
