@@ -27,8 +27,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.st.smartrash.category.model.service.CategoryService;
 import com.st.smartrash.category.model.vo.Category;
+import com.st.smartrash.common.CompressZip;
 import com.st.smartrash.common.CreateCSV;
-import com.st.smartrash.notice.model.vo.Notice;
 import com.st.smartrash.trash.model.service.TrashService;
 import com.st.smartrash.trash.model.vo.Trash;
 import com.st.smartrash.user.model.vo.User;
@@ -235,4 +235,37 @@ public class HomeController {
 //	        }
 //	    }).start();
 //	}
+	
+	@RequestMapping(value="zipdown.do")
+	public ModelAndView zipdown(HttpServletRequest request, ModelAndView mv) {
+		// 압축 파일 위치와 압축된 파일
+		// String zipPath = "G:/ZIP_TEST/";
+		// String zipFile = "jsmpeg-player-master.zip";
+
+		// 압축을 해제할 위치, 압축할 파일이름
+		String unZipPath = "G:/ZIP_TEST/TEST/";
+		String unZipFile = "jsmpeg-player";
+
+//		System.out.println("--------- 압축 해제 ---------");
+//		UnZip unZip = new UnZip();
+//		// 압축 해제 
+//		if (!unZip.unZip(zipPath, zipFile, unZipPath)) {
+//			System.out.println("압축 해제 실패");
+//		}
+
+		System.out.println("--------- 압축 하기 ---------");
+		CompressZip compressZip = new CompressZip();
+
+		// 압축 하기
+		try {
+			if (!compressZip.compress("G:/ZIP_TEST/TEST/jsmpeg-player-master", unZipPath, unZipFile)) {
+				System.out.println("압축 실패");
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		
+		mv.setViewName("user/zipDownload");
+		return mv;
+	}
 }
