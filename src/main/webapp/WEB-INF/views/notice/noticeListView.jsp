@@ -15,7 +15,7 @@
 <head>
 <meta charset="UTF-8">
 <title>SmarTrash - ${ page_title }</title>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	/* function showWriteForm(){
 	 location.href = "${ pageContext.servletContext.contextPath }/nwform.do";
 	 } */
@@ -34,7 +34,7 @@ function checkboxArr() {
         }
     });
 }
-</script>
+</script> -->
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style type="text/css">
 ul {
