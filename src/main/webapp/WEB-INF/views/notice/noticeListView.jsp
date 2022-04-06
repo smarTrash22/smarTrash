@@ -19,39 +19,21 @@
 	/* function showWriteForm(){
 	 location.href = "${ pageContext.servletContext.contextPath }/nwform.do";
 	 } */
-	 function NoticeDelete() {
-		if(confirm("정말로 삭제하시겠습니까?")){
-			
-		}
-	}
-	 function deleteReport(){
-	        var cnt = $("input[name='reportChkBxRow']:checked").length;
-	        var arr = new Array();
-	        $("input[name='reportChkBxRow']:checked").each(function() {
-	            arr.push($(this).attr('id'));
-	        });
-	        if(cnt == 0){
-	            alert("선택된 글이 없습니다.");
-	        }
-	        else{
-	            $.ajax = {
-	                type: "POST"
-	                url: "OOOO.do"
-	                data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
-	                dataType:"json",
-	                success: function(jdata){
-	                    if(jdata != 1) {
-	                        alert("삭제 오류");
-	                    }
-	                    else{
-	                        alert("삭제 성공");
-	                    }
-	                },
-	                error: function(){alert("서버통신 오류");}
-	            };
-	        }
-	    }
-
+function checkboxArr() {
+    var checkArr = [];     // 배열 초기화
+    $("input[name='test_check']:checked").each(function(i)) {
+        checkArr.push($(this).val());     // 체크된 것만 값을 뽑아서 배열에 push
+    }
+ 
+    $.ajax({
+        url: 'ndel.do'
+        , type: 'post'
+        , dataType: 'text'
+        , data: {
+            valueArrTest: checkArr
+        }
+    });
+}
 </script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style type="text/css">
@@ -111,12 +93,7 @@ a {
 						<td width="3%">
 						<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
 						<div class="form-check">
-						  <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled">
-						</div>
-						</c:if>
-						<c:if test="${ empty sessionScope.loginUser or sessionScope.loginUser.user_admin eq 'N' }">
-						<div class="form-check">
-						   <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled>
+						  <input type="hidden" name="test_check" class="form-check-input" type="checkbox" value="">
 						</div>
 						</c:if>
 						</td>
