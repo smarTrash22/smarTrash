@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.st.smartrash.board.model.service.BoardService;
 import com.st.smartrash.board.model.vo.Board;
 import com.st.smartrash.common.Paging;
 import com.st.smartrash.notice.model.vo.Notice;
@@ -36,6 +37,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private BoardService boardService;
 	
 	@Autowired // 설정된 xml에서 가져와 쓰겠다 선언
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
@@ -317,7 +321,7 @@ public class UserController {
 		//페이징 처리 -- 별도의 클래스로 작성해서 사용해도 됨 ------------------------------------------------------------------------------------
 		int limit = 9;  //한 페이지에 출력할 목록 갯수
 		//페이지 수 계산을 위해 총 목록갯수 조회
-		int listCount = userService.selectListCount();
+		int listCount = userService.selectReportListCount();
 		//페이지 수 계산
 		//주의 : 목록이 11개이면, 페이지 수는 2가 됨 (나머지 목록 1개도 페이지가 1개 필요함)
 		int maxPage = (int)((double)listCount / limit + 0.9);
@@ -369,5 +373,48 @@ public class UserController {
 		mv.setViewName("user/managerPage");
 		
 		return mv;
+	}
+	
+	@RequestMapping("mbdetail.do")
+	public ModelAndView boardDetailMethod(HttpServletRequest request, ModelAndView mv,@RequestParam("board_no") int board_no) {
+		
+		//댓글 리스트 저장-------
+		ArrayList<Board> list = boardService.selectReplyList(board_no);
+		int listCount = boardService.selectReplyCount(board_no);
+		//해당 게시글 조회
+		Board board = boardService.selectBoard(board_no);
+		if(board != null) {
+//			String path = request.getSession().getServletContext().getRealPath("resources/trash_upfiles");
+//			
+//			board.setTrash_path(path + "\\" + board.getTrash_path());
+//			System.out.println(board.getTrash_path());
+			
+			//댓글 리스트보내기
+			mv.addObject("list", list);
+			mv.addObject("listCount", listCount);
+			mv.addObject("board", board);
+			mv.setViewName("board/boardDetailView");
+		}else {
+			mv.addObject("message", board_no+"번 게시글 조회 실패");
+			mv.setViewName("common/error");
+		}
+		
+		return mv;
+	}
+
+	//로그인 제한/가능 변경 처리용
+	@RequestMapping("loginok.do")
+	public String changeLoginOKMethod(User user, Model model, HttpServletRequest request) {
+		logger.info("loginok.do : " + user.getUser_email() + ", " + user.getLogin_ok());
+		
+		if(userService.updateLoginOK(user) > 0) {
+			String referer = request.getHeader("Referer");
+			return "redirect:"+ referer;
+//			return "redirect:manager.do";
+		}else {
+			model.addAttribute("message", "로그인 제한/허용 처리 오류 발생!");
+			return "common/error";
+		}
+		
 	}
 }

@@ -10,16 +10,18 @@ public class User implements java.io.Serializable {
 	private String user_email;
 	private String user_admin;
 	private Date user_date;
+	private String login_ok;
 	
 	public User() {}
 
-	public User(int user_no, String user_name, String user_email, String user_admin, Date user_date) {
+	public User(int user_no, String user_name, String user_email, String user_admin, Date user_date, String login_ok) {
 		super();
 		this.user_no = user_no;
 		this.user_name = user_name;
 		this.user_email = user_email;
-		this.user_date = user_date;
 		this.user_admin = user_admin;
+		this.user_date = user_date;
+		this.login_ok = login_ok;
 	}
 
 	public int getUser_no() {
@@ -46,14 +48,6 @@ public class User implements java.io.Serializable {
 		this.user_email = user_email;
 	}
 
-	public Date getUser_date() {
-		return user_date;
-	}
-
-	public void setUser_date(Date user_date) {
-		this.user_date = user_date;
-	}
-
 	public String getUser_admin() {
 		return user_admin;
 	}
@@ -62,14 +56,31 @@ public class User implements java.io.Serializable {
 		this.user_admin = user_admin;
 	}
 
+	public Date getUser_date() {
+		return user_date;
+	}
+
+	public void setUser_date(Date user_date) {
+		this.user_date = user_date;
+	}
+
+	public String getLogin_ok() {
+		return login_ok;
+	}
+
+	public void setLogin_ok(String login_ok) {
+		this.login_ok = login_ok;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
 	@Override
 	public String toString() {
-		return "User [user_no=" + user_no + ", user_name=" + user_name + ", user_email=" + user_email + ", user_date="
-				+ user_date + ", user_admin=" + user_admin + "]";
+		return "User [user_no=" + user_no + ", user_name=" + user_name + ", user_email=" + user_email + ", user_admin="
+				+ user_admin + ", user_date=" + user_date + ", login_ok=" + login_ok + "]";
 	}
+
 	
 }
