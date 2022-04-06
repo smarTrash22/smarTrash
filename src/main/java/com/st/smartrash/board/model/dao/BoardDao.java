@@ -53,14 +53,23 @@ public class BoardDao {
 	}
 
 	public int updateOrigin(Board board) {
-		return 0;
+		return session.update("boardMapper.updateOrigin",board);
 	}
 
 	public int updateReply(Board reply) {
 		return 0;
 	}
 
-	public int deleteBoard(Board board) {
-		return 0;
+	public int deleteBoard(int board_no) {
+		return session.delete("boardMapper.deleteBoard", board_no);
+	}
+
+	public int deleteReply(Board board) {
+		return session.delete("boardMapper.deleteReply", board);
+	}
+
+	public ArrayList<Board> selectSearchHashtag(String hashtag) {
+		List<Board> list = session.selectList("boardMapper.selectSearchHashtag",hashtag);
+		return (ArrayList<Board>)list;
 	}
 }

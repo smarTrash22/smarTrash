@@ -13,6 +13,7 @@
 <title>SmarTrash - ${ page_title }</title>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style>
+
 div table {
 	border: 0px solid #444444;
 	border-collapse: collapse;
@@ -51,8 +52,8 @@ img#photo {
 }
 
 textarea#t2 {
-	width: 90%;
-	height: 100px;
+	width: 95%;
+	height: 50%;
 	padding: 10px;
 	box-sizing: border-box;
 	border: solid 2px #1E90FF;
@@ -100,7 +101,10 @@ textarea#t2 {
 			</div>
 		</div>
 		<!-- 상단게시물 영역 -->
-		<div>
+		<form action="boardupdate.do" method="post">
+		<input type="hidden" name="board_no" value="${ board.board_no }"/>
+		<input type="hidden" name="page" value="${ currentPage }"/>
+		
 			<table align="center" border="1" cellspacing="0" style = "word-break: break-all">
 				<tr>
 					<td class="td1" rowspan="3">
@@ -119,10 +123,8 @@ textarea#t2 {
 					<td colspan="3"><div id="line"></div></td>
 				</tr>
 				<tr>
-					<!-- <td></td> -->
-					<td valign="top" class="td1" width="500" colspan="3">${ board.board_content }</td>
-					<!-- <td></td>
-					<td></td> -->
+					<td valign="top" class="td1" width="500" colspan="3"><textarea  rows="10" id="t2" name="board_content" placeholder="${ board.board_content }"></textarea></td>
+					
 				</tr>
 				<tr>
 					<td class="td1"><b>&nbsp; <c:forTokens var="hash"
@@ -131,36 +133,15 @@ textarea#t2 {
 						</c:forTokens>
 					</b></td>
 					<td align="right" class="td1" colspan="3">
-					<c:if test="${ board.user_no eq loginUser.user_no }">
-						<c:url var="bup" value="bupdate.do">
-							<c:param name="board_no" value="${ board.board_no }"/>
-							<c:param name="page" value="${ currentPage }"/>
-						</c:url>
-						<button type="button" class="btn btn-secondary" onclick="location.href='${bup}'">수정</button>&nbsp;
-						<c:url var="bdt" value="boarddelete.do">
-							<c:param name="board_no" value="${ board.board_no }"/>
-							<c:param name="page" value="${ currentPage }"/>
-						</c:url>
-						<button class="btn btn-danger" type="button" onclick="location.href='${bdt}'">삭제</button>&nbsp;
-					</c:if>
-					<c:if test="${ loginUser.user_admin == 'Y' }">
-						<c:url var="bup" value="bupdate.do">
-							<c:param name="board_no" value="${ board.board_no }"/>
-							<c:param name="page" value="${ currentPage }"/>
-						</c:url>
-						<button type="button" class="btn btn-secondary" onclick="location.href='${bup}'">수정</button>&nbsp;
-						<c:url var="bdt" value="boarddelete.do">
-							<c:param name="board_no" value="${ board.board_no }"/>
-							<c:param name="page" value="${ currentPage }"/>
-						</c:url>
-						<button class="btn btn-danger" type="button" onclick="location.href='${bdt}'">삭제</button>&nbsp;
-					</c:if>
-						<button class="btn btn-primary" type="button" onclick="location.href='boardlist.do?page=${ currentPage }'">돌아가기</button>
+						
+						<button type="submit" class="btn btn-primary">저장</button>&nbsp;
+						<button class="btn btn-secondary" type="button" onclick="location.href='bdetail.do?board_no=${ board.board_no }&page=${ currentPage }'">취소</button>
 					</td>
 						
 				</tr>
 			</table>
-		</div>
+			</form>
+		
 		<!-- 댓글 영역 -->
 		<br>
 		 <div>
@@ -193,16 +174,7 @@ textarea#t2 {
 					<tr>
 						<td width="20"></td>
 						<td colspan="3"><div align="right">
-						<c:if test="${ b.user_no eq loginUser.user_no }">
-							<!-- <a href="">수정하기</a>&nbsp; --> 
-							<c:url var="rdt" value="replydelete.do">
-								<c:param name="board_ref" value="${ b.board_ref }"/>
-								<c:param name="board_no" value="${ b.board_no }"/>
-								<c:param name="page" value="${ currentPage }"/>
-							</c:url>
-							<a href="${ rdt }">삭제하기</a> &nbsp;
-						</c:if>
-							<a href="">댓글달기</a>&nbsp;
+						
 						</div>
 						</td>
 					</tr>
@@ -213,18 +185,7 @@ textarea#t2 {
 				<tr><td colspan="4" height="16"></td></tr>
 				<tr>
 					<td colspan="4" width="770">
-					<div align="center">
-					<c:if test="${ !empty loginUser.user_no }">
-						<form action="breply.do" method="post">
-							<input type="hidden" name="board_ref" value="${ board.board_no }">
-							<input type="hidden" name="user_no" value="${ loginUser.user_no }">
-							<input type="hidden" name="page" value="${ currentPage }">
-							<textarea name="board_content" id="t2" maxlength="150" placeholder="댓글을입력하세요"></textarea>
-							<button type="submit" class="btn btn-primary"
-								style="position: relative; top: -76px;">등록</button>
-						</form> 
-					</c:if>	
-					</div>
+					
 					</td>
 					
 				</tr>
