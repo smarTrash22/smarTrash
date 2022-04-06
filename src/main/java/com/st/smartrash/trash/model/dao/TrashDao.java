@@ -62,11 +62,21 @@ public class TrashDao {
 		List<Trash> list = session.selectList("trashMapper.searchDate", date);
 		return (ArrayList<Trash>) list;
 	}
+	
+	// 쓰레기 파일 이름으로 검색
+	public Trash searchTrashPath(String keyword) {
+		return session.selectOne("trashMapper.searchTrashPath", keyword);
+	}
 
 	// 신고된 쓰레기 검색
 	public ArrayList<Trash> selectSearchReport(String keyword) {
 		List<Trash> list = session.selectList("trashMapper.searchReport", keyword);
 		return (ArrayList<Trash>) list;
+	}
+	
+	// 쓰레기 삭제
+	public int deleteTrash(int trash_no) {
+		return session.delete("trashMapper.deleteTrash", trash_no);
 	}
 
 	// 최근 업로드 쓰레기 출력(사진) - 구현중

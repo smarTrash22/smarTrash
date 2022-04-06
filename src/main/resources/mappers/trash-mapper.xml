@@ -72,15 +72,26 @@
 		where trash_date between #{ begin } and
 		#{ end }
 	</select>
-
+	
+	<!-- 쓰레기 파일 이름으로 검색 -->
+	<select id="searchTrashPath" parameterType="String"
+		resultMap="resultList">
+		select *
+		from t_trash
+		where trash_path = #{ keyword }
+	</select>
+	
 	<!-- 신고된 쓰레기 조회 -->
 	<select id="searchReport" parameterType="String"
 		resultMap="resultList">
 		select * from t_trash
 		where report = #{ keyword }
 	</select>
-
-
+	
+	<delete id="deleteTrash" parameterType="_int">
+		delete from t_trash 
+		where trash_no = #{ trash_no }	
+	</delete>
 	<!-- 최근 쓰레기 조회 -->
 	<!-- <select id="selectRecentList" resultMap="selectRecentList"> <![CDATA[ 
 		SELECT * FROM (SELECT ROWNUM RNUM, trash_no, trash_path, FROM (SELECT * FROM 

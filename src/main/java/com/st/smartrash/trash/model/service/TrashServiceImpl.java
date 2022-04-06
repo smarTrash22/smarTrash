@@ -87,4 +87,14 @@ public class TrashServiceImpl implements TrashService {
 	public ArrayList<Trash> selectTrashNewTop() {
 		return trashDao.selectTrashNewTop();
 	}
+
+	@Override
+	public Trash searchTrashPath(String keyword) {
+		return trashDao.searchTrashPath(keyword);
+	}
+
+	@Override
+	public int deleteTrash(int trash_no) {
+		return trashDao.deleteTrash(trash_no);
+	}
 }

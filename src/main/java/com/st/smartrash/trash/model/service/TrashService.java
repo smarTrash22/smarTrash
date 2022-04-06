@@ -29,8 +29,14 @@ public interface TrashService {
 	// 쓰레기 날짜로 검색
 	ArrayList<Trash> selectSearchDate(SearchDate date);
 
+	// 쓰레기 파일 이름으로 검색
+	Trash searchTrashPath(String keyword);
+	
 	// 신고된 쓰레기 검색
 	ArrayList<Trash> selectSearchReport(String keyword);
+	
+	// 쓰레기 삭제
+	int deleteTrash(int trash_no);
 	
 	// 최근 쓰레기 조회
 	ArrayList<Trash> selectRecentList();
