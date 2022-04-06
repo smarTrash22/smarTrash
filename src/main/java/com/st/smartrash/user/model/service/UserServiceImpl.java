@@ -180,12 +180,17 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public int selectListCount() {
-		return userDao.selectListCount();
+	public int selectReportListCount() {
+		return userDao.selectReportListCount();
 	}
 	
 	@Override
 	public ArrayList<Board> selectReportList(Paging page) {
 		return userDao.selectReportList(page);
+	}
+	
+	@Override
+	public int updateLoginOK(User user) {
+		return userDao.updateLoginOK(user);
 	}
 }

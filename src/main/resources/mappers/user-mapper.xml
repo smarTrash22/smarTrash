@@ -10,6 +10,7 @@
 		<result property="user_name" column="user_name" />
 		<result property="user_admin" column="user_admin" />
 		<result property="user_date" column="user_date" />
+		<result property="login_ok" column="login_ok" />
 	</resultMap>
 	
 	<resultMap id="trashResultList" type="Trash">
@@ -34,8 +35,8 @@
 		<result column="user_name" property="user_name" />
 	</resultMap>
 	
-	<select id="getListCount" resultType="_int">
-		select count(*) from t_board
+	<select id="getReportListCount" resultType="_int">
+		select count(*) from t_trash where report = 'Y'
 	</select>
 	
 	<select id="selectReportList" 
@@ -62,7 +63,7 @@
 	</select>
 	
 	<insert id="insertUser" parameterType="User">
-		insert into t_user values(T_UN_S.nextval, #{ user_email }, #{ user_name }, default, default)
+		insert into t_user values(T_UN_S.nextval, #{ user_email }, #{ user_name }, default, default, default)
 	</insert>
 	
 	<select id="selectUser" parameterType="String" resultType="User">
@@ -81,19 +82,35 @@
 		set user_email = '탈퇴한이메일',
 			user_name = '탈퇴한아이디',
 			user_admin = 'N',
-			user_date = sysdate
+			user_date = sysdate,
+			login_ok = 'N'
 		where user_email = #{ user_email }
 	</update>
 	
-	<select id="selectLatest5" resultMap="trashResultList" parameterType="_int">
+	<update id="updateLoginOK" parameterType="User">
+		update t_user
+		set	login_ok = #{ login_ok }
+		where user_email = #{ user_email }
+	</update>
+	
+<!-- 	<select id="selectLatest5" resultMap="trashResultList" parameterType="_int">
 		<![CDATA[
 		select *
 		from t_trash
 		where user_no = #{ user_no } and rownum <= 5
 		order by trash_date desc
 		]]>
-	</select>
+	</select> -->
 	
+	<select id="selectLatest" resultMap="trashResultList" parameterType="_int">
+		<![CDATA[
+		select *
+		from t_trash
+		where user_no = #{ user_no }
+		order by trash_date desc
+		]]>
+	</select>
+
 	<select id="selectMygal5" resultMap="resultBoard" parameterType="_int">
 		<![CDATA[
 		SELECT *

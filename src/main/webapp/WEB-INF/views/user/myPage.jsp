@@ -139,7 +139,112 @@
 	<head>
 		<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.0.min.js" ></script>
 		<script type="text/javascript">
-			
+		$(document).ready(function () {
+		    var itemsMainDiv = ('.MultiCarousel');
+		    var itemsDiv = ('.MultiCarousel-inner');
+		    var itemWidth = "";
+
+		    $('.leftLst, .rightLst').click(function () {
+		        var condition = $(this).hasClass("leftLst");
+		        if (condition)
+		            click(0, this);
+		        else
+		            click(1, this)
+		    });
+
+		    ResCarouselSize();
+
+
+
+
+		    $(window).resize(function () {
+		        ResCarouselSize();
+		    });
+
+		    //this function define the size of the items
+		    function ResCarouselSize() {
+		        var incno = 0;
+		        var dataItems = ("data-items");
+		        var itemClass = ('.item');
+		        var id = 0;
+		        var btnParentSb = '';
+		        var itemsSplit = '';
+		        var sampwidth = $(itemsMainDiv).width();
+		        var bodyWidth = $('body').width();
+		        $(itemsDiv).each(function () {
+		            id = id + 1;
+		            var itemNumbers = $(this).find(itemClass).length;
+		            btnParentSb = $(this).parent().attr(dataItems);
+		            itemsSplit = btnParentSb.split(',');
+		            $(this).parent().attr("id", "MultiCarousel" + id);
+
+
+		            if (bodyWidth >= 1200) {
+		                incno = itemsSplit[3];
+		                itemWidth = sampwidth / incno;
+		            }
+		            else if (bodyWidth >= 992) {
+		                incno = itemsSplit[2];
+		                itemWidth = sampwidth / incno;
+		            }
+		            else if (bodyWidth >= 768) {
+		                incno = itemsSplit[1];
+		                itemWidth = sampwidth / incno;
+		            }
+		            else {
+		                incno = itemsSplit[0];
+		                itemWidth = sampwidth / incno;
+		            }
+		            $(this).css({ 'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers });
+		            $(this).find(itemClass).each(function () {
+		                $(this).outerWidth(itemWidth);
+		            });
+
+		            $(".leftLst").addClass("over");
+		            $(".rightLst").removeClass("over");
+
+		        });
+		    }
+
+
+		    //this function used to move the items
+		    function ResCarousel(e, el, s) {
+		        var leftBtn = ('.leftLst');
+		        var rightBtn = ('.rightLst');
+		        var translateXval = '';
+		        var divStyle = $(el + ' ' + itemsDiv).css('transform');
+		        var values = divStyle.match(/-?[\d\.]+/g);
+		        var xds = Math.abs(values[4]);
+		        if (e == 0) {
+		            translateXval = parseInt(xds) - parseInt(itemWidth * s);
+		            $(el + ' ' + rightBtn).removeClass("over");
+
+		            if (translateXval <= itemWidth / 2) {
+		                translateXval = 0;
+		                $(el + ' ' + leftBtn).addClass("over");
+		            }
+		        }
+		        else if (e == 1) {
+		            var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
+		            translateXval = parseInt(xds) + parseInt(itemWidth * s);
+		            $(el + ' ' + leftBtn).removeClass("over");
+
+		            if (translateXval >= itemsCondition - itemWidth / 2) {
+		                translateXval = itemsCondition;
+		                $(el + ' ' + rightBtn).addClass("over");
+		            }
+		        }
+		        $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
+		    }
+
+		    //It is used to get some elements from btn
+		    function click(ell, ee) {
+		        var Parent = "#" + $(ee).parent().attr("id");
+		        var slide = $(Parent).attr("data-slide");
+		        ResCarousel(ell, Parent, slide);
+		    }
+
+		});
 		</script>
 		<meta charset="UTF-8">
 		<title>SmarTrash - ${ page_title }</title>
@@ -148,6 +253,15 @@
 			div.n{
 				font-size:25px;
 			}
+			.MultiCarousel { float: left; overflow: hidden; padding: 15px; width: 100%; position:relative; }
+		    .MultiCarousel .MultiCarousel-inner { transition: 1s ease all; float: left; }
+		        .MultiCarousel .MultiCarousel-inner .item { float: left;}
+		        .MultiCarousel .MultiCarousel-inner .item > div { text-align: center; padding:10px; margin:10px; background:#f1f1f1; color:#666;}
+		    .MultiCarousel .leftLst, .MultiCarousel .rightLst { position:absolute; border-radius:50%;top:calc(50% - 20px); }
+		    .MultiCarousel .leftLst { left:0; }
+		    .MultiCarousel .rightLst { right:0; }
+		    
+		        .MultiCarousel .leftLst.over, .MultiCarousel .rightLst.over { pointer-events: none; background:#ccc; }
 		</style>
 	</head>
     <body class="d-flex flex-column">
@@ -192,9 +306,9 @@
 								<c:forEach items="${ blist }" var="b">
 									<tr align="center">
 										<td align="left">${ b.board_no }</td>
-										<c:url var="bd" value="bdetail.do">
+										<%-- <c:url var="bd" value="bdetail.do"> --%> <%-- 자기글 조회시 조회수 증가 되도록함 --%>
+										<c:url var="bd" value="mbdetail.do"> <%-- 자기글 조회시 조회수 증가 안되도록함 --%>
 											<c:param name="board_no" value="${ b.board_no }" />
-											<c:param name="page" value="${ currentPage }" />
 										</c:url>
 										<td colspan="3" align="left"><a href="${ bd }" style="text-align: center; text-decoration: none; color: inherit;">${ b.board_content }</a></td>
 										<td align="left"></td>
@@ -227,16 +341,22 @@
 						<div class="pb-5">
 								<div class="n" style="float:left; width:200px; font-weight:bold;">조회한 쓰레기</div>
 						</div>
-						<div class="pb-5" border="1">
-							<c:forEach items="${ tlist }" var="t">
-								<div>
-									<div style="float:left;">
-										<a href="" style="text-decoration:none; color:inherit; margin:40px;">
-											<img src=${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${ t.trash_path }>
-										</a>
-									</div>
-								</div>
-							</c:forEach>
+						<div class="container">
+							<div class="row">
+								<div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
+						            <div class="MultiCarousel-inner">
+							            <c:forEach items="${ tlist }" var="t">
+											<div class="item">
+												<a href="" style="text-decoration:none; color:inherit; margin:40px;">
+													<img src=${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${ t.trash_path }>
+												</a>
+											</div>
+										</c:forEach>
+						            </div>
+						            <button class="btn btn-primary leftLst"><</button>
+						            <button class="btn btn-primary rightLst">></button>
+						        </div>
+							</div>
 						</div>
 						<hr>
 						<div class="pb-5">

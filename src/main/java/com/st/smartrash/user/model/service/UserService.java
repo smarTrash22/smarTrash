@@ -38,7 +38,10 @@ public interface UserService {
 
 	ArrayList<User> selectUserList();
 
-	int selectListCount();
+	int selectReportListCount();
 
 	ArrayList<Board> selectReportList(Paging page);
+	
+	int updateLoginOK(User user);
+
 }

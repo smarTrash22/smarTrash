@@ -40,7 +40,7 @@ public class UserDao {
 	}
 
 	public ArrayList<Trash> selectLatest5(int user_no) {
-		List<Trash> list = session.selectList("userMapper.selectLatest5", user_no);
+		List<Trash> list = session.selectList("userMapper.selectLatest", user_no);
 		return (ArrayList<Trash>)list;
 	}
 
@@ -72,15 +72,18 @@ public class UserDao {
 		List<User> list = session.selectList("userMapper.selectUserList");
 		return (ArrayList<User>)list;
 	}
-	
-	public int selectListCount() {
-		return session.selectOne("boardMapper.getListCount");
-	}
 
 	public ArrayList<Board> selectReportList(Paging page) {
 		List<Board> list = session.selectList("userMapper.selectReportList", page);
 		return (ArrayList<Board>)list;
 	}
-	
 
+	public int updateLoginOK(User user) {
+		return session.update("userMapper.updateLoginOK", user);
+	}
+
+	public int selectReportListCount() {
+		return session.selectOne("userMapper.getReportListCount");
+	}
+	
 }
