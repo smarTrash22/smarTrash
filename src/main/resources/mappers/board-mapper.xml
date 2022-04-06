@@ -87,19 +87,24 @@
 	</select>	
 	
 	
-<!-- 
-	<delete id="deleteBoard" parameterType="Board">
-		delete from board 
+ 
+	<delete id="deleteBoard" parameterType="int">
+		delete from t_board 
+		where board_ref = #{board_no}	
+	</delete>
+	
+	<delete id="deleteReply" parameterType="Board">
+		delete from t_board 
 		where board_no = #{board_no}	
 	</delete>
 	
 	
 	<update id="updateOrigin" parameterType="Board">
-		update board 
+		update t_board 
 		set board_content = #{board_content}		
 		where board_no = #{board_no}
 	</update>
- -->	
+ 
 	<!-- 댓글관련 -->
 	<select id="selectReplyList" parameterType="int" resultMap="resultBoard">
 		<![CDATA[
@@ -127,12 +132,15 @@
 		]]>
 	</select>
 	
-	
-	
 	<insert id="insertReply1" parameterType="Board">
 	<![CDATA[
 			INSERT INTO T_BOARD VALUES(T_BN_S.NEXTVAL, #{board_ref}, 1, #{user_no}, #{board_content}, NULL, DEFAULT, DEFAULT)
 	]]>
 	</insert>
+	
+	<select id="selectSearchHashtag" parameterType="string" resultMap="resultBoard">
+		select * from t_board
+		where hashtag like '%' || #{ hashtag } || '%'
+	</select>
 	
 </mapper>

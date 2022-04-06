@@ -90,12 +90,13 @@ img.photo{
 			</div>
 		</div>
 		<div align="center">
-			<form action="해쉬태그검색용.do" method="post">
+		</form>
+			<form action="searchHash.do" method="post">
 				<div class="search">
 					<input type="text" size="30" placeholder="search hashtag..."
 						onfocus="this.placeholder=''"
 						onblur="this.placeholder='search hashtag...'" name="hashtag">
-					<button id="btn1" class="btn btn-primary" btn type="submit">search</button>
+					<button id="btn1" class="btn btn-primary" type="submit">search</button>
 				</div>
 			</form>
 		</div>

@@ -57,8 +57,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int deleteBoard(Board board) {
-		return boardDao.deleteBoard(board);
+	public int deleteBoard(int board_no) {
+		return boardDao.deleteBoard(board_no);
 	}
 
 	@Override
@@ -69,6 +69,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int selectReplyCount(int board_no) {
 		return boardDao.selectReplyCount(board_no);
+	}
+
+	@Override
+	public int deleteReply(Board board) {
+		return boardDao.deleteReply(board);
+	}
+
+	@Override
+	public ArrayList<Board> selectSearchHashtag(String hashtag) {
+		return boardDao.selectSearchHashtag(hashtag);
 	}
 
 }
