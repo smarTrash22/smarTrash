@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!-- Page Title -->
 <c:set var="page_title" value="Main" />
@@ -81,8 +82,7 @@
 				if (files != null) {
 					if(files[0].type.match(/image.*/)) {
 						
-						dropZone.innerHTML = ""
-						
+						$(dropZone).html("업로드한 쓰레기사진을 분류중입니다. <br> 잠시만 기달려 주세요");
 					    $(dropZone).css({
 					        "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
 					        "background-size": "contain",
@@ -127,8 +127,8 @@
 			            var reader = new FileReader(); // instance of the FileReader
 			            reader.readAsDataURL(files[0]); // read the local file
 			            reader.onload = function(e) {
-			            	dropZone.innerHTML = ""
 			            	
+			    			$(dropZone).html("업로드한 쓰레기사진을 분류중입니다. <br> 잠시만 기달려 주세요");
 			            	$(dropZone).css({
 						        "background-image": "url(" + e.target.result + ")",
 						        "background-size": "contain",
@@ -150,9 +150,6 @@
 			});
 			
 		    function ajaxFileUpload() {
-		    	
-				$(dropZone).html("업로드한 쓰레기사진을 분류중입니다. <br> 잠시만 기달려 주세요");
-		    	
 		    	$.ajax({
 					url: "uploadFile.do",
 					type: "POST",
@@ -225,11 +222,13 @@
                     <div class="row justify-content-center">
                         <!-- Pricing card free-->
                         <c:forEach items="${ requestScope.trash_list }" var="t">
-							<div style="width:120px;" class="mx-1 pb-5 justify-content-center">
+							<div style="width:120px;" class="mx-1 pb-3 justify-content-center">
 								<div style="width:96px; height:96px; background-image: url('${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${ t.trash_path }'); background-position: center; background-size: 100% 100%;" class="align-items-center d-flex justify-content-center rounded-circle">
 									${ status.count }								</div>
-								<div class="pt-1 user-select-none">
-									<h5 class="fs-6" align="center">${ t.trash_date }</h5>
+								<div class="pt-1 user-select-none text-center">
+									<fmt:formatDate value="${ t.trash_date }" pattern="yy-MM-dd" />
+									<br>
+									<fmt:formatDate value="${ t.trash_date }" pattern="HH:mm:ss" />
 								</div>
 							</div>
 						</c:forEach>

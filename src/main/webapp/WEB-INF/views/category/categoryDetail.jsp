@@ -17,27 +17,45 @@
             <!-- Navigation-->
 			<c:import url="/WEB-INF/views/common/navi.jsp" />
             <!-- Pricing section-->
-            <section class="bg-light py-4">
-                <div class="container px-5">
-                    <div class="text-center mb-5">
-                        <h1 class="fw-bolder">${ category.category_name_kor } 정보</h1>
-                    </div>
-                    <div class="row gx-5 justify-content-center">
-                        <!-- Pricing card free-->
-						<div style="width:200px;" class="mx-auto pb-5 justify-content-center">
-							<div class="align-items-center d-flex justify-content-center">
-								<img style="width:100%;" class="rounded-circle" src="${ pageContext.servletContext.contextPath }/resources/images/category/${ category.category_name }.png"/></a>
+			<section class="bg-light py-4">
+				<div class="container px-5">
+					<div class="row mb-2">
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-auto">
+										<h1 class="d-inline-block my-3 text-md-center">${ category.category_name_kor } 정보</h1>
+										</div>
+										<div class="col-auto">
+										<button class="d-inline-block my-3 btn-sm text-md-end" onclick="location.href='category.do'">돌아가기</a>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12 d-flex align-items-center justify-content-center d-block d-lg-none">
+									<div class="">
+										<img style="width:100%;" class="align-self-center rounded-circle" src="${ pageContext.servletContext.contextPath }/resources/images/category/${ category.category_name }.png"/></a>
+									</div>
+								</div>
 							</div>
-							<div class="text-center mt-1">
-								<h5>${ category.category_name_kor }</h5>
-								<p>${ category.category_content }</p>
-								<p>${ category.category_tip }</p>
-								<button class="btn btn-outline-secondary" onclick="javascript:location.href='category.do';">뒤로 가기</button>
+							<div class="row">
+								<div class="col-auto d-flex align-items-center justify-content-center d-none d-lg-block">
+									<div class="align-items-center justify-content-center">
+										<img style="width:100%;" class=" rounded-circle" src="${ pageContext.servletContext.contextPath }/resources/images/category/${ category.category_name }.png"/></a>
+									</div>
+								</div>
+								<div class="col d-flex flex-column position-static">
+						
+									<h3 class="my-3">분리수거 방법</h3>
+									<p class="mb-5 card-text mb-auto">${ category.category_content }</p>
+									<h3 class="my-3">분리수거 팁</h3>
+									<p class="card-text mb-auto">${ category.category_tip }</p>
+						        </div>
 							</div>
 						</div>
-                    </div>
-                </div>
-            </section>
+					</div>
+				</div>
+			</section>
         </main>
         <!-- Footer-->
 		<c:import url="/WEB-INF/views/common/foot.jsp" />
