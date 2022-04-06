@@ -223,62 +223,63 @@ public class HomeController {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("loginUser") != null) {
 			ArrayList<Trash> trash_list = trashService.selectSearchReport("Y");
-			String path = request.getSession().getServletContext().getRealPath("resources/");
-			
-			for(Trash t : trash_list) {
-				String srcFile = path + "trash_upfiles\\" + t.getTrash_path();
-				String dstFile = path + "report_images\\" + t.getTrash_path();
+			if(trash_list.size() != 0) {
+				String path = request.getSession().getServletContext().getRealPath("resources/");
 				
-				// 신고 쓰레기 제거
-				trashService.deleteTrash(t.getTrash_no());
+				for(Trash t : trash_list) {
+					String srcFile = path + "trash_upfiles\\" + t.getTrash_path();
+					String dstFile = path + "report_images\\" + t.getTrash_path();
+					
+					// 신고 쓰레기 제거
+					trashService.deleteTrash(t.getTrash_no());
+					
+					File src = new File(srcFile);
+					File dst = new File(dstFile);
+					      
+					try {
+					   FileUtils.moveFile(src, dst);
+					}
+					catch (Exception e) {
+					   e.printStackTrace();
+					}
+				}
 				
-				File src = new File(srcFile);
-				File dst = new File(dstFile);
-				      
-				try {
-				   FileUtils.moveFile(src, dst);
-				}
-				catch (Exception e) {
-				   e.printStackTrace();
-				}
-			}
-			
-			// 압축 파일 위치와 압축된 파일
-			String zipPath = path + "report_images\\";
-			String zipFile = "report_images.zip";
-	
-			// 압축을 해제할 위치, 압축할 파일이름
-	//		String unZipPath = "G:/ZIP_TEST/TEST/";
-	//		String unZipFile = "jsmpeg-player";
-	
-	//		System.out.println("--------- 압축 해제 ---------");
-	//		UnZip unZip = new UnZip();
-	//		// 압축 해제 
-	//		if (!unZip.unZip(zipPath, zipFile, unZipPath)) {
-	//			System.out.println("압축 해제 실패");
-	//		}
-			
-			System.out.println("--------- 압축 하기 ---------");
-			CompressZip compressZip = new CompressZip();
-			
-			// 압축 하기
-			try {
-				if (!compressZip.compress(zipPath, path, zipFile)) {
-					System.out.println("압축 실패");
-				}
-			} catch (Throwable e) {
-				e.printStackTrace();
-			}
+				// 압축 파일 위치와 압축된 파일
+				String zipPath = path + "report_images\\";
+				String zipFile = "report_images.zip";
 		
-			// 신고사진 삭제
-			try {
-			    File rootDir = new File(path + "report_images\\");
-			    FileUtils.deleteDirectory(rootDir);
-			} catch (IOException e) {
-			    e.printStackTrace();
+				// 압축을 해제할 위치, 압축할 파일이름
+		//		String unZipPath = "G:/ZIP_TEST/TEST/";
+		//		String unZipFile = "jsmpeg-player";
+		
+		//		System.out.println("--------- 압축 해제 ---------");
+		//		UnZip unZip = new UnZip();
+		//		// 압축 해제 
+		//		if (!unZip.unZip(zipPath, zipFile, unZipPath)) {
+		//			System.out.println("압축 해제 실패");
+		//		}
+				
+				System.out.println("--------- 압축 하기 ---------");
+				CompressZip compressZip = new CompressZip();
+				
+				// 압축 하기
+				try {
+					if (!compressZip.compress(zipPath, path, zipFile)) {
+						System.out.println("압축 실패");
+					}
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			
+				// 신고사진 삭제
+				try {
+				    File rootDir = new File(path + "report_images\\");
+				    FileUtils.deleteDirectory(rootDir);
+				} catch (IOException e) {
+				    e.printStackTrace();
+				}
 			}
-			
-			
+				
 			mv.addObject("count", trash_list.size());
 			mv.setViewName("user/zipDownload");
 			return mv;
