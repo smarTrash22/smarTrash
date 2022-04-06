@@ -4,11 +4,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="listCount" value="${ requestScope.listCount }" />
+<c:set var="list" value="${ requestScope.list }" />
 <c:set var="startPage" value="${ requestScope.startPage }" />
 <c:set var="endPage" value="${ requestScope.endPage }" />
 <c:set var="maxPage" value="${ requestScope.maxPage }" />
 <c:set var="currentPage" value="${ requestScope.currentPage }" />
+<c:set var="hashtag" value="${ requestScope.hashtag }"/>
 <!-- Page Title -->
 
 
@@ -91,16 +92,21 @@ img.photo{
 		</div>
 		<div align="center">
 		</form>
-			<form action="searchHash.do" method="post">
+			<form action="searchHash.do" method="get">
 				<div class="search">
 					<input type="text" size="30" placeholder="search hashtag..."
 						onfocus="this.placeholder=''"
-						onblur="this.placeholder='search hashtag...'" name="hashtag">
+						onblur="this.placeholder='search hashtag...'" name="hashtag"/>
 					<button id="btn1" class="btn btn-primary" type="submit">search</button>
 				</div>
 			</form>
 		</div>
 		<br>
+		<c:if test="${ empty list }">
+		<br>
+		<div align="center" style="color:red"><h5>-검색결과가 없습니다-</h1></div>
+		</c:if>
+		<c:if test="${ !empty list }">
 		<div>
 			<table align="center" border="1" cellspacing="0" cellpadding="1">
 				<tr align="center">
@@ -124,6 +130,7 @@ img.photo{
 			</table>
 		</div>
 		
+		<c:if test="${ empty hashtag }">
 		<br>
 		<div id="pg">
 			<ul class="pagination">
@@ -187,6 +194,79 @@ img.photo{
 				</c:if>
 			</ul>
 		</div>
+		</c:if>
+		<!-- 검색한 페이지의 경우-------------------------------------------------------- -->
+		<c:if test="${ !empty hashtag }">
+		<br>
+		<div id="pg">
+			<ul class="pagination">
+				<!-- 1페이지로 이동처리 -->
+				<c:if test="${ currentPage eq 1 }">
+					<li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-double-left"></i></a></li>
+				</c:if>
+				<c:if test="${ currentPage > 1 }">
+					<c:url var="hblf" value="searchHash.do">
+						<c:param name="page" value="1" />
+						<c:param name="hashtag" value="${ hashtag }"/>
+					</c:url>
+					<li class="page-item"><a class="page-link" href="${ hblf }"><i class="bi bi-chevron-double-left"></i></a></li>
+				</c:if>
+				<!--  이전페이지 그룹으로 이동처리  -->
+				<c:if
+					test="${ (currentPage -10) < startPage and (currentPage - 10) > 1 }">
+					<c:url var="hblf2" value="searchHash.do">
+						<c:param name="page" value="${ startPage - 10 }" />
+						<c:param name="hashtag" value="${ hashtag }"/>
+					</c:url>
+					<li class="page-item"><a class="page-link" href="${ hblf2 }"><i class="bi bi-chevron-left"></i></a></li>
+				</c:if>
+				<c:if
+					test="${ !((currentPage -10) < startPage and (currentPage - 10) > 1) }">
+					<li class="page-item disabled"><a class="page-link"
+						href="${ hblf2 }"><i class="bi bi-chevron-left"></i></a></li>
+				</c:if>
+				<!-- 현재 페이지가 속한 페이지 그룹 출력 -->
+				<c:forEach var="p" begin="${ startPage }" end="${ endPage }"
+					step="1">
+					<c:if test="${ p eq currentPage }">
+						<li class="page-item active"><a class="page-link" href="#">${ p }</a></li>
+					</c:if>
+					<c:if test="${ p ne currentPage }">
+						<c:url var="hblf5" value="searchHash.do">
+							<c:param name="page" value="${ p }" />
+							<c:param name="hashtag" value="${ hashtag }"/>
+						</c:url>
+						<li class="page-item"><a class="page-link" href="${ hblf5 }">${ p }</a></li>
+					</c:if>
+				</c:forEach>
+				<!--  다음페이지 그룹으로 이동처리  -->
+				<c:if
+					test="${ (currentPage +10) > endPage and (currentPage + 10) < maxPage }">
+					<c:url var="hblf3" value="searchHash.do">
+						<c:param name="page" value="${ endPage + 10 }" />
+						<c:param name="hashtag" value="${ hashtag }"/>
+					</c:url>
+					<li class="page-item"><a class="page-link" href="${ hblf3 }"><i class="bi bi-chevron-right"></i></a></li>
+				</c:if>
+				<c:if
+					test="${ !((currentPage +10) > endPage and (currentPage + 10) < maxPage) }">
+					<li class="page-item disabled"><a class="page-link" href=""><i class="bi bi-chevron-right"></i></a></li>
+				</c:if>
+				<c:if test="${ currentPage eq maxPage }">
+					<li class="page-item disabled"><a class="page-link" href=""><i class="bi bi-chevron-double-right"></i></a>
+				</c:if>
+				<!-- 끝페이지로 이동처리 -->
+				<c:if test="${ currentPage < maxPage }">
+					<c:url var="hblf4" value="searchHash.do">
+						<c:param name="page" value="${ maxPage }" />
+						<c:param name="hashtag" value="${ hashtag }"/>
+					</c:url>
+					<li class="page-item"><a class="page-link" href="${ hblf4 }"><i class="bi bi-chevron-double-right"></i></a>
+				</c:if>
+			</ul>
+		</div>
+		</c:if>
+		</c:if>
 		<br>
 	</main>
 	<!-- Footer-->

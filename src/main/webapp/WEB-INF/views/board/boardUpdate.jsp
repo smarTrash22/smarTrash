@@ -105,7 +105,7 @@ textarea#t2 {
 		<input type="hidden" name="board_no" value="${ board.board_no }"/>
 		<input type="hidden" name="page" value="${ currentPage }"/>
 		
-			<table align="center" border="1" cellspacing="0" style = "word-break: break-all">
+			<table align="center" cellspacing="0" style = "word-break: break-all">
 				<tr>
 					<td class="td1" rowspan="3">
 						<div id="photobox">
@@ -123,7 +123,7 @@ textarea#t2 {
 					<td colspan="3"><div id="line"></div></td>
 				</tr>
 				<tr>
-					<td valign="top" class="td1" width="500" colspan="3"><textarea  rows="10" id="t2" name="board_content" placeholder="${ board.board_content }"></textarea></td>
+					<td valign="top" class="td1" width="500" colspan="3"><textarea  rows="10" id="t2" name="board_content">${ board.board_content }</textarea></td>
 					
 				</tr>
 				<tr>
