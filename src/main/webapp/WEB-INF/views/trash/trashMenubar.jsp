@@ -69,9 +69,6 @@
 			<li><a
 				href="${ pageContext.servletContext.contextPath }/tlist.do">전체
 					쓰레기 조회</a></li>
-			<li><a
-				href="${ pageContext.servletContext.contextPath }/moveDescPage.do">업로드파일
-					분류정보</a></li>
 		</ul>
 	</c:if>
 	<!-- 로그인 한 경우 : 관리자인 경우 -->
@@ -81,9 +78,6 @@
 			<li><a
 				href="${ pageContext.servletContext.contextPath }/tlist.do">전체
 					쓰레기 조회</a></li>
-			<li><a
-				href="${ pageContext.servletContext.contextPath }/moveDescPage.do">업로드파일
-					분류정보</a></li>
 		</ul>
 	</c:if>
 	<!-- el 에서의 절대경로 표기 : 
