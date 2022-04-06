@@ -2,6 +2,7 @@ package com.st.smartrash.board.model.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.st.smartrash.board.model.vo.Board;
 import com.st.smartrash.common.Paging;
+import com.st.smartrash.notice.model.vo.Notice;
 
 
 
@@ -68,8 +70,16 @@ public class BoardDao {
 		return session.delete("boardMapper.deleteReply", board);
 	}
 
-	public ArrayList<Board> selectSearchHashtag(String hashtag) {
-		List<Board> list = session.selectList("boardMapper.selectSearchHashtag",hashtag);
+//	public ArrayList<Board> selectSearchHashtag(String hashtag) {
+//		List<Board> list = session.selectList("boardMapper.selectSearchHashtag",hashtag);
+//		return (ArrayList<Board>)list;
+//	}
+	public ArrayList<Board> selectSearch(Map<String, Object> map) {
+		List<Board> list = session.selectList("boardMapper.searchBoard", map);
 		return (ArrayList<Board>)list;
+	}
+
+	public int selectSearchListCount(String keyword) {
+		return session.selectOne("boardMapper.getSearchListCount",keyword);
 	}
 }

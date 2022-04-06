@@ -1,6 +1,7 @@
 package com.st.smartrash.board.model.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class BoardServiceImpl implements BoardService {
 	public int selectListCount() {
 		return boardDao.selectListCount();
 	}
+	
 
 	@Override
 	public ArrayList<Board> selectList(Paging page) {
@@ -75,10 +77,22 @@ public class BoardServiceImpl implements BoardService {
 	public int deleteReply(Board board) {
 		return boardDao.deleteReply(board);
 	}
+//
+//	@Override
+//	public ArrayList<Board> selectSearchHashtag(String hashtag) {
+//		return boardDao.selectSearchHashtag(hashtag);
+//	}
 
 	@Override
-	public ArrayList<Board> selectSearchHashtag(String hashtag) {
-		return boardDao.selectSearchHashtag(hashtag);
+	public ArrayList<Board> selectSearch(Map<String, Object> map) {
+		return boardDao.selectSearch(map);
+	}
+
+
+	@Override
+	public int selectSearchListCount(String keyword) {
+		// TODO Auto-generated method stub
+		return boardDao.selectSearchListCount(keyword);
 	}
 
 }

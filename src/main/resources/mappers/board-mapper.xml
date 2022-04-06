@@ -138,9 +138,30 @@
 	]]>
 	</insert>
 	
-	<select id="selectSearchHashtag" parameterType="string" resultMap="resultBoard">
-		select * from t_board
-		where hashtag like '%' || #{ hashtag } || '%'
-	</select>
 	
+	
+	<select id="searchBoard" parameterType="HashMap" resultMap="resultBoard">
+		<![CDATA[
+		select * from (
+		select rownum num, n.* from (
+		select * from (SELECT B.BOARD_NO BOARD_NO, 
+			                    B.BOARD_REF BOARD_REF,
+			                    B.TRASH_NO TRASH_NO,
+			                    B.USER_NO USER_NO,
+			                    B.BOARD_CONTENT BOARD_CONTENT,
+			                    B.HASHTAG HASHTAG,
+			                    B.BOARD_READCOUNT BOARD_READCOUNT,
+			                    B.BOARD_DATE BOARD_DATE,
+			                    T.TRASH_PATH TRASH_PATH,
+			                    U.USER_NAME USER_NAME
+			             FROM T_BOARD B
+			             LEFT JOIN T_TRASH T ON T.TRASH_NO = B.TRASH_NO 
+			             LEFT JOIN T_USER U ON U.USER_NO = T.USER_NO
+		where hashtag like '%' || #{ keyword } || '%') order by board_no desc ) n)
+		where num >= ${startRow} and num <= ${endRow}
+		]]>
+	</select>
+	<select id="getSearchListCount" resultType="_int">
+		select count(*) from t_board where hashtag like '%' || #{ keyword } || '%'
+	</select>
 </mapper>

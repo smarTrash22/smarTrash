@@ -12,8 +12,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.st.smartrash.board.model.service.BoardService;
 import com.st.smartrash.board.model.vo.Board;
 import com.st.smartrash.common.Paging;
+import com.st.smartrash.notice.model.vo.Notice;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -114,6 +117,9 @@ public class BoardController {
 			@RequestParam("user_no") int user_no, @RequestParam("page") int page,
 			@RequestParam("board_content") String board_content, Model model) {
 		// 해당 댓글에 대한 원글 조회
+		if("".equals(board_content)) {
+			board_content=" ";
+		}
 		reply.setBoard_ref(board_ref);
 		reply.setBoard_content(board_content);
 		reply.setUser_no(user_no);
@@ -184,7 +190,9 @@ public class BoardController {
 	@RequestMapping(value = "boardupdate.do", method = RequestMethod.POST)
 	public String boardUpdateMethod(Board board, Model model, @RequestParam("page") int page,
 			@RequestParam("board_no") int board_no, @RequestParam("board_content") String board_content) {
-
+		if("".equals(board_content)) {
+			board_content=" ";
+		}
 		board.setBoard_no(board_no);
 		board.setBoard_content(board_content);
 
@@ -197,18 +205,58 @@ public class BoardController {
 			return "common/error";
 		}
 	}
-	
-//	@RequestMapping(value="searchHash.do", method=RequestMethod.POST)
-//	public String noticeSearchTitleMethod(@RequestParam("hashtag") String hashtag, Model model) {
-//		ArrayList<Board> list = boardService.selectSearchHashtag(hashtag);
-//		
-//		if(list.size() > 0) {
-//			model.addAttribute("list", list);
-//			return "board/noticeListView";
-//		} else {
-//			model.addAttribute("message", "[" + hashtag + "](으)로 검색된 공지 정보가 없습니다.");
-//			return "common/error";
+
+	@RequestMapping(value = "searchHash.do", method = RequestMethod.GET)
+	public ModelAndView boardSearchHashtag(HttpServletRequest request, ModelAndView mv) {
+		
+		String keyword = request.getParameter("hashtag");
+		String page = request.getParameter("page");
+		
+		int currentPage = 1;
+//		if (page != null) {
+//			currentPage = Integer.parseInt(page);
 //		}
-//	}
-//수정중
+
+		int limit = 9;
+
+		int listCount = boardService.selectSearchListCount(keyword);
+
+		int maxPage = (int) ((double) listCount / limit + 0.9);
+
+		int startPage = (int) ((double) currentPage / 10 + 0.9);
+
+		int endPage = startPage + 10 - 1;
+
+		if (maxPage < endPage) {
+			endPage = maxPage;
+		}
+
+		int startRow = (currentPage - 1) * limit + 1;
+		int endRow = startRow + limit - 1;
+
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("keyword", keyword);
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+
+		ArrayList<Board> list = boardService.selectSearch(map);
+
+		if (list != null && list.size() > 0) {
+			mv.addObject("list", list);
+			mv.addObject("listCount", listCount);
+			mv.addObject("maxPage", maxPage);
+			mv.addObject("currentPage", currentPage);
+			mv.addObject("startPage", startPage);
+			mv.addObject("endPage", endPage);
+			mv.addObject("limit", limit);
+			mv.addObject("hashtag", keyword);
+
+			mv.setViewName("board/boardlist");
+		} else {
+			mv.setViewName("board/boardlist");
+		}
+		return mv;
+	}
+
 }

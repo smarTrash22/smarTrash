@@ -1,6 +1,7 @@
 package com.st.smartrash.board.model.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.st.smartrash.board.model.vo.Board;
 import com.st.smartrash.common.Paging;
@@ -18,5 +19,7 @@ public interface BoardService {
 	int updateReply(Board reply);  // 댓글 수정용
 	int deleteBoard(int board_no);  // 게시글 삭제용
 	int deleteReply(Board board);//댓글삭제용
-	ArrayList<Board> selectSearchHashtag(String hashtag);
+	//ArrayList<Board> selectSearchHashtag(String hashtag);
+	ArrayList<Board> selectSearch(Map<String, Object> map);
+	int selectSearchListCount(String string);
 }
