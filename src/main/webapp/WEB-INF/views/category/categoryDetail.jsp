@@ -28,7 +28,7 @@
 										<h1 class="d-inline-block my-3 text-md-center">${ category.category_name_kor } 정보</h1>
 										</div>
 										<div class="col-auto">
-										<button class="d-inline-block my-3 btn-sm text-md-end" onclick="location.href='category.do'">돌아가기</a>
+										<button class="d-inline-block my-3 btn btn-secondary btn-sm text-md-end" onclick="location.href='category.do'">돌아가기</button>
 										</div>
 									</div>
 								</div>

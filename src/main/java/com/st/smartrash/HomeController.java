@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.st.smartrash.category.model.service.CategoryService;
 import com.st.smartrash.category.model.vo.Category;
+import com.st.smartrash.common.CategoryTranslation;
 import com.st.smartrash.common.CompressZip;
 import com.st.smartrash.common.CreateCSV;
 import com.st.smartrash.trash.model.service.TrashService;
@@ -56,42 +57,6 @@ public class HomeController {
 		model.addAttribute("trash_list", trash_list);
 		model.addAttribute("category_list", category_list);
 		return "common/main";
-	}
-	
-	// 부트스트랩 기본 페이지
-	@RequestMapping(value = "about.do", method = RequestMethod.GET)
-	public String aboutViewForward() {
-		return "common/about";
-	}
-	
-	@RequestMapping(value = "blog-home.do", method = RequestMethod.GET)
-	public String blog_homeViewForward() {
-		return "common/blog-home";
-	}
-	
-	@RequestMapping(value = "blog-post.do", method = RequestMethod.GET)
-	public String blog_postViewForward() {
-		return "common/blog-post";
-	}
-	
-	@RequestMapping(value = "contact.do", method = RequestMethod.GET)
-	public String contactViewForward() {
-		return "common/contact";
-	}
-	
-	@RequestMapping(value = "faq.do", method = RequestMethod.GET)
-	public String faqViewForward() {
-		return "common/faq";
-	}
-	
-	@RequestMapping(value = "portfolio-item.do", method = RequestMethod.GET)
-	public String portfolio_itemViewForward() {
-		return "common/portfolio-item";
-	}
-	
-	@RequestMapping(value = "portfolio-overview.do", method = RequestMethod.GET)
-	public String portfolio_overviewViewForward() {
-		return "common/portfolio-overview";
 	}
 	
 	@RequestMapping(value = "uploadFile.do", method = RequestMethod.POST)
@@ -208,6 +173,9 @@ public class HomeController {
 	@RequestMapping(value="dataPush.do")
 	public ModelAndView dataPush(@RequestParam(name="file") String file, @RequestParam(name="category") String category_name, HttpServletRequest request, ModelAndView mv) {
 		Category category = categoryService.selectSearchName(category_name);
+		CategoryTranslation ct = new CategoryTranslation();
+		category.setCategory_name_kor(ct.categoryTranslation(category.getCategory_name()));
+		
 		ArrayList<Category> category_list = categoryService.selectList();
 		for(Category c : category_list) {
 			System.out.println(c.toString());
