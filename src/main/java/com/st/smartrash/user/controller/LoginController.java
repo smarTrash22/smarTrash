@@ -1,7 +1,9 @@
 package com.st.smartrash.user.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
+import com.st.smartrash.trash.model.service.TrashService;
+import com.st.smartrash.trash.model.vo.Trash;
 import com.st.smartrash.user.model.service.UserService;
 import com.st.smartrash.user.model.vo.NaverLoginBO;
 import com.st.smartrash.user.model.vo.User;
@@ -32,6 +36,9 @@ public class LoginController {
 	private void setNaverLoginBO(NaverLoginBO naverLoginBO) {
 		this.naverLoginBO = naverLoginBO;
 	}
+	
+	@Inject
+	private TrashService trashService;
 	
 	@Autowired
 	private UserService userService;
@@ -103,9 +110,14 @@ public class LoginController {
 
 	//로그아웃
 	@RequestMapping(value="logout.do", method = { RequestMethod.GET, RequestMethod.POST })
-	public String logout(HttpSession session)throws IOException {
+	public String logout(HttpSession session, Model model)throws IOException {
 		System.out.println("여기는 logout");
 		session.invalidate();
+		
+		ArrayList<Trash> trash_list = trashService.selectTrashNewTop();
+		ArrayList<Trash> category_list = trashService.selectTrashNewTop();
+		model.addAttribute("trash_list", trash_list);
+		model.addAttribute("category_list", category_list);
 		return "common/main";
 	}
 }

@@ -351,7 +351,6 @@ public class NoticeController {
 	    	  
 	    	 mv.setViewName("notice/noticeSearchView");
 	      }
-	      
 	      return mv;
 	}
 }

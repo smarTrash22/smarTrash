@@ -222,69 +222,74 @@ public class HomeController {
 	public ModelAndView zipdown(HttpServletRequest request, ModelAndView mv) {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("loginUser") != null) {
-			ArrayList<Trash> trash_list = trashService.selectSearchReport("Y");
-			if(trash_list.size() != 0) {
-				String path = request.getSession().getServletContext().getRealPath("resources/");
-				
-				for(Trash t : trash_list) {
-					String srcFile = path + "trash_upfiles\\" + t.getTrash_path();
-					String dstFile = path + "report_images\\" + t.getTrash_path();
+			User user = (User)session.getAttribute("loginUser");
+			if(user.getUser_admin() == "Y") {
+				ArrayList<Trash> trash_list = trashService.selectSearchReport("Y");
+				if(trash_list.size() != 0) {
+					String path = request.getSession().getServletContext().getRealPath("resources/");
 					
-					// 신고 쓰레기 제거
-					trashService.deleteTrash(t.getTrash_no());
+					for(Trash t : trash_list) {
+						String srcFile = path + "trash_upfiles\\" + t.getTrash_path();
+						String dstFile = path + "report_images\\" + t.getTrash_path();
+						
+						// 신고 쓰레기 제거
+						trashService.deleteTrash(t.getTrash_no());
+						
+						File src = new File(srcFile);
+						File dst = new File(dstFile);
+						      
+						try {
+						   FileUtils.moveFile(src, dst);
+						}
+						catch (Exception e) {
+						   e.printStackTrace();
+						}
+					}
 					
-					File src = new File(srcFile);
-					File dst = new File(dstFile);
-					      
-					try {
-					   FileUtils.moveFile(src, dst);
-					}
-					catch (Exception e) {
-					   e.printStackTrace();
-					}
-				}
-				
-				// 압축 파일 위치와 압축된 파일
-				String zipPath = path + "report_images\\";
-				String zipFile = "report_images.zip";
-		
-				// 압축을 해제할 위치, 압축할 파일이름
-		//		String unZipPath = "G:/ZIP_TEST/TEST/";
-		//		String unZipFile = "jsmpeg-player";
-		
-		//		System.out.println("--------- 압축 해제 ---------");
-		//		UnZip unZip = new UnZip();
-		//		// 압축 해제 
-		//		if (!unZip.unZip(zipPath, zipFile, unZipPath)) {
-		//			System.out.println("압축 해제 실패");
-		//		}
-				
-				System.out.println("--------- 압축 하기 ---------");
-				CompressZip compressZip = new CompressZip();
-				
-				// 압축 하기
-				try {
-					if (!compressZip.compress(zipPath, path, zipFile)) {
-						System.out.println("압축 실패");
-					}
-				} catch (Throwable e) {
-					e.printStackTrace();
-				}
+					// 압축 파일 위치와 압축된 파일
+					String zipPath = path + "report_images\\";
+					String zipFile = "report_images.zip";
 			
-				// 신고사진 삭제
-				try {
-				    File rootDir = new File(path + "report_images\\");
-				    FileUtils.deleteDirectory(rootDir);
-				} catch (IOException e) {
-				    e.printStackTrace();
-				}
-			}
+					// 압축을 해제할 위치, 압축할 파일이름
+			//		String unZipPath = "G:/ZIP_TEST/TEST/";
+			//		String unZipFile = "jsmpeg-player";
+			
+			//		System.out.println("--------- 압축 해제 ---------");
+			//		UnZip unZip = new UnZip();
+			//		// 압축 해제 
+			//		if (!unZip.unZip(zipPath, zipFile, unZipPath)) {
+			//			System.out.println("압축 해제 실패");
+			//		}
+					
+					System.out.println("--------- 압축 하기 ---------");
+					CompressZip compressZip = new CompressZip();
+					
+					// 압축 하기
+					try {
+						if (!compressZip.compress(zipPath, path, zipFile)) {
+							System.out.println("압축 실패");
+						}
+					} catch (Throwable e) {
+						e.printStackTrace();
+					}
 				
-			mv.addObject("count", trash_list.size());
-			mv.setViewName("user/zipDownload");
-			return mv;
+					// 신고사진 삭제
+					try {
+					    File rootDir = new File(path + "report_images\\");
+					    FileUtils.deleteDirectory(rootDir);
+					} catch (IOException e) {
+					    e.printStackTrace();
+					}
+				}
+				mv.addObject("count", trash_list.size());
+				mv.setViewName("user/zipDownload");
+				return mv;
+			} else {
+				mv.setViewName("user/login");
+				return mv;
+			}
 		} else {
-			mv.setViewName("common/main");
+			mv.setViewName("user/login");
 			return mv;
 		}
 	}
@@ -292,16 +297,27 @@ public class HomeController {
 	//첨부파일 다운로드
 	@RequestMapping("zipDown.do")
 	public ModelAndView fileDownMethod(HttpServletRequest request, ModelAndView mv) {
-		String path = request.getSession().getServletContext().getRealPath("resources/");
-		File renameFile = new File(path + "report_images.zip");
-		File originFile = new File("report_images.zip");
-
-
-		mv.setViewName("filedown");
-		mv.addObject("renameFile", renameFile);
-		mv.addObject("originFile", originFile);
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginUser") != null) {
+			User user = (User)session.getAttribute("loginUser");
+			if(user.getUser_admin() == "Y") {
+				String path = request.getSession().getServletContext().getRealPath("resources/");
+				File renameFile = new File(path + "report_images.zip");
+				File originFile = new File("report_images.zip");
 		
-		return mv;
 		
+				mv.setViewName("filedown");
+				mv.addObject("renameFile", renameFile);
+				mv.addObject("originFile", originFile);
+				
+				return mv;
+			} else {
+				mv.setViewName("user/login");
+				return mv;
+			}
+		} else {
+			mv.setViewName("user/login");
+			return mv;
+		}
 	}
 }
