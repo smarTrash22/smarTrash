@@ -52,76 +52,81 @@ public class UserController {
 	public ModelAndView myInfoMethod(HttpServletRequest request, ModelAndView mv, 
 									 @RequestParam(name="page", required=false) String page) {
 		HttpSession session = request.getSession();
-
+		
 		User user = (User)session.getAttribute("loginUser");
-		
-		ArrayList<Trash> tlist = userService.selectMytrash(user.getUser_no());
-
-		System.out.println("여기는 mypage.do, tlist" + tlist);
-		
-		int currentPage = 1;
-		if(page != null) {
-			currentPage = Integer.parseInt(page);
-		}
-		
-		//페이징 처리 -- 별도의 클래스로 작성해서 사용해도 됨 ------------------------------------------------------------------------------------
-		int limit = 5;  //한 페이지에 출력할 목록 갯수
-		//페이지 수 계산을 위해 총 목록갯수 조회
-		int listCount = userService.selectMygalListCount(user.getUser_no());
-		System.out.println("내가쓴 갤러리 수 listCount : " + listCount);
-		//페이지 수 계산
-		//주의 : 목록이 11개이면, 페이지 수는 2가 됨 (나머지 목록 1개도 페이지가 1개 필요함)
-		int maxPage = (int)((double)listCount / limit + 0.9);
-		System.out.println("maxPage : " + maxPage);
-		//현재 페이지가 포함된 페이지 그룹의 시작값 지정 (뷰 아래쪽에 표시할 페이지 수를 10개씩 한 경우)
-		int startPage = (int)((double)currentPage / 10 + 0.9);
-		System.out.println("startPage : " + startPage);
-		//현재 페이지가 포함된 페이지그룹의 끝 값
-		int endPage = startPage + 10 - 1;
-		System.out.println("endPage : " + endPage);
-		if(maxPage < endPage) {
-			endPage = maxPage;
-		}
-		
-		//쿼리문에 전달할 현재 페이지에 출력할 목록의 첫 행과 끝 행 객체 처리
-		int startRow = (currentPage - 1) * limit + 1;
-		System.out.println("쿼리문에 전달할 startRow : " + startRow);
-		int endRow = startRow + limit - 1;
-		System.out.println("쿼리문에 전달할 endRow : " + endRow);
-		Paging paging = new Paging(startRow, endRow);
-		
-		//별도의 클래스 작성 끝 ---------------------------------------------------------------------------------------------------------
-		
-		//서비스 메소드 실행하고 결과 받기
-		Map<String,Object> map = new HashMap<>();
-		map.put("user_no", user.getUser_no());
-		map.put("startRow", startRow);
-        map.put("endRow", endRow);
-		
-		ArrayList<Board> blist = userService.selectMygalList(map);
-		
-		if(blist != null && blist.size() > 0) {
-			mv.addObject("blist", blist);
-			mv.addObject("listCount", listCount);
-			mv.addObject("maxPage", maxPage);
-			mv.addObject("currentPage", currentPage);
-			mv.addObject("startPage", startPage);
-			mv.addObject("endPage", endPage);
-			mv.addObject("limit", limit);
+		if(user != null && user.getLogin_ok().equals("Y")) {
+			ArrayList<Trash> tlist = userService.selectMytrash(user.getUser_no());
+	
+			System.out.println("여기는 mypage.do, tlist" + tlist);
 			
+			int currentPage = 1;
+			if(page != null) {
+				currentPage = Integer.parseInt(page);
+			}
+			
+			//페이징 처리 -- 별도의 클래스로 작성해서 사용해도 됨 ------------------------------------------------------------------------------------
+			int limit = 5;  //한 페이지에 출력할 목록 갯수
+			//페이지 수 계산을 위해 총 목록갯수 조회
+			int listCount = userService.selectMygalListCount(user.getUser_no());
+			System.out.println("내가쓴 갤러리 수 listCount : " + listCount);
+			//페이지 수 계산
+			//주의 : 목록이 11개이면, 페이지 수는 2가 됨 (나머지 목록 1개도 페이지가 1개 필요함)
+			int maxPage = (int)((double)listCount / limit + 0.9);
+			System.out.println("maxPage : " + maxPage);
+			//현재 페이지가 포함된 페이지 그룹의 시작값 지정 (뷰 아래쪽에 표시할 페이지 수를 10개씩 한 경우)
+			int startPage = (int)((double)currentPage / 10 + 0.9);
+			System.out.println("startPage : " + startPage);
+			//현재 페이지가 포함된 페이지그룹의 끝 값
+			int endPage = startPage + 10 - 1;
+			System.out.println("endPage : " + endPage);
+			if(maxPage < endPage) {
+				endPage = maxPage;
+			}
+			
+			//쿼리문에 전달할 현재 페이지에 출력할 목록의 첫 행과 끝 행 객체 처리
+			int startRow = (currentPage - 1) * limit + 1;
+			System.out.println("쿼리문에 전달할 startRow : " + startRow);
+			int endRow = startRow + limit - 1;
+			System.out.println("쿼리문에 전달할 endRow : " + endRow);
+			Paging paging = new Paging(startRow, endRow);
+			
+			//별도의 클래스 작성 끝 ---------------------------------------------------------------------------------------------------------
+			
+			//서비스 메소드 실행하고 결과 받기
+			Map<String,Object> map = new HashMap<>();
+			map.put("user_no", user.getUser_no());
+			map.put("startRow", startRow);
+	        map.put("endRow", endRow);
+			
+			ArrayList<Board> blist = userService.selectMygalList(map);
+			
+			if(blist != null && blist.size() > 0) {
+				mv.addObject("blist", blist);
+				mv.addObject("listCount", listCount);
+				mv.addObject("maxPage", maxPage);
+				mv.addObject("currentPage", currentPage);
+				mv.addObject("startPage", startPage);
+				mv.addObject("endPage", endPage);
+				mv.addObject("limit", limit);
+				
+			}else {
+				mv.addObject("message", currentPage + "페이지 목록 조회 실패.");
+				mv.setViewName("common/error");
+			}
+			
+			if(user != null) {
+				mv.addObject("user", user);
+				mv.addObject("tlist", tlist);
+				System.out.println("tlist : " + tlist);
+				mv.setViewName("user/myPage");
+			}
+			
+			return mv;
 		}else {
-			mv.addObject("message", currentPage + "페이지 목록 조회 실패.");
+			mv.addObject("message", "로그인 가능 여부를 관리자에게 문의하세요.");
 			mv.setViewName("common/error");
+			return mv;
 		}
-		
-		if(user != null) {
-			mv.addObject("user", user);
-			mv.addObject("tlist", tlist);
-			System.out.println("tlist : " + tlist);
-			mv.setViewName("user/myPage");
-		}
-		
-		return mv;
 	}
 	
 	//닉네임 변경 팝업페이지
@@ -217,103 +222,112 @@ public class UserController {
 	//관리자페이지
 	@RequestMapping("manager.do")
 	public ModelAndView boardListMethod(@RequestParam(name="upage", required=false) String upage, @RequestParam(name="inpage", required=false) String inpage,
-										@RequestParam(name="rpage", required=false) String rpage, ModelAndView mv) {
-		System.out.println("받아온 upage : " + upage);
-		System.out.println("받아온 rpage : " + rpage);
-		int onPage = 1;
-		if(inpage != null) {
-			onPage = Integer.parseInt(inpage);
-		}
-
-		int rcurrentPage = 1;
-		if(rpage != null) {
-			rcurrentPage = Integer.parseInt(rpage);
-		}
-		int ucurrentPage = 1;
-		if(upage != null) {
-			ucurrentPage = Integer.parseInt(upage);
-		}
+										@RequestParam(name="rpage", required=false) String rpage, ModelAndView mv, HttpServletRequest request) {
+		HttpSession session = request.getSession();
 		
-		//신고된 쓰레기 페이징 처리 ---------------------------------------------------------------------------------------------------------
-		int rlimit = 12;  //한 페이지에 출력할 목록 갯수
-		//페이지 수 계산을 위해 총 목록갯수 조회
-		int rlistCount = userService.selectReportListCount();
-		System.out.println("신고된 쓰레기 수 :" + rlistCount);
-		//페이지 수 계산
-		//주의 : 목록이 11개이면, 페이지 수는 2가 됨 (나머지 목록 1개도 페이지가 1개 필요함)
-		int rmaxPage = (int)((double)rlistCount / rlimit + 0.9);
-		//현재 페이지가 포함된 페이지 그룹의 시작값 지정 (뷰 아래쪽에 표시할 페이지 수를 10개씩 한 경우)
-		int rstartPage = (int)((double)rcurrentPage / 10 + 0.9);
-		//현재 페이지가 포함된 페이지그룹의 끝 값
-		int rendPage = rstartPage + 10 - 1;
-		
-		if(rmaxPage < rendPage) {
-			rendPage = rmaxPage;
-		}
-		
-		//쿼리문에 전달할 현재 페이지에 출력할 목록의 첫 행과 끝 행 객체 처리
-		int rstartRow = (rcurrentPage - 1) * rlimit + 1;
-		int rendRow = rstartRow + rlimit - 1;
-		Paging rpaging = new Paging(rstartRow, rendRow);
-		System.out.println("리포트 페이징 startRow, endRow : " + rstartRow + ", " + rendRow);
-		
-		//신고된 쓰레기 페이징 끝 ---------------------------------------------------------------------------------------------------------
-		
-		//저장된 유저 페이징 처리 ---------------------------------------------------------------------------------------------------------
-		int ulimit = 10;  //한 페이지에 출력할 목록 갯수
-		//페이지 수 계산을 위해 총 목록갯수 조회
-		int ulistCount = userService.selectUserListCount();
-		System.out.println("저장된 유저 수 :" + ulistCount);
-		//페이지 수 계산
-		//주의 : 목록이 11개이면, 페이지 수는 2가 됨 (나머지 목록 1개도 페이지가 1개 필요함)
-		int umaxPage = (int)((double)ulistCount / ulimit + 0.9);
-		//현재 페이지가 포함된 페이지 그룹의 시작값 지정 (뷰 아래쪽에 표시할 페이지 수를 10개씩 한 경우)
-		int ustartPage = (int)((double)ucurrentPage / 10 + 0.9);
-		//현재 페이지가 포함된 페이지그룹의 끝 값
-		int uendPage = ustartPage + 10 - 1;
-		
-		if(umaxPage < uendPage) {
-			uendPage = umaxPage;
-		}
-		
-		//쿼리문에 전달할 현재 페이지에 출력할 목록의 첫 행과 끝 행 객체 처리
-		int ustartRow = (ucurrentPage - 1) * ulimit + 1;
-		int uendRow = ustartRow + ulimit - 1;
-		Paging upaging = new Paging(ustartRow, uendRow);
-		System.out.println("유저 페이징 startRow, endRow : " + ustartRow + ", " + uendRow);
-		
-		//저장된 유저 페이징 끝 ---------------------------------------------------------------------------------------------------------
-		
-		//서비스 메소드 실행하고 결과 받기
-		ArrayList<Board> rlist = userService.selectReportList(rpaging);
-		System.out.println("rlist : " + rlist);
-		ArrayList<User> ulist = userService.selectUserList(upaging);
+		User user = (User)session.getAttribute("loginUser");
+		if(user != null && user.getLogin_ok().equals("Y") && user.getUser_admin().equals("Y")) {
+			System.out.println("받아온 upage : " + upage);
+			System.out.println("받아온 rpage : " + rpage);
+			int onPage = 1;
+			if(inpage != null) {
+				onPage = Integer.parseInt(inpage);
+			}
 	
-		mv.addObject("rlist", rlist);
-		mv.addObject("rlistCount", rlistCount);
-		mv.addObject("rmaxPage", rmaxPage);
-		mv.addObject("rcurrentPage", rcurrentPage);
-		mv.addObject("rstartPage", rstartPage);
-		mv.addObject("rendPage", rendPage);
-		mv.addObject("rlimit", rlimit);	
-
-		mv.addObject("ulist", ulist);
-		mv.addObject("ulistCount", ulistCount);
-		mv.addObject("umaxPage", umaxPage);
-		mv.addObject("ucurrentPage", ucurrentPage);
-		mv.addObject("ustartPage", ustartPage);
-		mv.addObject("uendPage", uendPage);
-
-		ArrayList<Trash> tlist = userService.selectTodayTrash();
-		ArrayList<Trash> trlist = userService.selectTodayReportTrash();
-
-		mv.addObject("tlist", tlist);
-		mv.addObject("trlist", trlist);
-		mv.addObject("onPage", onPage);
-		System.out.println("mv : " + mv);
-		mv.setViewName("user/managerPage");
+			int rcurrentPage = 1;
+			if(rpage != null) {
+				rcurrentPage = Integer.parseInt(rpage);
+			}
+			int ucurrentPage = 1;
+			if(upage != null) {
+				ucurrentPage = Integer.parseInt(upage);
+			}
+			
+			//신고된 쓰레기 페이징 처리 ---------------------------------------------------------------------------------------------------------
+			int rlimit = 12;  //한 페이지에 출력할 목록 갯수
+			//페이지 수 계산을 위해 총 목록갯수 조회
+			int rlistCount = userService.selectReportListCount();
+			System.out.println("신고된 쓰레기 수 :" + rlistCount);
+			//페이지 수 계산
+			//주의 : 목록이 11개이면, 페이지 수는 2가 됨 (나머지 목록 1개도 페이지가 1개 필요함)
+			int rmaxPage = (int)((double)rlistCount / rlimit + 0.9);
+			//현재 페이지가 포함된 페이지 그룹의 시작값 지정 (뷰 아래쪽에 표시할 페이지 수를 10개씩 한 경우)
+			int rstartPage = (int)((double)rcurrentPage / 10 + 0.9);
+			//현재 페이지가 포함된 페이지그룹의 끝 값
+			int rendPage = rstartPage + 10 - 1;
+			
+			if(rmaxPage < rendPage) {
+				rendPage = rmaxPage;
+			}
+			
+			//쿼리문에 전달할 현재 페이지에 출력할 목록의 첫 행과 끝 행 객체 처리
+			int rstartRow = (rcurrentPage - 1) * rlimit + 1;
+			int rendRow = rstartRow + rlimit - 1;
+			Paging rpaging = new Paging(rstartRow, rendRow);
+			System.out.println("리포트 페이징 startRow, endRow : " + rstartRow + ", " + rendRow);
+			
+			//신고된 쓰레기 페이징 끝 ---------------------------------------------------------------------------------------------------------
+			
+			//저장된 유저 페이징 처리 ---------------------------------------------------------------------------------------------------------
+			int ulimit = 10;  //한 페이지에 출력할 목록 갯수
+			//페이지 수 계산을 위해 총 목록갯수 조회
+			int ulistCount = userService.selectUserListCount();
+			System.out.println("저장된 유저 수 :" + ulistCount);
+			//페이지 수 계산
+			//주의 : 목록이 11개이면, 페이지 수는 2가 됨 (나머지 목록 1개도 페이지가 1개 필요함)
+			int umaxPage = (int)((double)ulistCount / ulimit + 0.9);
+			//현재 페이지가 포함된 페이지 그룹의 시작값 지정 (뷰 아래쪽에 표시할 페이지 수를 10개씩 한 경우)
+			int ustartPage = (int)((double)ucurrentPage / 10 + 0.9);
+			//현재 페이지가 포함된 페이지그룹의 끝 값
+			int uendPage = ustartPage + 10 - 1;
+			
+			if(umaxPage < uendPage) {
+				uendPage = umaxPage;
+			}
+			
+			//쿼리문에 전달할 현재 페이지에 출력할 목록의 첫 행과 끝 행 객체 처리
+			int ustartRow = (ucurrentPage - 1) * ulimit + 1;
+			int uendRow = ustartRow + ulimit - 1;
+			Paging upaging = new Paging(ustartRow, uendRow);
+			System.out.println("유저 페이징 startRow, endRow : " + ustartRow + ", " + uendRow);
+			
+			//저장된 유저 페이징 끝 ---------------------------------------------------------------------------------------------------------
+			
+			//서비스 메소드 실행하고 결과 받기
+			ArrayList<Board> rlist = userService.selectReportList(rpaging);
+			System.out.println("rlist : " + rlist);
+			ArrayList<User> ulist = userService.selectUserList(upaging);
 		
-		return mv;
+			mv.addObject("rlist", rlist);
+			mv.addObject("rlistCount", rlistCount);
+			mv.addObject("rmaxPage", rmaxPage);
+			mv.addObject("rcurrentPage", rcurrentPage);
+			mv.addObject("rstartPage", rstartPage);
+			mv.addObject("rendPage", rendPage);
+			mv.addObject("rlimit", rlimit);	
+	
+			mv.addObject("ulist", ulist);
+			mv.addObject("ulistCount", ulistCount);
+			mv.addObject("umaxPage", umaxPage);
+			mv.addObject("ucurrentPage", ucurrentPage);
+			mv.addObject("ustartPage", ustartPage);
+			mv.addObject("uendPage", uendPage);
+	
+			ArrayList<Trash> tlist = userService.selectTodayTrash();
+			ArrayList<Trash> trlist = userService.selectTodayReportTrash();
+	
+			mv.addObject("tlist", tlist);
+			mv.addObject("trlist", trlist);
+			mv.addObject("onPage", onPage);
+			System.out.println("mv : " + mv);
+			mv.setViewName("user/managerPage");
+			
+			return mv;
+		} else {
+			mv.addObject("message", "관리자 여부를 확인하세요.");
+			mv.setViewName("common/error");
+			return mv;
+		}
 	}
 	
 	//마이페이지에서 내가쓴 갤러리 상세페이지 이동용
