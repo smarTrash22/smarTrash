@@ -334,7 +334,7 @@
 									</ul>
 								</div>
 								<div style="float:right; border-radius:5px 5px; background-color:orange; font-size:15px;">
-									<a class="nav-link" href="udel.do" style="color:white" >이미지 전체 저장</a>
+									<a class="nav-link" href="zipSet.do" style="color:white" >이미지 전체 저장</a>
 								</div>
 							</div>
 						</div>
