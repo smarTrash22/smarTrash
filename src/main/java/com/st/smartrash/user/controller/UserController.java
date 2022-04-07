@@ -59,7 +59,7 @@ public class UserController {
 		HttpSession session = request.getSession();
 		
 		User user = (User)session.getAttribute("loginUser");
-		if(user != null && user.getLogin_ok().equals("Y")) {
+		if(user != null) {
 			ArrayList<Trash> tlist = userService.selectMytrash(user.getUser_no());
 	
 			System.out.println("여기는 mypage.do, tlist" + tlist);
@@ -370,16 +370,28 @@ public class UserController {
 
 	//로그인 제한/가능 변경 처리용
 	@RequestMapping(value="loginok.do", method=RequestMethod.POST)
-	public void changeLoginOKMethod(@RequestParam("user_email") String user_email, HttpServletResponse response) throws IOException {
+	public void changeLoginOKMethod(@RequestParam("user_email") String user_email, @RequestParam("login_ok") String login_ok, HttpServletResponse response) throws IOException {
 		logger.info("여기는 loginok.do : " + user_email);
 		if(userService.selectUser(user_email).getUser_admin().equals("Y")) {
+			System.out.println("나는 와이");
 			response.setContentType("text/html; charset=utf-8"); // 문자는 html로 utf-8 형식으로
 			PrintWriter out = response.getWriter();
 			out.append("no");
 			out.flush();
 			out.close();
 		}else {
-			if(userService.updateLoginOK(userService.selectUser(user_email)) > 0) {
+			
+			if(login_ok.equals("true")) {
+				login_ok = "Y";
+			} else if(login_ok.equals("false")) {
+				login_ok = "N";
+			}
+			
+			Map<String, String> map = new HashMap<>();
+			map.put("login_ok", login_ok);
+			map.put("user_email", user_email);
+			
+			if(userService.updateLoginOK(map) > 0) {
 				response.setContentType("text/html; charset=utf-8"); // 문자는 html로 utf-8 형식으로
 				PrintWriter out = response.getWriter();
 				out.append("ok");

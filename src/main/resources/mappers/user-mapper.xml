@@ -83,7 +83,7 @@
 	</select>
 	
 	<insert id="insertUser" parameterType="User">
-		insert into t_user values(T_UN_S.nextval, #{ user_email }, #{ user_name }, default, default, 'N')
+		insert into t_user values(T_UN_S.nextval, #{ user_email }, #{ user_name }, default, default, default)
 	</insert>
 	
 	<select id="selectUser" parameterType="String" resultType="User">
@@ -102,8 +102,8 @@
 		set user_email = '탈퇴한이메일',
 			user_name = '탈퇴한아이디',
 			user_admin = 'N',
-			user_date = DEFAULT,
-			login_ok = 'N'
+			user_date = default,
+			login_ok = default
 		where user_email = #{ user_email }
 	</update>
 	

@@ -186,8 +186,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public int updateLoginOK(User user) {
-		return userDao.updateLoginOK(user);
+	public int updateLoginOK(Map<String, String> map) {
+		return userDao.updateLoginOK(map);
 	}
 	
 	@Override

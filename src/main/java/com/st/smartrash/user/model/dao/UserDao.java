@@ -74,8 +74,8 @@ public class UserDao {
 		return (ArrayList<Board>)list;
 	}
 
-	public int updateLoginOK(User user) {
-		return session.update("userMapper.updateLoginOK", user);
+	public int updateLoginOK(Map<String, String> map) {
+		return session.update("userMapper.updateLoginOK", map);
 	}
 
 	public int selectReportListCount() {

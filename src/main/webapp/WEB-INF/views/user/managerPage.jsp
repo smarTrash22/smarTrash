@@ -24,12 +24,14 @@
 		<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.0.min.js" ></script>
 		<script type="text/javascript">		
 			function changeLogin(element){
+				console.log(element);
 				var user_email = element.name.substring(8);
 				$.ajax({
 					url: "loginok.do", 
 					type: "post",
 					/* data: { user_email: $("#user_email").val() }, */
-					data: { user_email: element.name.substring(8) },
+					data: { user_email: element.name.substring(8),
+							login_ok: element.value },
 					success: function(data){  //성공했을때 실행될 함수
 						console.log("success : " + data); 
 						if(data == "ok"){

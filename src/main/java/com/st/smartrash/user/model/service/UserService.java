@@ -41,7 +41,7 @@ public interface UserService {
 
 	ArrayList<Board> selectReportList(Paging page);
 	
-	int updateLoginOK(User user);
+	int updateLoginOK(Map<String, String> map);
 
 	int selectMygalListCount(int user_no);
 
