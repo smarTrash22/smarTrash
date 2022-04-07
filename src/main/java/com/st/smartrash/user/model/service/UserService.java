@@ -2,6 +2,7 @@ package com.st.smartrash.user.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.st.smartrash.board.model.vo.Board;
 import com.st.smartrash.common.Paging;
@@ -24,9 +25,9 @@ public interface UserService {
 
 	int deleteUser(String user_email);
 
-	ArrayList<Trash> selectLatest5(int user_no);
+	ArrayList<Trash> selectLatest(int user_no);
 
-	ArrayList<Board> selectMygal5(int user_no);
+	ArrayList<Board> selectMygal(int user_no);
 
 	int updateAdmin(User user);
 
@@ -43,5 +44,9 @@ public interface UserService {
 	ArrayList<Board> selectReportList(Paging page);
 	
 	int updateLoginOK(User user);
+
+	int selectMygalListCount(int user_no);
+
+	ArrayList<Board> selectMygalList(Map<String, Object> map);
 
 }

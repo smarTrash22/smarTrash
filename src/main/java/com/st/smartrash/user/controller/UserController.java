@@ -1,9 +1,12 @@
 package com.st.smartrash.user.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -99,21 +102,93 @@ public class UserController {
 		return "common/main";
 	}
 	
+	/*
+	 * @RequestMapping("mypage.do") public ModelAndView
+	 * myInfoMethod(HttpServletRequest request, ModelAndView mv) { HttpSession
+	 * session = request.getSession();
+	 * 
+	 * User user = (User)session.getAttribute("loginUser");
+	 * 
+	 * ArrayList<Board> blist = userService.selectMygal5(user.getUser_no());
+	 * ArrayList<Trash> tlist = userService.selectLatest5(user.getUser_no());
+	 * 
+	 * System.out.println("여기는 mypage.do, blist" + blist);
+	 * System.out.println("여기는 mypage.do, tlist" + tlist);
+	 * 
+	 * if(user != null) { mv.addObject("user", user); mv.addObject("blist", blist);
+	 * mv.addObject("tlist", tlist); mv.setViewName("user/myPage"); }
+	 * 
+	 * return mv; }
+	 */
+	
 	@RequestMapping("mypage.do")
-	public ModelAndView myInfoMethod(HttpServletRequest request, ModelAndView mv) {
+	public ModelAndView myInfoMethod(HttpServletRequest request, ModelAndView mv, 
+									 @RequestParam(name="page", required=false) String page) {
 		HttpSession session = request.getSession();
 
 		User user = (User)session.getAttribute("loginUser");
 		
-		ArrayList<Board> blist = userService.selectMygal5(user.getUser_no());
-		ArrayList<Trash> tlist = userService.selectLatest5(user.getUser_no());
-		
-		System.out.println("여기는 mypage.do, blist" + blist);
+		ArrayList<Trash> tlist = userService.selectLatest(user.getUser_no());
+
 		System.out.println("여기는 mypage.do, tlist" + tlist);
+		
+		int currentPage = 1;
+		if(page != null) {
+			currentPage = Integer.parseInt(page);
+		}
+		
+		//페이징 처리 -- 별도의 클래스로 작성해서 사용해도 됨 ------------------------------------------------------------------------------------
+		int limit = 5;  //한 페이지에 출력할 목록 갯수
+		//페이지 수 계산을 위해 총 목록갯수 조회
+		int listCount = userService.selectMygalListCount(user.getUser_no());
+		System.out.println("내가쓴 갤러리 수 listCount : " + listCount);
+		//페이지 수 계산
+		//주의 : 목록이 11개이면, 페이지 수는 2가 됨 (나머지 목록 1개도 페이지가 1개 필요함)
+		int maxPage = (int)((double)listCount / limit + 0.9);
+		System.out.println("maxPage : " + maxPage);
+		//현재 페이지가 포함된 페이지 그룹의 시작값 지정 (뷰 아래쪽에 표시할 페이지 수를 10개씩 한 경우)
+		int startPage = (int)((double)currentPage / 10 + 0.9);
+		System.out.println("startPage : " + startPage);
+		//현재 페이지가 포함된 페이지그룹의 끝 값
+		int endPage = startPage + 10 - 1;
+		System.out.println("endPage : " + endPage);
+		if(maxPage < endPage) {
+			endPage = maxPage;
+		}
+		
+		//쿼리문에 전달할 현재 페이지에 출력할 목록의 첫 행과 끝 행 객체 처리
+		int startRow = (currentPage - 1) * limit + 1;
+		System.out.println("쿼리문에 전달할 startRow : " + startRow);
+		int endRow = startRow + limit - 1;
+		System.out.println("쿼리문에 전달할 endRow : " + endRow);
+		Paging paging = new Paging(startRow, endRow);
+		
+		//별도의 클래스 작성 끝 ---------------------------------------------------------------------------------------------------------
+		
+		//서비스 메소드 실행하고 결과 받기
+		Map<String,Object> map = new HashMap<>();
+		map.put("user_no", user.getUser_no());
+		map.put("startRow", startRow);
+        map.put("endRow", endRow);
+		
+		ArrayList<Board> blist = userService.selectMygalList(map);
+		
+		if(blist != null && blist.size() > 0) {
+			mv.addObject("blist", blist);
+			mv.addObject("listCount", listCount);
+			mv.addObject("maxPage", maxPage);
+			mv.addObject("currentPage", currentPage);
+			mv.addObject("startPage", startPage);
+			mv.addObject("endPage", endPage);
+			mv.addObject("limit", limit);
+			
+		}else {
+			mv.addObject("message", currentPage + "페이지 목록 조회 실패.");
+			mv.setViewName("common/error");
+		}
 		
 		if(user != null) {
 			mv.addObject("user", user);
-			mv.addObject("blist", blist);
 			mv.addObject("tlist", tlist);
 			mv.setViewName("user/myPage");
 		}
@@ -192,7 +267,7 @@ public class UserController {
 		User user = (User)session.getAttribute("loginUser");
 		System.out.println("여기는 latest5.do, 받은 세션user : " + user);
 		
-		ArrayList<Trash> list = userService.selectLatest5(user.getUser_no());
+		ArrayList<Trash> list = userService.selectLatest(user.getUser_no());
 		
 		//전송용 json 객체 준비
 		JSONObject sendJson = new JSONObject();
@@ -224,7 +299,7 @@ public class UserController {
 		User user = (User)session.getAttribute("loginUser");
 		System.out.println("여기는 mygal5.do, 받은 세션user : " + user);
 		
-		ArrayList<Board> list = userService.selectMygal5(user.getUser_no());
+		ArrayList<Board> list = userService.selectMygal(user.getUser_no());
 		System.out.println("mg5 list 검사 : " + list);
 		//전송용 json 객체 준비
 		JSONObject sendJson = new JSONObject();
@@ -319,7 +394,7 @@ public class UserController {
 		}
 		
 		//페이징 처리 -- 별도의 클래스로 작성해서 사용해도 됨 ------------------------------------------------------------------------------------
-		int limit = 9;  //한 페이지에 출력할 목록 갯수
+		int limit = 12;  //한 페이지에 출력할 목록 갯수
 		//페이지 수 계산을 위해 총 목록갯수 조회
 		int listCount = userService.selectReportListCount();
 		//페이지 수 계산
@@ -342,10 +417,10 @@ public class UserController {
 		//별도의 클래스 작성 끝 ---------------------------------------------------------------------------------------------------------
 		
 		//서비스 메소드 실행하고 결과 받기
-		ArrayList<Board> list = userService.selectReportList(paging);
+		ArrayList<Board> rlist = userService.selectReportList(paging);
 		
-		if(list != null && list.size() > 0) {
-			mv.addObject("list", list);
+		if(rlist != null && rlist.size() > 0) {
+			mv.addObject("list", rlist);
 			mv.addObject("listCount", listCount);
 			mv.addObject("maxPage", maxPage);
 			mv.addObject("currentPage", currentPage);
@@ -353,7 +428,6 @@ public class UserController {
 			mv.addObject("endPage", endPage);
 			mv.addObject("limit", limit);
 			
-			mv.setViewName("user/boardListView");
 		}else {
 			mv.addObject("message", currentPage + "페이지 목록 조회 실패.");
 			mv.setViewName("common/error");
@@ -361,10 +435,7 @@ public class UserController {
 		
 		ArrayList<User> ulist = userService.selectUserList();
 		ArrayList<Trash> tlist = userService.selectTodayTrash();
-		ArrayList<Trash> rlist = userService.selectReportTrash();
 		ArrayList<Trash> trlist = userService.selectTodayReportTrash();
-		
-		System.out.println("여기는 manager.do : " + rlist);
 
 		mv.addObject("ulist", ulist);
 		mv.addObject("tlist", tlist);
@@ -376,7 +447,7 @@ public class UserController {
 	}
 	
 	@RequestMapping("mbdetail.do")
-	public ModelAndView boardDetailMethod(HttpServletRequest request, ModelAndView mv,@RequestParam("board_no") int board_no) {
+	public ModelAndView boardDetailMethod(HttpServletRequest request, ModelAndView mv, @RequestParam("board_no") int board_no) {
 		
 		//댓글 리스트 저장-------
 		ArrayList<Board> list = boardService.selectReplyList(board_no);
@@ -415,6 +486,28 @@ public class UserController {
 			model.addAttribute("message", "로그인 제한/허용 처리 오류 발생!");
 			return "common/error";
 		}
-		
 	}
+	
+	//로그인 제한/가능 변경 처리용
+		@RequestMapping(value="loginok1.do", method=RequestMethod.POST)
+		public void changeLoginOKMethod1(@RequestParam("user_email") String user_email, HttpServletResponse response) throws IOException {
+			logger.info("여기는 loginok1.do : " + user_email);
+			if(userService.selectUser(user_email).getUser_admin().equals("Y")) {
+				response.setContentType("text/html; charset=utf-8"); // 문자는 html로 utf-8 형식으로
+				PrintWriter out = response.getWriter();
+				out.append("no");
+				out.flush();
+				out.close();
+			}else {
+				if(userService.updateLoginOK(userService.selectUser(user_email)) > 0) {
+					response.setContentType("text/html; charset=utf-8"); // 문자는 html로 utf-8 형식으로
+					PrintWriter out = response.getWriter();
+					out.append("ok");
+					out.flush();
+					out.close();
+				}else {
+					System.out.println("변경 실패");
+				}
+			}
+		}
 }

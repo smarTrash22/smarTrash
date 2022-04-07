@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 //import org.codehaus.jackson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,13 +146,13 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public ArrayList<Trash> selectLatest5(int user_no) {
-		return userDao.selectLatest5(user_no);
+	public ArrayList<Trash> selectLatest(int user_no) {
+		return userDao.selectLatest(user_no);
 	}
 	
 	@Override
-	public ArrayList<Board> selectMygal5(int user_no) {
-		return userDao.selectMygal5(user_no);
+	public ArrayList<Board> selectMygal(int user_no) {
+		return userDao.selectMygal(user_no);
 	}
 	
 	@Override
@@ -185,12 +186,22 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public ArrayList<Board> selectReportList(Paging page) {
+	public ArrayList<Board> selectReportList(Paging page) { //신고된트래시리스트 가져오는데 보드를 가져온다고?
 		return userDao.selectReportList(page);
 	}
 	
 	@Override
 	public int updateLoginOK(User user) {
 		return userDao.updateLoginOK(user);
+	}
+	
+	@Override
+	public int selectMygalListCount(int user_no) {
+		return userDao.selectMygalListCount(user_no);
+	}
+	
+	@Override
+	public ArrayList<Board> selectMygalList(Map<String, Object> map){
+		return userDao.selectMygalList(map);
 	}
 }
