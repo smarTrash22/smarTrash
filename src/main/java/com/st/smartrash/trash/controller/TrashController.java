@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.st.smartrash.board.model.vo.Board;
 import com.st.smartrash.category.model.vo.Category;
 import com.st.smartrash.common.CategoryTranslation;
 import com.st.smartrash.common.Paging;
@@ -217,6 +218,8 @@ public class TrashController {
 			return "common/error";
 		}
 	}
+	
+	//
 
 	@RequestMapping(value = "selectRecentList.do", method = RequestMethod.POST)
 	@ResponseBody // responsebody에 담아서 보낸다
@@ -249,22 +252,27 @@ public class TrashController {
 		return sendJson.toJSONString();
 		// 뷰리졸버에게로 리턴됨
 	}
-
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
+	@RequestMapping(value = "trashReport.do", method = RequestMethod.POST)
+	public String trashUpdatePath(HttpServletRequest request, Model model, @RequestParam("trash_path") String trash_path) {
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginUser") != null) {
+			Trash trash = trashService.searchTrashPath(trash_path);
+			
+			System.out.println(trash.toString());
+			
+			if (trashService.updateTrashReport(trash.getTrash_no()) > 0) {
+				ArrayList<Trash> trash_list = trashService.selectTrashNewTop();
+				ArrayList<Trash> category_list = trashService.selectTrashNewTop();
+				model.addAttribute("trash_list", trash_list);
+				model.addAttribute("category_list", category_list);
+				return "common/main";
+			} else {
+				model.addAttribute("message", "[" + trash.getTrash_no() + "]번 쓰레기 수정 실패");
+				return "common/error";
+			}
+		} else {
+			return "common/main";
+		}
+	}
 }

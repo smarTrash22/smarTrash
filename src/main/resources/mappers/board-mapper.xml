@@ -51,14 +51,11 @@
 		]]>
 	</select>
 	
-	
-	
-<!-- 	
 	<insert id="insertOriginBoard" parameterType="Board" >
-		insert into board 	
-		values (T_BN_S.NEXTVAL, T_BN_S.CURRVAL, #{trash_no},#{user_no}, #{board_content}, #{hashtag}, DEFAULT, DEFAULT);		
+		insert into t_board 	
+		values (T_BN_S.NEXTVAL, T_BN_S.CURRVAL, #{trash_no}, #{user_no}, #{board_content}, #{hashtag}, DEFAULT, DEFAULT)	
 	</insert>
- -->
+	
 	<update id="addReadCount" parameterType="_int">
 		<![CDATA[
 		update t_board 

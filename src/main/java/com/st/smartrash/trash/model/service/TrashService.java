@@ -32,6 +32,9 @@ public interface TrashService {
 	// 쓰레기 파일 이름으로 검색
 	Trash searchTrashPath(String keyword);
 	
+	// 쓰레기 신고하기
+	int updateTrashReport(int trash_no);
+	
 	// 신고된 쓰레기 검색
 	ArrayList<Trash> selectSearchReport(String keyword);
 	

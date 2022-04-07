@@ -29,54 +29,23 @@
 				width: 500px;
 				right: 25px;
 			}
-			/* .button1 {
-			
-			  background-color: blue;
-			 width: 500px;
-			  border: none;
-			
-			  color: white;
-			
-			  padding: 15px 30px;
-			
-			  text-align: center;
-			
-			  text-decoration: none;
-			
-			  display: inline-block;
-			
-			  font-size: 16px;
-			
-			  margin: 4px 2px;
-			
-			  cursor: pointer;
-			
-			} */
 		</style>
+		<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.0.min.js"></script>
 		<script type="text/javascript">
-			//클래스 이름 설정/변경
-			function button1() {
-				document.getElementById('comment').className = 'collapse show';
-				document.getElementById('comment2').className = 'collapse';
-			}
-		
-			function button2() {
-				document.getElementById('comment').className = 'collapse show';
-				document.getElementById('comment2').className = 'collapse';
-			}
+			$(function() {
+				$("#button1").click(function(){
+					document.getElementById('content1').style.display = "block";
+					document.getElementById('content2').style.display = "none";
+					console.log("1");
+				});
+				
+				$("#button2").click(function(){
+					document.getElementById('content1').style.display = "none";
+					document.getElementById('content2').style.display = "block";
+					console.log("2");
+				});
+			});
 		</script>
-
-		<%-- 쓰레기 파일 : ${ trash_path }
-		<br> 카테고리 : [${ category.category_no }, ${ category.category_name },
-		${ category.category_content }, ${ category.category_tip }]
-		<br> 카테고리 리스트
-		<br> --%>
-		<%-- <c:forEach items="${ requestScope.category_list }" var="cl">
-		${ cl.category_no }, ${ cl.category_name }, ${ cl.category_content }, ${ cl.category_tip }] <br>
-		</c:forEach> --%>
-		<%-- 유저 : [${ sessionScope.loginUser.user_no }, ${ sessionScope.loginUser.user_email },
-		${ sessionScope.loginUser.user_name }, ${ sessionScope.loginUser.user_admin },
-		${ sessionScope.loginUser.user_date }] --%>
 	</head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
@@ -119,25 +88,67 @@
 									<p class="card-text mb-auto">${ category.category_tip }</p>	
 						        </div>
 							</div>
-							<div class="row mt-5">
-								<div class="col d-flex flex-column position-static text-md-end">
-									<div>
-										<button type="button" class="btn btn-lg btn-primary"
-											onclick="button1();" style="height: 50px; width: 300px">
-											<b>검사 갤러리에 공유하기</b>
-										</button>
+							<c:if test="${ !empty sessionScope.loginUser }">
+								<div class="row mt-5">
+									<div id="content" class="show">
+										<div id="content1" class="hide" style="display: none;">
+											<div class="text-center">
+												<form action="binsert.do" method="POST">
+													<div class="form-floating mb-1">
+														<input class="form-control" id="board_content" type="text" name="board_content" items=${ board.board_content } />
+														<label for="board_content">내용</label>
+													</div>
+													<div class="form-floating mb-3">
+														<input class="form-control" id="hashtag" type="text" name="hashtag" value="#${ category.category_name_kor }, #${ sessionScope.loginUser.user_email }, " />
+														<label for="hashtag">태그</label>
+													</div>
+													<div class="mb-5">
+														<div class="">
+															<input type="hidden" name="trash_path" value="${ trash_path }" />
+															<input class="btn btn-primary " type="submit" value="등록">
+															<input class="btn btn-secondary " type="reset" value="취소">
+														</div>
+													</div>
+												</form>
+											</div>
+										</div>
+										<div id="content2" class="hide" style="display: none;">
+											<div class="text-center mb-5">
+												<form action="trashReport.do" method="post">
+													<input type="hidden" name="trash_path" value="${ trash_path }" />
+													<input type="submit" name="submit" class="btn btn-lg btn-danger" value="신고하기 확인" />
+												</form>
+											</div>
+										</div>
 									</div>
-									<br>
+									<div class="col d-flex flex-column position-static text-md-end">
+										<div>
+											<button id="button1" type="button" class="btn btn-lg btn-primary" style="height: 50px; width: 300px">
+												<b>검사 갤러리에 공유하기</b>
+											</button>
+										</div>
+										<br>
+									</div>
+									<div class="col d-flex flex-column position-static text-md-start">
+										<div>
+											<button id="button2" type="button" class="btn btn-lg btn-danger" style="height: 50px; width: 300px">
+												<b>잘못된 분류로 신고하기</b>
+											</button>
+										</div>
+							        </div>
 								</div>
-								<div class="col d-flex flex-column position-static text-md-start">
-									<div>
-										<button type="button" class="btn btn-lg btn-danger"
-											onclick="button2();" style="height: 50px; width: 300px">
-											<b>잘못된 분류로 신고하기</b>
-										</button>
-									</div>
-						        </div>
-							</div>
+							</c:if>
+							<c:if test="${ empty sessionScope.loginUser }">
+								<div class="row mt-5">
+									<div class="col d-flex flex-column position-static text-md-start">
+										<div class="text-md-center">
+											<button id="button2" type="button" class="btn btn-secondary btn-lg" onclick="location.href='main.do'" style="height: 50px; width: 300px">
+												<b>메인으로</b>
+											</button>
+										</div>
+							        </div>
+								</div>
+							</c:if>
 						</div>
 					</div>
 				</div>

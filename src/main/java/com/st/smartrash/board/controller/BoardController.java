@@ -1,27 +1,29 @@
 package com.st.smartrash.board.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import org.springframework.web.servlet.ModelAndView;
 
 import com.st.smartrash.board.model.service.BoardService;
 import com.st.smartrash.board.model.vo.Board;
 import com.st.smartrash.common.Paging;
-import com.st.smartrash.notice.model.vo.Notice;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.st.smartrash.trash.model.service.TrashService;
+import com.st.smartrash.trash.model.vo.Trash;
+import com.st.smartrash.user.model.vo.User;
 
 @Controller
 public class BoardController {
@@ -30,6 +32,9 @@ public class BoardController {
 
 	@Autowired
 	private BoardService boardService;
+	
+	@Inject
+	private TrashService trashService;
 
 	@RequestMapping("boardlist.do")
 	public ModelAndView boardListMethod(HttpServletRequest request,
@@ -111,7 +116,30 @@ public class BoardController {
 
 		return mv;
 	}
+	
+	@RequestMapping(value = "binsert.do", method = RequestMethod.POST)
+	public String insertOriginMethod(HttpServletRequest request, @RequestParam("trash_path") String trash_path, Board board, Model model) {
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginUser") != null) {
 
+			Trash trash = trashService.searchTrashPath(trash_path);
+			User user = (User)session.getAttribute("loginUser");
+			
+			board.setTrash_no(trash.getTrash_no());
+			board.setUser_no(user.getUser_no());
+	
+			if (boardService.insertOriginBoard(board) > 0) {
+				return "redirect:boardlist.do?page=1";
+			} else {
+				model.addAttribute("message", board.getBoard_ref() + "번 글에 대한 댓글 등록 실패");
+				return "common/error";
+			}
+		} else {
+			return "common/main";
+		}
+	}
+	
+	
 	@RequestMapping(value = "breply.do", method = RequestMethod.POST)
 	public String replyInsertMethod(Board reply, @RequestParam("board_ref") int board_ref,
 			@RequestParam("user_no") int user_no, @RequestParam("page") int page,

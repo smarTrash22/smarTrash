@@ -97,4 +97,9 @@ public class TrashServiceImpl implements TrashService {
 	public int deleteTrash(int trash_no) {
 		return trashDao.deleteTrash(trash_no);
 	}
+	
+	@Override
+	public int updateTrashReport(int trash_no) {
+		return trashDao.updateTrashReport(trash_no);
+	}
 }

@@ -131,29 +131,27 @@ textarea#t2 {
 						</c:forTokens>
 					</b></td>
 					<td align="right" class="td1" colspan="3">
-					<c:if test="${ board.user_no eq loginUser.user_no }">
+					<c:if test="${ board.user_no eq loginUser.user_no or loginUser.user_admin == 'Y' }">
 						<c:url var="bup" value="bupdate.do">
 							<c:param name="board_no" value="${ board.board_no }"/>
 							<c:param name="page" value="${ currentPage }"/>
 						</c:url>
-						<button type="button" class="btn btn-secondary" onclick="location.href='${bup}'">수정</button>&nbsp;
+						<button type="button" class="btn btn-secondary" onclick="location.href='${bup}'">
+							<c:if test="${ board.user_no ne loginUser.user_no and loginUser.user_admin == 'Y' }">
+								관리자
+							</c:if>
+							수정
+						</button>&nbsp;
 						<c:url var="bdt" value="boarddelete.do">
 							<c:param name="board_no" value="${ board.board_no }"/>
 							<c:param name="page" value="${ currentPage }"/>
 						</c:url>
-						<button class="btn btn-danger" type="button" onclick="location.href='${bdt}'">삭제</button>&nbsp;
-					</c:if>
-					<c:if test="${ loginUser.user_admin == 'Y' }">
-						<c:url var="bup" value="bupdate.do">
-							<c:param name="board_no" value="${ board.board_no }"/>
-							<c:param name="page" value="${ currentPage }"/>
-						</c:url>
-						<button type="button" class="btn btn-secondary" onclick="location.href='${bup}'">수정</button>&nbsp;
-						<c:url var="bdt" value="boarddelete.do">
-							<c:param name="board_no" value="${ board.board_no }"/>
-							<c:param name="page" value="${ currentPage }"/>
-						</c:url>
-						<button class="btn btn-danger" type="button" onclick="location.href='${bdt}'">삭제</button>&nbsp;
+						<button class="btn btn-danger" type="button" onclick="location.href='${bdt}'">
+							<c:if test="${ board.user_no ne loginUser.user_no and loginUser.user_admin == 'Y' }">
+								관리자
+							</c:if>
+							삭제
+						</button>&nbsp;
 					</c:if>
 						<button class="btn btn-primary" type="button" onclick="location.href='boardlist.do?page=${ currentPage }'">돌아가기</button>
 					</td>
@@ -202,7 +200,7 @@ textarea#t2 {
 							</c:url>
 							<a href="${ rdt }">삭제하기</a> &nbsp;
 						</c:if>
-							<a href="">댓글달기</a>&nbsp;
+							<!-- <a href="">댓글달기</a>&nbsp; -->
 						</div>
 						</td>
 					</tr>

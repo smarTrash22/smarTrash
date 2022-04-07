@@ -81,6 +81,13 @@
 		where trash_path = #{ keyword }
 	</select>
 	
+	<!-- 쓰레기 신고하기 -->
+	<update id="updateTrashReport" parameterType="_int">
+		UPDATE T_TRASH
+		SET REPORT = 'Y' 
+		WHERE TRASH_NO = #{ TRASH_NO }
+	</update>
+	
 	<!-- 신고된 쓰레기 조회 -->
 	<select id="searchReport" parameterType="String"
 		resultMap="resultList">
@@ -88,6 +95,7 @@
 		where report = #{ keyword }
 	</select>
 	
+	<!-- 쓰레기 삭제 -->
 	<delete id="deleteTrash" parameterType="_int">
 		delete from t_trash 
 		where trash_no = #{ trash_no }	

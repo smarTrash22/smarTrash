@@ -47,7 +47,7 @@ public class BoardDao {
 	}
 
 	public int insertOriginBoard(Board board) {
-		return 0;
+		return session.insert("boardMapper.insertOriginBoard", board);
 	}
 
 	public int insertReply(Board reply) {

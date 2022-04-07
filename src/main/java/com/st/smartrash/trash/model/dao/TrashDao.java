@@ -68,6 +68,11 @@ public class TrashDao {
 		return session.selectOne("trashMapper.searchTrashPath", keyword);
 	}
 
+	// 쓰레기 신고
+	public int updateTrashReport(int trash_no) {
+		return session.update("trashMapper.updateTrashReport", trash_no);
+	}
+	
 	// 신고된 쓰레기 검색
 	public ArrayList<Trash> selectSearchReport(String keyword) {
 		List<Trash> list = session.selectList("trashMapper.searchReport", keyword);

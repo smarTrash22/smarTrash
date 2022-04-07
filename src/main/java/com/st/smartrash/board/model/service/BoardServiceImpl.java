@@ -13,16 +13,15 @@ import com.st.smartrash.common.Paging;
 
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
+	
 	@Autowired
 	private BoardDao boardDao;
 	
-
 	@Override
 	public int selectListCount() {
 		return boardDao.selectListCount();
 	}
 	
-
 	@Override
 	public ArrayList<Board> selectList(Paging page) {
 		return boardDao.selectList(page);
