@@ -80,18 +80,63 @@
 				});
 			});
 
-			function changeLogin(element){
-				//선택한 radio의 name 속성의 이름에서 userid 분리 추출함. "loginok_달러중괄호 m.userid " 으로 받아서 8번 인덱스부터 userid 이고 8만쓰면 맨뒤까지 자동추출
+/* 			function changeLogin(element){
 				var user_email = element.name.substring(8);
 				console.log("changeLogin : " + user_email);
 				if(element.checked == true && element.value == "false"){
 					//로그인 제한을 체크했다면
 					console.log("로그인 제한 체크함");
-					location.href = "${ pageContext.servletContext.contextPath }/loginok.do?user_email=" + user_email + "&login_ok=N"; // userid, login_ok : 멤버클래스의 변수명 씀 = 자동으로 get, set이 됨
+					location.href = "${ pageContext.servletContext.contextPath }/loginok1.do?user_email=" + user_email + "&login_ok=N";
+					$("#user").load(window.location.href + "#user");
 				}else{
 					console.log("로그인 제한 해제함");
-					location.href = "${ pageContext.servletContext.contextPath }/loginok.do?user_email=" + user_email + "&login_ok=Y";
+					location.href = "${ pageContext.servletContext.contextPath }/loginok1.do?user_email=" + user_email + "&login_ok=Y";
+					$("#user").load(window.location.href + "#user");
 				}
+			} */
+			
+			function changeLogin(element){
+				var user_email = element.name.substring(8);
+				$.ajax({
+					url: "loginok1.do", 
+					type: "post",
+					/* data: { user_email: $("#user_email").val() }, */
+					data: { user_email: element.name.substring(8) },
+					success: function(data){  //성공했을때 실행될 함수
+						console.log("success : " + data); 
+						if(data == "ok"){
+							alert("변경되었습니다.");
+						}else{
+							alert("관리자는 변경할 수 없습니다.");
+							$('#adm').prop('checked', true);
+						}
+					},
+					error: function(jqXHR, textstatus, errorthrown){  //실패했을때 실행될 함수
+						console.log("error : " + jqXHR + ", " + textstatus + ", " + errorthrown);
+					}
+				})
+			}
+			
+			function paging(element){
+				var user_email = element.name.substring(8);
+				$.ajax({
+					url: "loginok1.do", 
+					type: "post",
+					/* data: { user_email: $("#user_email").val() }, */
+					data: { user_email: element.name.substring(8) },
+					success: function(data){  //성공했을때 실행될 함수
+						console.log("success : " + data); 
+						if(data == "ok"){
+							alert("변경되었습니다.");
+						}else{
+							alert("관리자는 변경할 수 없습니다.");
+							$('#adm').prop('checked', true);
+						}
+					},
+					error: function(jqXHR, textstatus, errorthrown){  //실패했을때 실행될 함수
+						console.log("error : " + jqXHR + ", " + textstatus + ", " + errorthrown);
+					}
+				})
 			}
 
 		</script>
@@ -145,7 +190,7 @@
                         </div>
 						<div class="col-lg-8">
 							<div class="col-lg-8 main">
-								<table width="1000" style="border-collapse: separate; border-spacing: 0 1rem;">
+								<table width="750" style="border-collapse: separate; border-spacing: 0 1rem;">
 									<tbody>
 									  <tr>
 									    <td style="padding : 1em;">
@@ -157,7 +202,7 @@
 									    <td rowspan='2' style="padding:1em;">
 									    	<div>
 												<div style="font-size:20px;">정확도</div>
-												<div style="font-size:80pt; font-weight:1000; color:skyblue;" pattern=".00"><fmt:formatNumber value="${ (fn:length(tlist)-fn:length(trlist))/fn:length(tlist)*100 }" pattern=".00"/>%</div>
+												<div style="font-size:80pt; font-weight:1000; color:skyblue;"><fmt:formatNumber value="${ (fn:length(tlist)-fn:length(trlist))/fn:length(tlist)*100 }" pattern=".00"/>%</div>
 											</div>
 										</td>
 									  </tr>
@@ -172,7 +217,7 @@
 								  </tbody>
 								</table>
 							</div>
-							<div class="user">
+							<div class="user" id="user">
 								<div class="col-lg-8">
 									<table align="center" cellspacing="0" cellpadding="3" width="800">
 										<tr>
@@ -192,7 +237,7 @@
 												<td>${ u.user_admin }</td>
 												<td>
 													<c:if test="${ u.login_ok eq 'Y' }">
-														<input type="radio" name="loginok_${ u.user_email }" onchange="changeLogin(this);" value="true" checked> 가능 &nbsp;
+														<input id="adm" type="radio" name="loginok_${ u.user_email }" onchange="changeLogin(this);" value="true" checked> 가능 &nbsp;
 														<input type="radio" name="loginok_${ u.user_email }" onchange="changeLogin(this);" value="false"> 제한
 													</c:if>
 													<c:if test="${ u.login_ok eq 'N' }">
@@ -218,7 +263,7 @@
 													<img class="photo" src="${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${r.trash_path}" />
 												</div>
 										</a></td>
-										<c:if test="${ status.count eq 4 or status.count eq 8 }">
+										<c:if test="${ status.count eq 4 or status.count eq 8 or status.count eq 12}">
 											<tr align="center">
 											</tr>
 										</c:if>
@@ -233,7 +278,7 @@
 											<li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-double-left"></i></a></li>
 										</c:if>
 										<c:if test="${ currentPage > 1 }">
-											<c:url var="blf" value="/boardlist.do">
+											<c:url var="blf" value="/manager.do">
 												<c:param name="page" value="1" />
 											</c:url>
 											<li class="page-item"><a class="page-link" href="${ blf }"><i class="bi bi-chevron-double-left"></i></a></li>
@@ -241,7 +286,7 @@
 										<!--  이전페이지 그룹으로 이동처리  -->
 										<c:if
 											test="${ (currentPage -10) < startPage and (currentPage - 10) > 1 }">
-											<c:url var="blf2" value="/boardlist.do">
+											<c:url var="blf2" value="/manager.do">
 												<c:param name="page" value="${ startPage - 10 }" />
 											</c:url>
 											<li class="page-item"><a class="page-link" href="${ blf2 }"><i class="bi bi-chevron-left"></i></a></li>
@@ -258,7 +303,7 @@
 												<li class="page-item active"><a class="page-link" href="#">${ p }</a></li>
 											</c:if>
 											<c:if test="${ p ne currentPage }">
-												<c:url var="blf5" value="/boardlist.do">
+												<c:url var="blf5" value="/manager.do">
 													<c:param name="page" value="${ p }" />
 												</c:url>
 												<li class="page-item"><a class="page-link" href="${ blf5 }">${ p }</a></li>
@@ -267,7 +312,7 @@
 										<!--  다음페이지 그룹으로 이동처리  -->
 										<c:if
 											test="${ (currentPage +10) > endPage and (currentPage + 10) < maxPage }">
-											<c:url var="blf3" value="/boardlist.do">
+											<c:url var="blf3" value="/manager.do">
 												<c:param name="page" value="${ endPage + 10 }" />
 											</c:url>
 											<li class="page-item"><a class="page-link" href="${ blf3 }"><i class="bi bi-chevron-right"></i></a></li>
@@ -281,12 +326,15 @@
 										</c:if>
 										<!-- 끝페이지로 이동처리 -->
 										<c:if test="${ currentPage < maxPage }">
-											<c:url var="blf4" value="/boardlist.do">
+											<c:url var="blf4" value="/manager.do">
 												<c:param name="page" value="${ maxPage }" />
 											</c:url>
 											<li class="page-item"><a class="page-link" href="${ blf4 }"><i class="bi bi-chevron-double-right"></i></a>
 										</c:if>
 									</ul>
+								</div>
+								<div style="float:right; border-radius:5px 5px; background-color:orange; font-size:15px;">
+									<a class="nav-link" href="udel.do" style="color:white" >이미지 전체 저장</a>
 								</div>
 							</div>
 						</div>

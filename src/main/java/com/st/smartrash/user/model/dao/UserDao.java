@@ -2,6 +2,7 @@ package com.st.smartrash.user.model.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +40,12 @@ public class UserDao {
 		return session.delete("userMapper.deleteUser", user_email);
 	}
 
-	public ArrayList<Trash> selectLatest5(int user_no) {
+	public ArrayList<Trash> selectLatest(int user_no) {
 		List<Trash> list = session.selectList("userMapper.selectLatest", user_no);
 		return (ArrayList<Trash>)list;
 	}
 
-	public ArrayList<Board> selectMygal5(int user_no) {
+	public ArrayList<Board> selectMygal(int user_no) {
 		List<Board> list = session.selectList("userMapper.selectMygal5", user_no);
 		return (ArrayList<Board>)list;
 	}
@@ -84,6 +85,15 @@ public class UserDao {
 
 	public int selectReportListCount() {
 		return session.selectOne("userMapper.getReportListCount");
+	}
+
+	public int selectMygalListCount(int user_no) {
+		return session.selectOne("userMapper.getMygalListCount", user_no);
+	}
+
+	public ArrayList<Board> selectMygalList(Map<String, Object> map) {
+		List<Board> list = session.selectList("userMapper.selectMygalList", map);
+		return (ArrayList<Board>)list;
 	}
 	
 }

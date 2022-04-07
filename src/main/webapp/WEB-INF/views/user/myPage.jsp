@@ -134,6 +134,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<c:set var="listCount" value="${ listCount }" />
+<c:set var="startPage" value="${ startPage }" />
+<c:set var="endPage" value="${ endPage }" />
+<c:set var="maxPage" value="${ maxPage }" />
+<c:set var="currentPage" value="${ currentPage }" />
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -253,6 +260,7 @@
 			div.n{
 				font-size:25px;
 			}
+
 			.MultiCarousel { float: left; overflow: hidden; padding: 15px; width: 100%; position:relative; }
 		    .MultiCarousel .MultiCarousel-inner { transition: 1s ease all; float: left; }
 		        .MultiCarousel .MultiCarousel-inner .item { float: left;}
@@ -300,6 +308,11 @@
 									<th scope="col" colspan="3">Content</th>
 									<th scope="col"></th>
 									<th scope="col"></th>
+									<th scope="col" colspan="3">Hashtag</th>
+									<th scope="col"></th>
+									<th scope="col"></th>
+									<th scope="col">Date of creation</th>
+									<th scope="col">Hits</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -313,10 +326,78 @@
 										<td colspan="3" align="left"><a href="${ bd }" style="text-align: center; text-decoration: none; color: inherit;">${ b.board_content }</a></td>
 										<td align="left"></td>
 										<td align="left"></td>
+										<td colspan="3" align="left"><a href="${ bd }" style="text-align: center; text-decoration: none; color: inherit;">${ b.hashtag }</a></td>
+										<td align="left"></td>
+										<td align="left"></td>
+										<td align="left">${ b.board_date }</td>
+										<td align="left">${ b.board_readcount }</td>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
+						<br>
+						<div id="pg">
+							<ul class="pagination" style="justify-content:center;">
+								<!-- 1페이지로 이동처리 -->
+								<c:if test="${ currentPage eq 1 }">
+									<li class="page-item disabled"><a class="page-link" href="#"><i class="bi bi-chevron-double-left"></i></a></li>
+								</c:if>
+								<c:if test="${ currentPage > 1 }">
+									<c:url var="blf" value="/mypage.do">
+										<c:param name="page" value="1" />
+									</c:url>
+									<li class="page-item"><a class="page-link" href="${ blf }"><i class="bi bi-chevron-double-left"></i></a></li>
+								</c:if>
+								<!--  이전페이지 그룹으로 이동처리  -->
+								<c:if
+									test="${ (currentPage -10) < startPage and (currentPage - 10) > 1 }">
+									<c:url var="blf2" value="/mypage.do">
+										<c:param name="page" value="${ startPage - 10 }" />
+									</c:url>
+									<li class="page-item"><a class="page-link" href="${ blf2 }"><i class="bi bi-chevron-left"></i></a></li>
+								</c:if>
+								<c:if
+									test="${ !((currentPage -10) < startPage and (currentPage - 10) > 1) }">
+									<li class="page-item disabled"><a class="page-link"
+										href="${ blf2 }"><i class="bi bi-chevron-left"></i></a></li>
+								</c:if>
+								<!-- 현재 페이지가 속한 페이지 그룹 출력 -->
+								<c:forEach var="p" begin="${ startPage }" end="${ endPage }"
+									step="1">
+									<c:if test="${ p eq currentPage }">
+										<li class="page-item active"><a class="page-link" href="#">${ p }</a></li>
+									</c:if>
+									<c:if test="${ p ne currentPage }">
+										<c:url var="blf5" value="/mypage.do">
+											<c:param name="page" value="${ p }" />
+										</c:url>
+										<li class="page-item"><a class="page-link" href="${ blf5 }">${ p }</a></li>
+									</c:if>
+								</c:forEach>
+								<!--  다음페이지 그룹으로 이동처리  -->
+								<c:if
+									test="${ (currentPage +10) > endPage and (currentPage + 10) < maxPage }">
+									<c:url var="blf3" value="/mypage.do">
+										<c:param name="page" value="${ endPage + 10 }" />
+									</c:url>
+									<li class="page-item"><a class="page-link" href="${ blf3 }"><i class="bi bi-chevron-right"></i></a></li>
+								</c:if>
+								<c:if
+									test="${ !((currentPage +10) > endPage and (currentPage + 10) < maxPage) }">
+									<li class="page-item disabled"><a class="page-link" href=""><i class="bi bi-chevron-right"></i></a></li>
+								</c:if>
+								<c:if test="${ currentPage eq maxPage }">
+									<li class="page-item disabled"><a class="page-link" href=""><i class="bi bi-chevron-double-right"></i></a>
+								</c:if>
+								<!-- 끝페이지로 이동처리 -->
+								<c:if test="${ currentPage < maxPage }">
+									<c:url var="blf4" value="/mypage.do">
+										<c:param name="page" value="${ maxPage }" />
+									</c:url>
+									<li class="page-item"><a class="page-link" href="${ blf4 }"><i class="bi bi-chevron-double-right"></i></a>
+								</c:if>
+							</ul>
+						</div>
 <%-- 						<div class="pb-5" border="1">
 							<table id="mygal" border="1" cellspacing="0">
 								<tr>
@@ -348,7 +429,7 @@
 							            <c:forEach items="${ tlist }" var="t">
 											<div class="item">
 												<a href="" style="text-decoration:none; color:inherit; margin:40px;">
-													<img src=${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${ t.trash_path }>
+													<img style="width:150px; height:150px; background-size: 100% 100%;" src=${ pageContext.servletContext.contextPath }/resources/trash_upfiles/${ t.trash_path }>
 												</a>
 											</div>
 										</c:forEach>
