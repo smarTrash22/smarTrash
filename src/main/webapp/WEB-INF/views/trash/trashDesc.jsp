@@ -4,6 +4,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+<c:set var="page_title" value="분류 페이지" />
+
 <!DOCTYPE html>
 <html>
 	<head>

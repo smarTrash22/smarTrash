@@ -4,6 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <c:set var="currentPage" value="${ requestScope.currentPage }" />
+<c:set var="page_title" value="공지 게시판" />
 
 <!DOCTYPE html>
 <html>

@@ -17,7 +17,7 @@
 <c:set var="ucurrentPage" value="${ requestScope.ucurrentPage }"/>
 
 <c:set var="onPage" value="${ requestScope.onPage }"/>
-
+<c:set var="page_title" value="관리 페이지" />
 <!DOCTYPE html>
 <html>
 	<head>

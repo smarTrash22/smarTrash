@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <c:set var="listCount" value="${ requestScope.listCount }" />
-<c:set var="startPage" value="${	 requestScope.startPage }" />
+<c:set var="startPage" value="${ requestScope.startPage }" />
 <c:set var="endPage" value="${ requestScope.endPage }" />
 <c:set var="maxPage" value="${ requestScope.maxPage}" />
 <c:set var="currentPage" value="${ requestScope.currentPage }" />

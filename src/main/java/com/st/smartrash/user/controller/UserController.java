@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -30,6 +31,7 @@ import com.st.smartrash.board.model.service.BoardService;
 import com.st.smartrash.board.model.vo.Board;
 import com.st.smartrash.common.Paging;
 import com.st.smartrash.notice.model.vo.Notice;
+import com.st.smartrash.trash.model.service.TrashService;
 import com.st.smartrash.trash.model.vo.Trash;
 import com.st.smartrash.user.model.service.UserService;
 import com.st.smartrash.user.model.vo.User;
@@ -43,6 +45,9 @@ public class UserController {
 	
 	@Autowired
 	private BoardService boardService;
+	
+	@Inject
+	private TrashService trashService;
 	
 	@Autowired // 설정된 xml에서 가져와 쓰겠다 선언
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
@@ -164,7 +169,7 @@ public class UserController {
 	
 	//마이페이지 회원탈퇴용
 	@RequestMapping(value="udel.do")
-	public String userDeleteMethod(HttpServletRequest request, @RequestParam(value="user_email", required=false) String user_email) {
+	public String userDeleteMethod(HttpServletRequest request, @RequestParam(value="user_email", required=false) String user_email, Model model) {
 		User user;
 		if(user_email != null) {
 			System.out.println("여기는 udel.do, 관리자가 탈퇴요청 : " + user_email);
@@ -176,6 +181,11 @@ public class UserController {
 			System.out.println("여기는 udel.do, 마이페이지 탈퇴 : " + user);
 			userService.deleteUser(user.getUser_email());
 			session.invalidate();
+			
+			ArrayList<Trash> trash_list = trashService.selectTrashNewTop();
+			ArrayList<Trash> category_list = trashService.selectTrashNewTop();
+			model.addAttribute("trash_list", trash_list);
+			model.addAttribute("category_list", category_list);
 			return "common/main";
 		}
 

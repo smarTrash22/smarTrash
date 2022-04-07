@@ -10,6 +10,8 @@
 <c:set var="maxPage" value="${ maxPage }" />
 <c:set var="currentPage" value="${ currentPage }" />
 
+<c:set var="page_title" value="공지 게시판" />
+
 <!DOCTYPE html>
 <html>
 <head>

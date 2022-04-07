@@ -5,6 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <c:set var="currentPage" value="${ requestScope.currnetPage }" />
+<c:set var="page_title" value="${ notice.notice_no }번 공지글" />
 
 <!DOCTYPE html>
 <html>

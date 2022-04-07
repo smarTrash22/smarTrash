@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!-- Page Title -->
-<c:set var="page_title" value="Main" />
+<c:set var="page_title" value="메인 페이지" />
 
 <!DOCTYPE html>
 <html>

@@ -8,6 +8,8 @@
 <c:set var="maxPage" value="${ maxPage }" />
 <c:set var="currentPage" value="${ currentPage }" />
 
+<c:set var="page_title" value="마이 페이지" />
+
 <!DOCTYPE html>
 <html>
 	<head>

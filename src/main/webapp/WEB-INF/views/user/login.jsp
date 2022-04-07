@@ -5,7 +5,7 @@ pageEncoding="UTF-8"%>
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>SmarTrash - Login</title>
+		<title>SmarTrash - 로그인 페이지</title>
 		<c:import url="/WEB-INF/views/common/head.jsp" />
 	</head>
 	<body class="d-flex flex-column">

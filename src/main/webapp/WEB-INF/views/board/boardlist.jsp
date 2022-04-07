@@ -12,6 +12,7 @@
 <c:set var="hashtag" value="${ requestScope.hashtag }"/>
 <!-- Page Title -->
 
+<c:set var="page_title" value="검사 갤러리" />
 
 <!DOCTYPE html>
 <html>

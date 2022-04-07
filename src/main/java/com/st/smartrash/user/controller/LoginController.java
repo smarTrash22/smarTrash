@@ -104,6 +104,11 @@ public class LoginController {
 		//4.파싱 네임 세션으로 저장
 		// 세션 생성
 		session.setAttribute("loginUser", user);
+		
+		ArrayList<Trash> trash_list = trashService.selectTrashNewTop();
+		ArrayList<Trash> category_list = trashService.selectTrashNewTop();
+		model.addAttribute("trash_list", trash_list);
+		model.addAttribute("category_list", category_list);
 		model.addAttribute("result", apiResult);
 		return "common/main";
 	}

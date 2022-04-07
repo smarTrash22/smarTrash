@@ -135,6 +135,10 @@ public class BoardController {
 				return "common/error";
 			}
 		} else {
+			ArrayList<Trash> trash_list = trashService.selectTrashNewTop();
+			ArrayList<Trash> category_list = trashService.selectTrashNewTop();
+			model.addAttribute("trash_list", trash_list);
+			model.addAttribute("category_list", category_list);
 			return "common/main";
 		}
 	}

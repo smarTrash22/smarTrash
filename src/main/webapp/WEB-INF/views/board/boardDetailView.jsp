@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!-- Page Title -->
-<c:set var="page_title" value="Content" />
+<c:set var="page_title" value="${ board.board_no }번 게시글" />
 <c:set var="currentPage" value="${ requestScope.currentPage }" />
 
 <!DOCTYPE html>
