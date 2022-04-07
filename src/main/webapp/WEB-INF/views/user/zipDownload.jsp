@@ -22,7 +22,8 @@
                         <div class="col-lg-8 col-xxl-6">
                             <div class="text-center my-5">
                             	<c:if test="${ count eq 0 }">
-	                                <h1 class="fw-bolder mb-3">신고된 쓰레기가 없습니다.</h1>
+	                                <h1 class="fw-bolder mb-3">신고된 쓰레기가 없습니다. 이전 압축파일을 다운 받으실 수 있습니다.</h1>
+	                                <a class="btn btn-primary btn-lg" href="zipDown.do">다운로드</a>
                             	</c:if>
                             	<c:if test="${ count ne 0 }">
 	                                <h1 class="fw-bolder mb-3">[${ count }]개의 신고된 쓰레기 정보를 삭제하고 해당 이미지를 모아 압축했습니다.</h1>

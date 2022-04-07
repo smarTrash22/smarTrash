@@ -373,7 +373,6 @@ public class UserController {
 	public void changeLoginOKMethod(@RequestParam("user_email") String user_email, @RequestParam("login_ok") String login_ok, HttpServletResponse response) throws IOException {
 		logger.info("여기는 loginok.do : " + user_email);
 		if(userService.selectUser(user_email).getUser_admin().equals("Y")) {
-			System.out.println("나는 와이");
 			response.setContentType("text/html; charset=utf-8"); // 문자는 html로 utf-8 형식으로
 			PrintWriter out = response.getWriter();
 			out.append("no");

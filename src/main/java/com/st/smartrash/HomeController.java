@@ -223,7 +223,8 @@ public class HomeController {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("loginUser") != null) {
 			User user = (User)session.getAttribute("loginUser");
-			if(user.getUser_admin() == "Y") {
+			System.out.println(user.toString());
+			if(user.getUser_admin().equals("Y")) {
 				ArrayList<Trash> trash_list = trashService.selectSearchReport("Y");
 				if(trash_list.size() != 0) {
 					String path = request.getSession().getServletContext().getRealPath("resources/");
@@ -300,7 +301,7 @@ public class HomeController {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("loginUser") != null) {
 			User user = (User)session.getAttribute("loginUser");
-			if(user.getUser_admin() == "Y") {
+			if(user.getUser_admin().equals("Y")) {
 				String path = request.getSession().getServletContext().getRealPath("resources/");
 				File renameFile = new File(path + "report_images.zip");
 				File originFile = new File("report_images.zip");
