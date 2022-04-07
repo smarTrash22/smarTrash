@@ -79,8 +79,8 @@ public class LoginController {
 		//response의 name값 파싱
 		String name = (String)response_obj.get("name");
 		String email = (String)response_obj.get("email");
-//		System.out.println(name);
-		
+
+		//중복된 이메일이 있으면 그대로 사용, 아니면 새로 적용
 		if(userService.dupCheck(email) != null) {
 			user = userService.dupCheck(email);
 		}else {
@@ -94,8 +94,8 @@ public class LoginController {
 		}
 		user = userService.selectUser(email);
 		System.out.println(user.toString());
-//		//4.파싱 네임 세션으로 저장
-//		session.setAttribute("sessionId", name); // 세션 생성
+		//4.파싱 네임 세션으로 저장
+		// 세션 생성
 		session.setAttribute("loginUser", user);
 		model.addAttribute("result", apiResult);
 		return "common/main";

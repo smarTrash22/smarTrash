@@ -40,14 +40,9 @@ public class UserDao {
 		return session.delete("userMapper.deleteUser", user_email);
 	}
 
-	public ArrayList<Trash> selectLatest(int user_no) {
-		List<Trash> list = session.selectList("userMapper.selectLatest", user_no);
+	public ArrayList<Trash> selectMytrash(int user_no) {
+		List<Trash> list = session.selectList("userMapper.selectMytrash", user_no);
 		return (ArrayList<Trash>)list;
-	}
-
-	public ArrayList<Board> selectMygal(int user_no) {
-		List<Board> list = session.selectList("userMapper.selectMygal5", user_no);
-		return (ArrayList<Board>)list;
 	}
 
 	public int updateAdmin(User user) {
@@ -69,8 +64,8 @@ public class UserDao {
 		return (ArrayList<Trash>)list;
 	}
 
-	public ArrayList<User> selectUserList() {
-		List<User> list = session.selectList("userMapper.selectUserList");
+	public ArrayList<User> selectUserList(Paging page) {
+		List<User> list = session.selectList("userMapper.selectUserList", page);
 		return (ArrayList<User>)list;
 	}
 
@@ -94,6 +89,10 @@ public class UserDao {
 	public ArrayList<Board> selectMygalList(Map<String, Object> map) {
 		List<Board> list = session.selectList("userMapper.selectMygalList", map);
 		return (ArrayList<Board>)list;
+	}
+
+	public int selectUserListCount() {
+		return session.selectOne("userMapper.selectUserListCount");
 	}
 	
 }

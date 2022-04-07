@@ -25,9 +25,7 @@ public interface UserService {
 
 	int deleteUser(String user_email);
 
-	ArrayList<Trash> selectLatest(int user_no);
-
-	ArrayList<Board> selectMygal(int user_no);
+	ArrayList<Trash> selectMytrash(int user_no);
 
 	int updateAdmin(User user);
 
@@ -37,7 +35,7 @@ public interface UserService {
 
 	ArrayList<Trash> selectTodayReportTrash();
 
-	ArrayList<User> selectUserList();
+	ArrayList<User> selectUserList(Paging page);
 
 	int selectReportListCount();
 
@@ -48,5 +46,7 @@ public interface UserService {
 	int selectMygalListCount(int user_no);
 
 	ArrayList<Board> selectMygalList(Map<String, Object> map);
+
+	int selectUserListCount();
 
 }

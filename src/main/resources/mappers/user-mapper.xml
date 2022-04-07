@@ -34,15 +34,23 @@
 		<result column="trash_path" property="trash_path" />
 		<result column="user_name" property="user_name" />
 	</resultMap>
-
+	
+	<!-- 신고된 쓰레기 전체 카운트 -->
 	<select id="getReportListCount" resultType="_int">
 		select count(*) from t_trash where report = 'Y'
 	</select>
 	
+	<!-- 저장된 유저 전체 카운트 -->
+	<select id="selectUserListCount" resultType="_int">
+		select count(*) from t_user
+	</select>
+	
+	<!-- 내가쓴 갤러리 전체 카운트 -->
 	<select id="getMygalListCount" parameterType="_int" resultType="_int">
 		select count(*) from t_board where user_no = ${ user_no }
 	</select>
 
+	<!-- 신고된 쓰레기 페이징처리 전체 조회 -->
 	<select id="selectReportList" 
 	parameterType="Paging" resultMap="trashResultList">
 		<![CDATA[
@@ -55,6 +63,7 @@
 		]]>
 	</select>
 	
+	<!-- 내가쓴 갤러리 페이징처리 전체 조회 -->
 	<select id="selectMygalList" parameterType="HashMap" resultMap="resultBoard">
 		<![CDATA[
 			SELECT *
@@ -66,11 +75,7 @@
 		]]>
 	</select>
 	
-	<resultMap id="selectMygalResult" type="Board">
-		<id property="board_no" column="board_no"/>
-		<result property="board_content" column="board_content"/>
-	</resultMap>
-	
+	<!-- 이메일로 유저 중복체크 -->
 	<select id="dupCheck" parameterType="String" resultType="User">
 		select *
 		from t_user
@@ -108,33 +113,13 @@
 		where user_email = #{ user_email }
 	</update>
 	
-<!-- 	<select id="selectLatest5" resultMap="trashResultList" parameterType="_int">
-		<![CDATA[
-		select *
-		from t_trash
-		where user_no = #{ user_no } and rownum <= 5
-		order by trash_date desc
-		]]>
-	</select> -->
-	
-	<select id="selectLatest" resultMap="trashResultList" parameterType="_int">
+	<select id="selectMytrash" resultMap="trashResultList" parameterType="_int">
 		<![CDATA[
 		select *
 		from t_trash
 		where user_no = #{ user_no }
 		order by trash_date desc
 		]]>
-	</select>
-
-	<select id="selectMygal5" resultMap="resultBoard" parameterType="_int">
-		<![CDATA[
-		SELECT *
-		FROM t_board
-		where trash_no in (SELECT trash_no
-                           FROM t_trash
-                           WHERE  user_no = ${ user_no }) and rownum <= 5
-        order by board_date
-        ]]>
 	</select>
 	
 	<update id="updateAdmin" parameterType="User">
@@ -161,8 +146,14 @@
 		where report = 'Y' and to_char(trash_date, 'YYMMDD') = to_char(sysdate, 'YYMMDD')
 	</select>
 	
-	<select id="selectUserList" resultMap="userResultList">
-		select *
-		from t_user
+	<select id="selectUserList" parameterType="Paging" resultMap="userResultList">
+		<![CDATA[
+			SELECT *
+			FROM ( SELECT ROWNUM RNUM, N.*
+              FROM (select *
+					       from t_user) N)
+			WHERE RNUM >= #{ startRow } AND RNUM <= #{ endRow }
+			order by user_no
+		]]>
 	</select>
 </mapper>

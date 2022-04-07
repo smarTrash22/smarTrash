@@ -146,13 +146,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public ArrayList<Trash> selectLatest(int user_no) {
-		return userDao.selectLatest(user_no);
-	}
-	
-	@Override
-	public ArrayList<Board> selectMygal(int user_no) {
-		return userDao.selectMygal(user_no);
+	public ArrayList<Trash> selectMytrash(int user_no) {
+		return userDao.selectMytrash(user_no);
 	}
 	
 	@Override
@@ -176,8 +171,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public ArrayList<User> selectUserList() {
-		return userDao.selectUserList();
+	public ArrayList<User> selectUserList(Paging page) {
+		return userDao.selectUserList(page);
 	}
 	
 	@Override
@@ -203,5 +198,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ArrayList<Board> selectMygalList(Map<String, Object> map){
 		return userDao.selectMygalList(map);
+	}
+	
+	@Override
+	public int selectUserListCount() {
+		return userDao.selectUserListCount();
 	}
 }
