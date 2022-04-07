@@ -30,6 +30,15 @@
 	console.log(notice_no);
 
 } */
+function checkForm() {
+	 // 내용 입력 유무 체크
+   var content = document.getElementsByName('keyword')[0];
+   if(content.value == ''){
+       alert('검색어을 입력하세요.');
+       return false;
+   }
+   searchForm.submit();
+}
 </script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style type="text/css">
@@ -59,13 +68,12 @@ a {
 		<table class="table table-striped table-hover">
 			<thead>
 				<tr>
-					<th width="5%" scope="col">No</th>
-					<th width="55%" scope="col">Subject</th>
-					<th width="15%" scope="col">Name</th>
-					<th width="5%" scope="col">File</th>
-					<th width="5%" scope="col">Date</th>
-					<th width="5%" scope="col">Views</th>
-					<th width="3%" scope="col"></th>
+					<th width="7%" scope="col">번호</th>
+					<th width="50%" scope="col">제목</th>
+					<th width="7%" scope="col">글쓴이</th>
+					<th width="7%" scope="col">파일</th>
+					<th width="7%" scope="col">작성일</th>
+					<th width="7%" scope="col">조회</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -86,25 +94,28 @@ a {
 						<td width="5%" align="left"><font size="2"><fmt:formatDate value="${ n.notice_date}"
 								type="date" pattern="yy.MM.dd" /></font></td>
 						<td width="5%" align="center"><font size="2">${ n.notice_readcount }</font></td>
-						<td width="3%">
-						<%-- <c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
+						<%-- <td width="3%">
+						<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
 						<form action="ndel.do" method="post" id="form">
 						<div class="form-check">
 						  <input class="form-check-input" type="checkbox" value="${ n.notice_no }" name="notice_no">
 						</div>
 						
 						</form>
-						</c:if> --%>
-						</td>
-						
+						</c:if>
+						</td> --%>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
+		<c:if test="${ empty requestScope.list}">
+					<div align="center">검색결과가 없습니다.</div>
+		</c:if>
 		<div align="right">
+		<button class="btn btn-primary" type="button" onclick="javascript:location.href='nlist.do';">목록</button>
 			<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
-				<button type="button" class="btn btn-sm btn-primary"
-					onclick="javascript:location.href='movewrite.do';">${ loginMember.user_admin } Write</button>
+				<button type="button" class="btn btn-primary"
+					onclick="javascript:location.href='movewrite.do';">${ loginMember.user_admin } 글쓰기</button>
 			</c:if>
 		<%-- 	<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
 				<button type="button" class="btn btn-sm btn-primary"
@@ -121,6 +132,11 @@ a {
 					<li class="page-item disabled"><a class="page-link" href="#"><i
 							class="bi bi-chevron-double-left"></i></a></li>
 				</c:if>
+				<c:if test="${ empty currentPage }">
+				<li class="page-item disabled"><a class="page-link" href="#"><i
+							class="bi bi-chevron-double-left"></i></a></li>
+				</c:if>
+		
 				<c:if test="${ currentPage > 1 }">
 					<c:url var="nlf" value="/nsearch.do">
 						<c:param name="page" value="1"></c:param>
@@ -206,7 +222,7 @@ a {
 			</div>
 			<input style="width: 10px;" type="text" class="form-control"
 				placeholder="Search Here" name="keyword">
-			<button class="input-group-text shadow-none px-4 btn-secondary" type="submit">
+			<button class="input-group-text shadow-none px-4 btn-secondary" type="button" onclick="checkForm()">
 				<i class="bi bi-search"></i>
 			</button>
 		</div>

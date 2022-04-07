@@ -87,7 +87,7 @@ a { text-decoration: none; color: black; }
 							style="padding-top: 10px;">
 							<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
 								<button type="button" class="btn btn-sm btn-primary"
-									onclick="javascript:location.href='movewrite.do';">Write</button>
+									onclick="javascript:location.href='movewrite.do';">글쓰기</button>
 							</c:if>
 							
 							<c:url var="ndel" value="/ndel.do">
@@ -97,6 +97,15 @@ a { text-decoration: none; color: black; }
 										value="${ notice.notice_rename_filepath }" />
 								</c:if>
 							</c:url>
+								
+							<c:url var="numove" value="/moveupdate.do">
+								<c:param name="notice_no" value="${ notice.notice_no }" />
+							</c:url>
+							<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
+								<button type="button" class="btn btn-primary"
+									onclick="javascript:location.href='${ numove }'">수정</button>
+							</c:if>
+							
 							<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
 <%-- 							<button type="button" class="btn btn-sm btn-primary"
 								onclick="javascript:location.href='${ ndel }'">delete</button> --%>
@@ -107,26 +116,17 @@ a { text-decoration: none; color: black; }
 										value="${ notice.notice_rename_filepath }" />
 								</c:if>
 							</c:url>"
-							class="btn btn-primary">del</a>
+							class="btn btn-primary">삭제</a>
 							</c:if>	
+			
 							
-							<!-- <form id="form" action="ndel.do" method="post" enctype="multipart/form-data">
-							<button type="button" onclick="del();">삭제</button>
-							</form> -->
-							<c:url var="numove" value="/moveupdate.do">
-								<c:param name="notice_no" value="${ notice.notice_no }" />
-							</c:url>
-							<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
-								<button type="button" class="btn btn-sm btn-primary"
-									onclick="javascript:location.href='${ numove }'">Update</button>
-							</c:if>
 							<%-- <c:if test="${ loginMember.admin != 'Y' }">
 								<button type="button" class="btn btn-sm btn-primary" disabled
-									onclick="javascript:location.href='moveupdate.do';">Update</button>
+									onclick="javascript:location.href='moveupdate.do';">수정</button>
 							</c:if> --%>
 							<button
 								onclick="javascript:location.href='nlist.do?page=${ currentPage }';"
-								class="btn btn-primary" type="button">List</button>
+								class="btn btn-primary" type="button">목록</button>
 						</div></td>
 				</tr>
 			</tbody>
