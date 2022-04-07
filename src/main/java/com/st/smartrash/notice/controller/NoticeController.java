@@ -291,8 +291,8 @@ public class NoticeController {
 	//공지사항 검색
 	@RequestMapping(value="nsearch.do", method=RequestMethod.GET)
 	public ModelAndView noticeSearchMethod(
-			@RequestParam(value="keyword", defaultValue="") String keyword,
-			@RequestParam(value="type", defaultValue="") String type,
+			@RequestParam(value="keyword", required=false) String keyword,
+			@RequestParam(value="type", required=false) String type,
 			@RequestParam(name="page", required=false) String page,
 			ModelAndView mv){
 		int currentPage = 1;
@@ -302,8 +302,12 @@ public class NoticeController {
 	      
 
 	      int limit = 10; 
-
-	      int listCount = noticeService.selectSearchListCount(keyword);
+	      
+	      Map<String, String> cmap = new HashMap<>();
+	      cmap.put("type", type);
+		  cmap.put("keyword", keyword);
+		  
+	      int listCount = noticeService.selectSearchListCount(cmap);
 	 
 	
 	      int maxPage = (int)((double)listCount / limit + 0.9);
@@ -319,7 +323,7 @@ public class NoticeController {
 	      int startRow = (currentPage - 1) * limit + 1;
 	      int endRow = startRow + limit - 1;
 	      Paging paging = new Paging(startRow, endRow);
-	      
+	      System.out.println(paging.toString());
 		Map<String,Object> map = new HashMap<>();
 		
 		map.put("type", type);
@@ -330,8 +334,10 @@ public class NoticeController {
 	 
 	        ArrayList<Notice> list = noticeService.selectSearch(map);
 			
-	        
+	        System.out.println(type);
 	        if(list != null && list.size() > 0) {
+			 mv.addObject("type", type);
+			 mv.addObject("keyword", keyword);
 		     mv.addObject("list", list);
 	         mv.addObject("listCount", listCount);
 	         mv.addObject("maxPage", maxPage);

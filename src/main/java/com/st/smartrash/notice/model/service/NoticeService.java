@@ -12,7 +12,7 @@ public interface NoticeService {
 	ArrayList<Notice> selectList(Paging page);
 	Notice selectNotice(int notice_no);
 	int selectListCount();
-	int selectSearchListCount(String keyword);
+	int selectSearchListCount(Map<String, String> map);
 	int insertNotice(Notice notice);
 	int updateNotice(Notice notice);
 	int deleteNotice(int notice_no);

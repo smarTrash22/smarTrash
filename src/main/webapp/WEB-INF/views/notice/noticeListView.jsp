@@ -57,6 +57,10 @@ function checkForm() {
     }
     searchForm.submit();
 }
+
+$("#search").keyup(function(e){
+	if(e.keyCode == 13);
+});
 //검색창 유효성 검사
 /* function selectSearch() {
 	
@@ -262,7 +266,7 @@ a { text-decoration: none; color: black; }
 			</div>
 			<input style="width: 10px;" type="text" class="form-control"
 				placeholder="Search Here" name="keyword">
-			<button class="input-group-text shadow-none px-4 btn-secondary" type="button" onclick="checkForm();">
+			<button id="search" class="input-group-text shadow-none px-4 btn-secondary" type="button" onclick="checkForm();">
 				<i class="bi bi-search"></i>
 			</button>
 		</div>

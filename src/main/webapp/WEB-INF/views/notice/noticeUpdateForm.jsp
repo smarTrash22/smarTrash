@@ -50,7 +50,7 @@ function checkForm() {
       	<input style="width: 200px;" class="form-control" name="notice_writer" type="text" value="${ notice.notice_writer }" aria-label="readonly input example" readonly><br>
         <input style="width: 450px;" type="text" class="form-control" name="notice_title" value="${ notice.notice_title }">
       <br>
-        <textarea class="form-control" name="notice_content" rows="5">${ notice.notice_title }</textarea>
+        <textarea class="form-control" name="notice_content" rows="5">${ notice.notice_content }</textarea>
       <br>
       <c:if test="${ !empty notice.notice_original_filepath }">
       	${ notice.notice_original_filepath } &nbsp;

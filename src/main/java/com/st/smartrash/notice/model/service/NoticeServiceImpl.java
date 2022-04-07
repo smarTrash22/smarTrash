@@ -62,8 +62,8 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public int selectSearchListCount(String keyword) {
-		return noticeDao.selectSearchListCount(keyword);
+	public int selectSearchListCount(Map<String, String> map) {
+		return noticeDao.selectSearchListCount(map);
 	}
 
 }

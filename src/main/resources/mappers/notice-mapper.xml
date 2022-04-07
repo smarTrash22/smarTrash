@@ -20,9 +20,23 @@
 	</select>
 	
 	<select id="getSearchListCount" resultType="_int">
-		<![CDATA[
-		select count(*) from t_notice where notice_title like '%' || #{keyword} || '%'
-		]]>
+		<if test='type.equals("title")'>
+			<![CDATA[
+			select count(*) from t_notice where notice_title like '%' || #{keyword} || '%'
+			]]>
+		</if>
+		<if test='type.equals("writer")'>
+			<![CDATA[
+			select count(*) from t_notice where notice_writer like '%' || #{keyword} || '%'
+			]]>
+		</if>
+		<if test='type.equals("titleOrWriter")'>
+			<![CDATA[
+			select count(*) from t_notice 
+			where notice_title like '%' || #{keyword} || '%'
+        	or notice_content  like '%' || #{keyword} || '%'
+			]]>
+		</if>
 	</select>	
 	
 	<select id="selectList" parameterType="Paging" resultMap="resultNotice">
@@ -100,7 +114,7 @@
 		select * from (
 		select rownum num, n.* from (
 		select * from (select * from t_notice
-		where notice_writer like '%' || #{keyword} || '%'
+		where notice_title like '%' || #{keyword} || '%'
         or notice_content  like '%' || #{keyword} || '%') order by notice_no desc ) n)
 		where num >= ${startRow} and num <= ${endRow}
 		]]>

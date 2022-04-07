@@ -59,7 +59,7 @@ public class NoticeDao {
 		return (ArrayList<Notice>)list;
 	}
 
-	public int selectSearchListCount(String keyword) {
-		return session.selectOne("noticeMapper.getSearchListCount", keyword);
+	public int selectSearchListCount(Map<String, String> map) {
+		return session.selectOne("noticeMapper.getSearchListCount", map);
 	}
 }

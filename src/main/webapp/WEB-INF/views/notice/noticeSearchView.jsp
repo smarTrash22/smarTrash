@@ -39,6 +39,10 @@ function checkForm() {
    }
    searchForm.submit();
 }
+
+$("#search").keyup(function(e){
+	if(e.keyCode == 13);
+});
 </script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style type="text/css">
@@ -215,14 +219,19 @@ a {
 			<div class="input-group-text p-0 ">
 				<select name="type"
 					class="form-select form-select-xsm shadow-none bg-light border-0">
-					<option value="title">제목</option>
-					<option value="writer">글쓴이</option>
-					<option value="titleOrWriter">제목+내용</option>
+					<c:if test="${ type eq 'title' }"><option value="title" selected>제목</option></c:if>
+					<c:if test="${ type ne 'title' }"><option value="title">제목</option></c:if>
+
+					<c:if test="${ type eq 'writer' }"><option value="writer" selected>글쓴이</option></c:if>
+					<c:if test="${ type ne 'writer' }"><option value="writer">글쓴이</option></c:if>
+					
+					<c:if test="${ type eq 'titleOrWriter' }"><option value="titleOrWriter" selected>제목+내용</option></c:if>
+					<c:if test="${ type ne 'titleOrWriter' }"><option value="titleOrWriter">제목+내용</option></c:if>
 				</select>
 			</div>
 			<input style="width: 10px;" type="text" class="form-control"
 				placeholder="Search Here" name="keyword">
-			<button class="input-group-text shadow-none px-4 btn-secondary" type="button" onclick="checkForm()">
+			<button id="search" class="input-group-text shadow-none px-4 btn-secondary" type="button" onclick="checkForm()">
 				<i class="bi bi-search"></i>
 			</button>
 		</div>
