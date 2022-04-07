@@ -17,6 +17,12 @@
 	
 	<select id="getListCount" resultType="_int">
 		select count(*) from t_notice
+	</select>
+	
+	<select id="getSearchListCount" resultType="_int">
+		<![CDATA[
+		select count(*) from t_notice where notice_title like '%' || #{keyword} || '%'
+		]]>
 	</select>	
 	
 	<select id="selectList" parameterType="Paging" resultMap="resultNotice">
@@ -68,24 +74,7 @@
 		where notice_no = #{notice_no}
 	</update>
 	
-<!-- 	<select id="searchNotice" parameterType="HashMap" resultType="Notice">
-		<if test='type.equals("title")'>
-		select * from t_notice
-		where notice_title like '%' || #{keyword} || '%'
-		</if>
-		<if test='type.equals("writer")'>
-		select * from t_notice
-		where notice_writer like '%' || #{keyword} || '%'
-		</if>
-		<if test='type.equals("titleOrWriter")'>
-		select * from t_notice
-		where notice_writer like '%' || #{keyword} || '%'
-        or notice_content  like '%' || #{keyword} || '%'
-        </if>
-
-	</select> -->
-	
-		<select id="searchNotice" parameterType="HashMap" resultType="Notice">
+	<select id="searchNotice" parameterType="HashMap" resultType="Notice">
 		<if test='type.equals("title")'>
 		<![CDATA[
 		select * from (

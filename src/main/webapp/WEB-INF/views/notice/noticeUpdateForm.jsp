@@ -15,14 +15,31 @@ function cancle() {
 	}else{
 		return false;
 	}
-}</script>
+}
+function checkForm() {
+    var title = document.getElementsByName('notice_title')[0];
+    // 제목 입력 유무 체크
+    if(title.value == '') {
+        alert("제목을 입력하시오");
+        return false;
+    }
+    var content = document.getElementsByName('notice_content')[0];
+    // 내용 입력 유무 체크
+    if(content.value == ''){
+        alert('내용을 입력하세요.');
+        return false;
+    }
+    
+   form.submit();
+}
+</script>
 <meta charset="UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
 <c:import url="../common/navi.jsp" />
 <br>
-<form action="nupdate.do" method="post" enctype="multipart/form-data">
+<form action="nupdate.do" method="post" enctype="multipart/form-data" name="form">
 <input type="hidden" name="notice_no" value="${ notice.notice_no }">
 <c:if test="${ !empty notice.notice_original_filepath }">
 	<input type="hidden" name="notice_original_filepath" value="${ notice_original_filepath }">
@@ -43,7 +60,7 @@ function cancle() {
       <br>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding-top: 10px;">
         <!-- <button class="btn btn-primary" type="reset">Reset</button> -->
-        <button class="btn btn-primary" type="submit">Update</button>
+        <button onclick="checkForm();" class="btn btn-primary" type="button">Update</button>
         <button onclick="cancle();" class="btn btn-primary" type="button">Cancle</button>
       </div>
     </div>

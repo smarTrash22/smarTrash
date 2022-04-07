@@ -47,21 +47,6 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public ArrayList<Notice> selectSearchTitle(String keyword) {
-		return noticeDao.selectSearchTitle(keyword);
-	}
-
-	@Override
-	public ArrayList<Notice> selectSearchWriter(String keyword) {
-		return noticeDao.selectSearchWriter(keyword);
-	}
-
-	@Override
-	public ArrayList<Notice> selectSearchDate(SearchDate date) {
-		return noticeDao.selectSearchDate(date);
-	}
-
-	@Override
 	public int selectListCount() {
 		return noticeDao.selectListCount();
 	}
@@ -76,7 +61,9 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDao.selectSearch(map);
 	}
 
-
-	
+	@Override
+	public int selectSearchListCount(String keyword) {
+		return noticeDao.selectSearchListCount(keyword);
+	}
 
 }
