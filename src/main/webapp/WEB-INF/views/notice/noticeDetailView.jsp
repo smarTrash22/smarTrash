@@ -18,12 +18,21 @@
 		return false;
 	}
 } */
+function del() {
+	if(confirm("정말로 삭제하시겠습니까?")){
+		javascript:location.href='${ ndel }';
+	}else{
+		return false;
+	}
+}
 </script>
 <style type="text/css">
-a:link {
-	color: black;
-	text-decoration: none;
-}
+a { text-decoration: none; color: black; }
+    a:visited { text-decoration: none; }
+    a:hover { text-decoration: none; }
+    a:focus { text-decoration: none; }
+    a:hover, a:active { text-decoration: none; }
+
 </style>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -89,9 +98,21 @@ a:link {
 								</c:if>
 							</c:url>
 							<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
-							<button type="button" class="btn btn-sm btn-primary"
-								onclick="javascript:location.href='${ ndel }';">delete</button>
+<%-- 							<button type="button" class="btn btn-sm btn-primary"
+								onclick="javascript:location.href='${ ndel }'">delete</button> --%>
+							<a onclick="return confirm('정말로 삭제하시겠습니까?')" href="<c:url value="ndel.do">
+								<c:param name="notice_no" value="${ notice.notice_no }" />
+								<c:if test="${ !empty notice.notice_original_filepath }">
+									<c:param name="rfile"
+										value="${ notice.notice_rename_filepath }" />
+								</c:if>
+							</c:url>"
+							class="btn btn-primary">del</a>
 							</c:if>	
+							
+							<!-- <form id="form" action="ndel.do" method="post" enctype="multipart/form-data">
+							<button type="button" onclick="del();">삭제</button>
+							</form> -->
 							<c:url var="numove" value="/moveupdate.do">
 								<c:param name="notice_no" value="${ notice.notice_no }" />
 							</c:url>

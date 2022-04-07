@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -151,10 +152,10 @@ public class NoticeController {
 			}
 		} 
 		
-		if(noticeService.insertNotice(notice) > 0) { 
-			return "redirect:nlist.do";
+		
+		if(noticeService.insertNotice(notice) > 0 ) { 
+			 return "redirect:nlist.do";
 		}else {
-			model.addAttribute("message", "공지글 등록 실패.");
 			return "common/error";
 		}
 	}
@@ -193,19 +194,21 @@ public class NoticeController {
 		}
 	}
 	
+	
+	
 	//공지 일괄 삭제
-	/*
-	 * @RequestMapping("ndel.do") public String
-	 * noticeMultiDeleteMethod(@RequestParam("notice_no") int notice_no,
-	 * 
-	 * @RequestParam(name="rfile", required=false) String renameFileName,
-	 * HttpServletRequest request, Model model) {
-	 * if(noticeService.deleteNotice(notice_no) > 0) { if(renameFileName != null) {
-	 * new File(request.getSession().getServletContext().getRealPath(
-	 * "resources/notice_upfiles") + "\\"+ renameFileName).delete(); } return
-	 * "redirect:nlist.do"; }else { model.addAttribute("message", "글 삭제 실패.");
-	 * return "common/error"; } }
-	 */
+	
+	@RequestMapping("nsdel.do")
+	public String noticeDeleteMethod(@RequestParam(value="notice_no[]") List<Integer> deleteList, 
+			Model model) {
+		ArrayList<Integer> deleteArray = new ArrayList<Integer>();
+				for(int i=0;i<deleteList.size();i++){
+			        deleteArray.add(deleteList.get(i));
+		}
+			return "redirect:nlist.do";
+	}
+	 
+	 
 	//공지사항 수정(관리자)
 	//공지사항 수정페이지로 이동
 	@RequestMapping("moveupdate.do")
@@ -283,30 +286,10 @@ public class NoticeController {
 			}
 		}
 		
+
+		
 	//공지사항 검색
-//	@RequestMapping(value="nserach.do", method=RequestMethod.POST)
-//	public String noticeSearchMethod(
-//			@RequestParam("keyword") String keyword,
-//			@RequestParam("type") String type,
-//			Model model) {
-//		
-//		Map<String,Object> map = new HashMap<>();
-//		
-//		map.put("type", type);
-//        map.put("keyword", keyword);
-//        
-//        ArrayList<Notice> list = noticeService.selectSearch(map);
-//		
-//        
-//		if(list.size() > 0) {
-//			model.addAttribute("list", list);
-//			return "notice/noticeListView";
-//		}else {
-//			model.addAttribute("message", keyword + "로 검색된 공지 정보가 없습니다.");
-//			return "common/error";
-//		}
-//	}
-	@RequestMapping(value="nserach.do", method=RequestMethod.POST)
+	@RequestMapping(value="nsearch.do", method=RequestMethod.GET)
 	public ModelAndView noticeSearchMethod(
 			@RequestParam(value="keyword", defaultValue="") String keyword,
 			@RequestParam(value="type", defaultValue="") String type,
@@ -320,7 +303,7 @@ public class NoticeController {
 
 	      int limit = 10; 
 
-	      int listCount = noticeService.selectListCount();
+	      int listCount = noticeService.selectSearchListCount(keyword);
 	 
 	
 	      int maxPage = (int)((double)listCount / limit + 0.9);
@@ -335,21 +318,21 @@ public class NoticeController {
 	
 	      int startRow = (currentPage - 1) * limit + 1;
 	      int endRow = startRow + limit - 1;
-//	      Paging paging = new Paging(startRow, endRow);
+	      Paging paging = new Paging(startRow, endRow);
 	      
 		Map<String,Object> map = new HashMap<>();
 		
 		map.put("type", type);
-        map.put("keyword", keyword);
-//        map.put("paging", paging);
-        map.put("startRow", startRow);
-        map.put("endRow", endRow);
-        
-        ArrayList<Notice> list = noticeService.selectSearch(map);
-		
-        
-        if(list != null && list.size() > 0) {
-	         mv.addObject("list", list);
+	    map.put("keyword", keyword);
+	    map.put("startRow", paging.getStartRow());
+	    map.put("endRow", paging.getEndRow());
+	    
+	 
+	        ArrayList<Notice> list = noticeService.selectSearch(map);
+			
+	        
+	        if(list != null && list.size() > 0) {
+		     mv.addObject("list", list);
 	         mv.addObject("listCount", listCount);
 	         mv.addObject("maxPage", maxPage);
 	         mv.addObject("currentPage", currentPage);
@@ -357,10 +340,10 @@ public class NoticeController {
 	         mv.addObject("endPage", endPage);
 	         mv.addObject("limit", limit);
 	         
-	         mv.setViewName("notice/noticeListView");
+	         mv.setViewName("notice/noticeSearchView");
 	      }else {
 	    	  
-	         mv.setViewName("notice/noticeListView");
+	    	 mv.setViewName("notice/noticeSearchView");
 	      }
 	      
 	      return mv;

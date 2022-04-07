@@ -15,53 +15,21 @@
 <head>
 <meta charset="UTF-8">
 <title>SmarTrash - ${ page_title }</title>
-<script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	/* function showWriteForm(){
 	 location.href = "${ pageContext.servletContext.contextPath }/nwform.do";
 	 } */
 /* function checkForm() {
- 	var send_array = Array();
-    var chk_langs = document.getElementsByName('chk');
-    var notice_no =[];	
+    let chk_langs = document.getElementsByName('notice_no');
+    let notice_no =[];	
    	for(let i = 0 ; i<chk_langs.length ; i++){
    		if(chk_langs[i].checked){
    			notice_no.push(chk_langs[i].value);
    		}
    	}
 	console.log(notice_no);
-	$("#form").submit(); } */
-var chkArray = [];
-var checkboxValues = [];
-   $("input[name='chk']:checked").each(function(i) {
-       checkboxValues.push($(this).val());
-});
-$.ajax({
-	url :'/nsel.do',
-	type : 'post', 
-	dataType : 'json', 
-	data : { "sendArray" : sendArray, 
-	}, 
-	success: function(data){ 
-		console.log("성공");
-	} 
-});
-//체크 박스 전체 선택
-$(document).ready(function() {
-	$("#cbx_chkAll").click(function() {
-		if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
-		else $("input[name=chk]").prop("checked", false);
-	});
 
-	$("input[name=chk]").click(function() {
-		var total = $("input[name=chk]").length;
-		var checked = $("input[name=chk]:checked").length;
-
-		if(total != checked) $("#cbx_chkAll").prop("checked", false);
-		else $("#cbx_chkAll").prop("checked", true); 
-	});
-});
-
+} */
 </script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style type="text/css">
@@ -69,11 +37,11 @@ ul {
 	text-align: center;
 }
 
-a { text-decoration: none; color: black; }
-    a:visited { text-decoration: none; }
-    a:hover { text-decoration: none; }
-    a:focus { text-decoration: none; }
-    a:hover, a:active { text-decoration: none; }
+a {
+	text-align: center;
+	text-decoration: none;
+	color: inherit;
+}
 </style>
 </head>
 <body>
@@ -97,7 +65,7 @@ a { text-decoration: none; color: black; }
 					<th width="5%" scope="col">File</th>
 					<th width="5%" scope="col">Date</th>
 					<th width="5%" scope="col">Views</th>
-					<th width="3%" scope="col"><input class="form-check-input" type="checkbox" id="cbx_chkAll"></th>
+					<th width="3%" scope="col"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -119,15 +87,14 @@ a { text-decoration: none; color: black; }
 								type="date" pattern="yy.MM.dd" /></font></td>
 						<td width="5%" align="center"><font size="2">${ n.notice_readcount }</font></td>
 						<td width="3%">
-						<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
-						<form action="nsdel.do" method="post" id="form">
+						<%-- <c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
+						<form action="ndel.do" method="post" id="form">
 						<div class="form-check">
-						  <input class="form-check-input" type="checkbox" value="${ n.notice_no }" name="chk">
-						  
+						  <input class="form-check-input" type="checkbox" value="${ n.notice_no }" name="notice_no">
 						</div>
 						
 						</form>
-						</c:if>
+						</c:if> --%>
 						</td>
 						
 					</tr>
@@ -139,10 +106,10 @@ a { text-decoration: none; color: black; }
 				<button type="button" class="btn btn-sm btn-primary"
 					onclick="javascript:location.href='movewrite.do';">${ loginMember.user_admin } Write</button>
 			</c:if>
-			<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
+		<%-- 	<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
 				<button type="button" class="btn btn-sm btn-primary"
 					onclick="checkForm();">delete</button>
-			</c:if>
+			</c:if> --%>
 		</div>
 		<!-- 페이징 -->
 	</div>
@@ -155,8 +122,10 @@ a { text-decoration: none; color: black; }
 							class="bi bi-chevron-double-left"></i></a></li>
 				</c:if>
 				<c:if test="${ currentPage > 1 }">
-					<c:url var="nlf" value="/nlist.do">
+					<c:url var="nlf" value="/nsearch.do">
 						<c:param name="page" value="1"></c:param>
+						<c:param name="type" value="title"></c:param>
+						<c:param name="keyword" value="test"></c:param>
 					</c:url>
 					<li class="page-item "><a class="page-link" href="${ nlf }"><i
 							class="bi bi-chevron-double-left"></i></a></li>
@@ -169,8 +138,10 @@ a { text-decoration: none; color: black; }
 				</c:if>
 				<c:if
 					test="${ (currentPage - 10) < startPage and (currentPage - 10) > 1 }">
-					<c:url var="nlf3" value="/nlist.do">
+					<c:url var="nlf3" value="/nsearch.do">
 						<c:param name="page" value="${ startPage - 10 }" />
+						<c:param name="type" value="title"></c:param>
+						<c:param name="keyword" value="test"></c:param>
 					</c:url>
 					<li class="page-item"><a class="page-link" href="${ nlf3 }"><i
 							class="bi bi-chevron-left"></i></a></li>
@@ -182,8 +153,10 @@ a { text-decoration: none; color: black; }
 						<li class="page-item disabled"><a class="page-link" href="#">${ p }</a></li>
 					</c:if>
 					<c:if test="${ p ne currentPage }">
-						<c:url var="nlf5" value="/nlist.do">
+						<c:url var="nlf5" value="/nsearch.do">
 							<c:param name="page" value="${ p }" />
+							<c:param name="type" value="title"></c:param>
+						<c:param name="keyword" value="test"></c:param>
 						</c:url>
 						<li class="page-item"><a class="page-link" href="${ nlf5 }">${ p }</a></li>
 					</c:if>
@@ -196,8 +169,10 @@ a { text-decoration: none; color: black; }
 				</c:if>
 				<c:if
 					test="${ (currentPage + 10) > endPage and (currentPage + 10) < maxPage }">
-					<c:url var="nlf4" value="/nlist.do">
+					<c:url var="nlf4" value="/nsearch.do">
 						<c:param name="page" value="${ endPage + 10 }" />
+						<c:param name="type" value="title"></c:param>
+						<c:param name="keyword" value="test"></c:param>
 					</c:url>
 					<li class="page-item"><a class="page-link" href="${ nlf4 }"><i
 							class="bi bi-chevron-right"></i></a></li>
@@ -208,8 +183,10 @@ a { text-decoration: none; color: black; }
 							class="bi bi-chevron-double-right"></i></a></li>
 				</c:if>
 				<c:if test="${ currentPage < maxPage }">
-					<c:url var="nlf2" value="/nlist.do">
+					<c:url var="nlf2" value="/nsearch.do">
 						<c:param name="page" value="${ maxPage }"></c:param>
+						<c:param name="type" value="title"></c:param>
+						<c:param name="keyword" value="test"></c:param>
 					</c:url>
 					<li class="page-item"><a class="page-link" href="${ nlf2 }"><i
 							class="bi bi-chevron-double-right"></i></a></li>
@@ -217,7 +194,7 @@ a { text-decoration: none; color: black; }
 			</ul>
 		</nav>
 	</div>
-	<form action="nsearch.do?page=1&type=title&keyword=test" method="get">
+	<form action="nsearch.do" method="get">
 		<div style="width: 400px;" class="input-group mb-3 container">
 			<div class="input-group-text p-0 ">
 				<select name="type"
