@@ -60,8 +60,8 @@ function checkForm() {
       <br>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding-top: 10px;">
         <!-- <button class="btn btn-primary" type="reset">Reset</button> -->
-        <button onclick="checkForm();" class="btn btn-primary" type="button">Update</button>
-        <button onclick="cancle();" class="btn btn-primary" type="button">Cancle</button>
+        <button onclick="checkForm();" class="btn btn-primary" type="button">등록</button>
+        <button onclick="cancle();" class="btn btn-primary" type="button">취소</button>
       </div>
     </div>
     </fieldset>

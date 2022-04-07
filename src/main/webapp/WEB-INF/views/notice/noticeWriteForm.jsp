@@ -51,8 +51,8 @@ function checkForm() {
         <input style="width: 300px;" class="form-control" type="file" name="upfile">
       <br>
       <div class="d-grid gap-2 d-md-flex justify-content-md-end" style="padding-top: 10px;">
-        <button type="button" onclick="checkForm();" class="btn btn-primary">Submit</button>
-        <button onclick="cancle();" class="btn btn-primary" type="button">Cancle</button>
+        <button type="button" onclick="checkForm();" class="btn btn-primary">등록</button>
+        <button onclick="cancle();" class="btn btn-primary" type="button">취소</button>
       </div>
       <hr>
     </div>

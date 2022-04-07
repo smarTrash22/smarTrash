@@ -15,6 +15,8 @@
 <head>
 <meta charset="UTF-8">
 <title>SmarTrash - ${ page_title }</title>
+<style>
+</style>
 <script type="text/javascript" src="${ pageContext.servletContext.contextPath }/resources/js/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
 	/* function showWriteForm(){
@@ -31,7 +33,7 @@
    	}
 	console.log(notice_no);
 	$("#form").submit(); } */
-var chkArray = [];
+/* var chkArray = [];
 var checkboxValues = [];
    $("input[name='chk']:checked").each(function(i) {
        checkboxValues.push($(this).val());
@@ -45,23 +47,56 @@ $.ajax({
 	success: function(data){ 
 		console.log("성공");
 	} 
-});
-//체크 박스 전체 선택
-$(document).ready(function() {
+}); */
+function checkForm() {
+	 // 내용 입력 유무 체크
+    var content = document.getElementsByName('keyword')[0];
+    if(content.value == ''){
+        alert('검색어을 입력하세요.');
+        return false;
+    }
+    searchForm.submit();
+}
+//검색창 유효성 검사
+/* function selectSearch() {
+	
+	var type = $('#type').val()
+	var keyword = $('#keyword').val()
+	var num = 1
+	$.ajax({
+		type : 'get',
+		url : 'nsearch.do?page='+num+'&type='+type+'&keyword='+keyword,
+		data : {},
+		dataType : 'json',
+		error : function(xhr, status, error) {
+			alert('에러');
+		},
+		success : function(json) {
+			if(json == ''){
+				alert('아이디를 입력하세요');
+			}
+		}
+	});
+} */
+//체크 박스 전체 선택(구현중...)
+/* $(document).ready(function() {
 	$("#cbx_chkAll").click(function() {
-		if($("#cbx_chkAll").is(":checked")) $("input[name=chk]").prop("checked", true);
-		else $("input[name=chk]").prop("checked", false);
+		if ($("#cbx_chkAll").is(":checked"))
+			$("input[name=chk]").prop("checked", true);
+		else
+			$("input[name=chk]").prop("checked", false);
 	});
 
 	$("input[name=chk]").click(function() {
 		var total = $("input[name=chk]").length;
 		var checked = $("input[name=chk]:checked").length;
 
-		if(total != checked) $("#cbx_chkAll").prop("checked", false);
-		else $("#cbx_chkAll").prop("checked", true); 
+		if (total != checked)
+			$("#cbx_chkAll").prop("checked", false);
+		else
+			$("#cbx_chkAll").prop("checked", true);
 	});
-});
-
+}); */
 </script>
 <c:import url="/WEB-INF/views/common/head.jsp" />
 <style type="text/css">
@@ -91,13 +126,13 @@ a { text-decoration: none; color: black; }
 		<table class="table table-striped table-hover">
 			<thead>
 				<tr>
-					<th width="5%" scope="col">No</th>
-					<th width="55%" scope="col">Subject</th>
-					<th width="15%" scope="col">Name</th>
-					<th width="5%" scope="col">File</th>
-					<th width="5%" scope="col">Date</th>
-					<th width="5%" scope="col">Views</th>
-					<th width="3%" scope="col"><input class="form-check-input" type="checkbox" id="cbx_chkAll"></th>
+					<th width="7%" scope="col">번호</th>
+					<th width="50%" scope="col">제목</th>
+					<th width="7%" scope="col">글쓴이</th>
+					<th width="7%" scope="col">파일</th>
+					<th width="7%" scope="col">작성일</th>
+					<th width="7%" scope="col">조회</th>
+					<!-- <th width="3%" scope="col"><input class="form-check-input" type="checkbox" id="cbx_chkAll"></th> -->
 				</tr>
 			</thead>
 			<tbody>
@@ -118,32 +153,30 @@ a { text-decoration: none; color: black; }
 						<td width="5%" align="left"><font size="2"><fmt:formatDate value="${ n.notice_date}"
 								type="date" pattern="yy.MM.dd" /></font></td>
 						<td width="5%" align="center"><font size="2">${ n.notice_readcount }</font></td>
-						<td width="3%">
+						<%-- <td width="3%">
 						<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
 						<form action="nsdel.do" method="post" id="form">
 						<div class="form-check">
 						  <input class="form-check-input" type="checkbox" value="${ n.notice_no }" name="chk">
-						  
 						</div>
-						
 						</form>
 						</c:if>
-						</td>
+						</td> --%>
 						
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 		<div align="right">
+		<button class="btn btn-primary" type="button" onclick="javascript:location.href='nlist.do';">목록</button>
 			<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
-				<button type="button" class="btn btn-sm btn-primary"
-					onclick="javascript:location.href='movewrite.do';">${ loginMember.user_admin } Write</button>
+				<button type="button" class="btn btn-primary"
+					onclick="javascript:location.href='movewrite.do';">${ loginMember.user_admin } 글쓰기</button>
 			</c:if>
-			<c:if test="${ !empty sessionScope.loginUser and sessionScope.loginUser.user_admin eq 'Y' }">
-				<button type="button" class="btn btn-sm btn-primary"
-					onclick="checkForm();">delete</button>
-			</c:if>
+			
 		</div>
+		<!-- <div class="left"><button type="button" class="btn btn-sm btn-primary" onclick="nlist.do">list</button></div> -->
+			
 		<!-- 페이징 -->
 	</div>
 	<div class="d-flex justify-content-center">
@@ -217,7 +250,7 @@ a { text-decoration: none; color: black; }
 			</ul>
 		</nav>
 	</div>
-	<form action="nsearch.do?page=1&type=title&keyword=test" method="get">
+	<form action="nsearch.do?page=1&type=title&keyword=test" id="searchForm" method="get">
 		<div style="width: 400px;" class="input-group mb-3 container">
 			<div class="input-group-text p-0 ">
 				<select name="type"
@@ -229,7 +262,7 @@ a { text-decoration: none; color: black; }
 			</div>
 			<input style="width: 10px;" type="text" class="form-control"
 				placeholder="Search Here" name="keyword">
-			<button class="input-group-text shadow-none px-4 btn-secondary" type="submit">
+			<button class="input-group-text shadow-none px-4 btn-secondary" type="button" onclick="checkForm();">
 				<i class="bi bi-search"></i>
 			</button>
 		</div>
