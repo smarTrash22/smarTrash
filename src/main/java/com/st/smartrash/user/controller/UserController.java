@@ -325,9 +325,17 @@ public class UserController {
 	
 			ArrayList<Trash> tlist = userService.selectTodayTrash();
 			ArrayList<Trash> trlist = userService.selectTodayReportTrash();
-	
-			mv.addObject("tlist", tlist);
-			mv.addObject("trlist", trlist);
+			
+			double tlc = tlist.size();
+			double trlc = trlist.size();
+			double acc = (tlc-trlc)/tlc*100;
+			String tacc = String.format("%.2f", acc);
+			if(tacc.equals("NaN"))
+				tacc = "0";
+			
+			mv.addObject("tlc", tlist.size());
+			mv.addObject("trlc", trlist.size());
+			mv.addObject("tacc", tacc);
 			mv.addObject("onPage", onPage);
 			System.out.println("mv : " + mv);
 			mv.setViewName("user/managerPage");

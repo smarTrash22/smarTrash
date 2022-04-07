@@ -104,13 +104,13 @@
 									    <td style="padding : 1em;">
 									    	<div>
 												<div style="font-size:20px;">오늘 분석된 쓰레기 수</div>
-												<div style="font-size:80pt; font-weight:1000; color:darkgray;">${ fn:length(tlist) }</div>
+												<div style="font-size:80pt; font-weight:1000; color:darkgray;">${ tlc }</div>
 											</div>
 										</td>
 									    <td rowspan='2' style="padding:1em;">
 									    	<div>
 												<div style="font-size:20px;">정확도</div>
-												<div style="font-size:80pt; font-weight:1000; color:skyblue;"><fmt:formatNumber value="${ (fn:length(tlist)-fn:length(trlist))/fn:length(tlist)*100 }" pattern=".00"/>%</div>
+												<div style="font-size:80pt; font-weight:1000; color:skyblue;">${ tacc }%</div>
 											</div>
 										</td>
 									  </tr>
@@ -118,7 +118,7 @@
 									    <td style="padding : 1em;">
 											<div>
 												<div style="font-size: 20px;">오늘 신고된 쓰레기 수</div>
-												<div style="font-size: 80pt; font-weight: 1000; color: darkgray;">${ fn:length(trlist) }</div>
+												<div style="font-size: 80pt; font-weight: 1000; color: darkgray;">${ trlc }</div>
 											</div>
 										</td>
 									  </tr>
